@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 
-  <title>Game</title>
+<title>Game</title>
 
-  <meta charset="utf-8">
+<meta charset="utf-8">
 
 </head>
 
 <body>
   <canvas id="gameCanvas" width="600" height="600"></canvas>
   <script type="text/javascript">
-
     var canvas, ctx;
 
     window.onload = function() {
-       canvas = document.getElementById('gameCanvas');
-       ctx = canvas.getContext('2d');
+      canvas = document.getElementById('gameCanvas');
+      ctx = canvas.getContext('2d');
       // resizeCanvas();
       canvas.addEventListener("mousedown", function(evt) {
         getMousePosition(canvas, evt);
@@ -29,157 +28,123 @@
 
 
 
-  var mouseX, mouseY;
+    var mouseX, mouseY;
+
     function getMousePosition(canvas, evt) {
       var rect = canvas.getBoundingClientRect();
       mouseX = event.clientX - rect.left;
       mouseY = event.clientY - rect.top;
-    }  //end of getMOusdePos funtion ()
+    } //end of getMOusdePos funtion ()
 
 
+    var track = ['right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+      'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down','up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+      'down', 'down', 'down',
+    ];
+
+    var track2 = ['right','down','up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+    'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
+     'down', 'down','down'
+   ];
 
 
+    var currentTrack = '';
+    var gameActive = false;
 
     function mainloop() {
 
       colorRect(0, 0, canvas.width, canvas.height, 'blue');
-      drawGrid(canvas.width,canvas.height,'grid');
-  drawTrack();
-  // drawTrack2();
+      drawGrid(canvas.width, canvas.height, 'grid');
 
-    }  //end of mainloop function()
+      if (gameActive == false) {
+        currentTrack = track2;
+        gameActive = true;
+      }
+
+      drawTrack();
+     drawCircles();
+
+
+    } //end of mainloop function()
 
     //grid variables
-  var gridCount = 12;
-  // cavas.height and width are 600
-  var TotalGridSize = 600;
-  var gridSize = TotalGridSize / gridCount;
-var track = ['right','up','up','up','up','right','right','right','right','right','right',
-'right','down','down','down','down','down','down','left','left','left','left'];
-
-var track2=['right','right','up','up','up','up','right','right','right','right','right','down',
-'down','down','down','left','left','left'];
-var trackL = track.length;
- var gridAmount = track.length;
- var trackL2 = track2.length;
- var gridAmount2 = track2.length;
-  var gridDirection = 'left';
-  var xa =0;   //xa and ya used for track cooradanets
-  var ya = TotalGridSize/2-gridSize;
-    var xa2 =0;    //the 2nd one is for starting x,y
-var ya2=TotalGridSize/2-gridSize;
-  var xb = 0;
-  var yb= TotalGridSize/2;
-  var xb2 = 0;
-  var yb2 =TotalGridSize /2;
+    var gridCount = 12;
+    // cavas.height and width are 600
+    var TotalGridSize = 600;
+    var gridSize = TotalGridSize / gridCount;
 
 
 
-function drawTrack() {  // to draw the track
-ctx.strokeStyle = 'rgb(7,7,7)';
-ctx.lineWidth = gridSize;
-ctx.bord
+    var trackWidth = gridSize;
 
-     ctx.beginPath();
-     ctx.moveTo(xa2,ya2);
-
-
-
-  for(a = gridAmount; a<gridAmount*2; a++) {
- var i = a -gridAmount;
-// console.log(i);
-
-   gridDirection = track[i];
-   if(gridDirection =='up') {
-         track[i] = [xa,ya-gridSize];
-         ya -=gridSize;
-   } else if (gridDirection == 'down') {
-      track[i] = [xa,ya+gridSize];
-      ya+=gridSize
-   }  else if(gridDirection== 'left') {
-     track[i] = [xa-gridSize,ya];
-     xa-=gridSize;
-   }  else if(gridDirection =='right') {
-     track[i] = [xa + gridSize,ya];
-     xa += gridSize
-   }
-
-} gridAmount =0;
+    var trackL = '';
+    var gridAmount = '';
+    var gridDirection = '';
+    var xa = 0; //xa and ya used for track cooradanets
+    var ya = TotalGridSize / 2 - gridSize;
+    var xa2 = 0; //the 2nd one is for starting x,y
+    var ya2 = TotalGridSize / 2 - gridSize;
 
 
 
-//
+    function drawTrack() { // to draw the track
 
-for(var a = trackL;a<trackL*2;a++) {
-// console.log(i);
-  var i = a - trackL;
-      ctx.lineTo(track[i][0],track[i][1]);
-} i = i-trackL;
-
-ctx.stroke();
+       trackL = currentTrack.length;
+       gridAmount = currentTrack.length;
+      ctx.strokeStyle = 'rgb(7,7,7)';
+      ctx.lineWidth = trackWidth;
 
 
-}  //end of draw Track
-
-function drawTrack2() {  // to draw the track
-gridAmount2 = track.length;
-ctx.strokeStyle = 'rgb(7,7,7)';
-ctx.lineWidth = 5;
-
-     ctx.beginPath();
-     ctx.moveTo(xb2,yb2);
+      ctx.beginPath();
+      ctx.moveTo(xa2, ya2);
 
 
 
-  for(a = gridAmount2; a<gridAmount2*2; a++) {
- var i = a -gridAmount2;
-// console.log(i);
+      for (a = gridAmount; a < gridAmount * 2; a++) {
+        var i = a - gridAmount;
+        // console.log(i);
 
-   gridDirection = track2[i];
-   if(gridDirection =='up') {
-         track2[i] = [xb,yb-gridSize];
-         yb -=gridSize;
-   } else if (gridDirection == 'down') {
-      track2[i] = [xb,yb+gridSize];
-      yb+=gridSize
-   }  else if(gridDirection== 'left') {
-     track2[i] = [xb-gridSize,yb];
-     xb-=gridSize;
-   }  else if(gridDirection =='right') {
-     track2[i] = [xb + gridSize,yb];
-     xb += gridSize;
-   }
-
-} gridAmount2 =0;
-
-
-
-//
-
-for(var a = trackL2;a<trackL2*2;a++) {
-// console.log(i);
-  var i = a - trackL2;
-      ctx.lineTo(track2[i][0],track2[i][1]);
-} i = i-trackL2;
-
-// ctx.closePath();
-ctx.stroke();
+        gridDirection = currentTrack[i];
+        if (gridDirection == 'up') {
+          currentTrack[i] = [xa, ya - gridSize];
+          ya -= gridSize;
+        } else if (gridDirection == 'down') {
+          currentTrack[i] = [xa, ya + gridSize];
+          ya += gridSize
+        } else if (gridDirection == 'left') {
+          currentTrack[i] = [xa - gridSize, ya];
+          xa -= gridSize;
+        } else if (gridDirection == 'right') {
+          currentTrack[i] = [xa + gridSize, ya];
+          xa += gridSize
+        }
+      }
+      gridAmount = 0;
 
 
-}       //end of drawtrack 2
+      for (var a = 0; a < trackL; a++) {
+        console.log(i);
+        var i=  a;
+        ctx.lineTo(currentTrack[i][0], currentTrack[i][1]);
+      }
+      i = i - trackL;
 
+      ctx.stroke();
+
+
+    } //end of draw Track
 
     var drawGrid = function(w, h, id) {
 
 
-var vStep = canvas.height/gridCount;
-var hStep = canvas.width/gridCount;
+      var vStep = canvas.height / gridCount;
+      var hStep = canvas.width / gridCount;
 
-        ctx.canvas.width = w;
-        ctx.canvas.height = h;
+      ctx.canvas.width = w;
+      ctx.canvas.height = h;
 
 
-      for (x = 0; x <= w; x += hStep) {   //drawas a line for entrei height width gaps of hstep
+      for (x = 0; x <= w; x += hStep) { //drawas a line for entrei height width gaps of hstep
         ctx.moveTo(x, 0);
         ctx.lineTo(x, h);
 
@@ -198,10 +163,37 @@ var hStep = canvas.width/gridCount;
     }; //end of drawGrid Funtion()
 
 
+var ballX = 200;
+var ballY = 200;
+var ballR =gridSize/5;
+var ballC = 'green';
+var ballBorderW= gridSize/10;
+var ballBorderC='white';
+
+function drawCircles() {
+drawCircle(ballX,ballY,ballR,ballC,ballBorderW,ballBorderC);
+
+
+}
+
+
+
     function colorRect(x, y, w, h, c) { //to draw things
       ctx.fillStyle = c;
       ctx.fillRect(x, y, w, h);
-    }//end of colorRect
+    } //end of colorRect
+
+   function drawCircle(x,y, radius,c,borderWidth, borderColor) {
+     ctx.strokeStyle = borderColor;
+     ctx.lineWidth = borderWidth;
+     ctx.fillStyle = c;
+     ctx.beginPath();
+     ctx.arc(x,y,radius,0,2*Math.PI);
+      ctx.stroke();
+      ctx.fill();
+
+   }
+
   </script>
 
 </body>
