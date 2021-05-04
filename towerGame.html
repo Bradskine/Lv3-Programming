@@ -84,11 +84,12 @@
     var trackL = '';
     var gridAmount = '';
     var gridDirection = '';
-    var xa = gridSize/2; //xa and ya used for track cooradanets
+    var xa = 0; //xa and ya used for track cooradanets
     var ya = TotalGridSize / 2 - gridSize/2;
-    var xa2 = gridSize/2; //the 2nd one is for starting x,y
+    var xa2 = 0; //the 2nd one is for starting x,y
     var ya2 = TotalGridSize / 2 - gridSize/2;
-
+                   //x start     y start               //radius            //color          //border widht  border Colour  
+var redCircle = Number(xa2) +','+Number(ya2)+','+Number(gridSize/6)+',' +'"red"'+','+Number(gridSize/11)+','+'"black"';
 
     class circle { //this will creawte circles which go around track
       //defaugt circle values so no empty stuff
@@ -105,7 +106,7 @@
    this.x = Number(x)
    this.y = Number(y)
    this.r = Number(r)  //makes all numbers incase mistype
-   this.c = Number(c)
+
    this.c = c
    this.borderW = borderW
    this.borderC = borderC
@@ -116,6 +117,8 @@ get area () { //this is incase i want to compare circles and know whcih one
   return this.radius^2 * Math.PI;
 }
 //might a make a shorcut fucniotn thing for each circle type
+
+
 
 draw() {
 
@@ -128,13 +131,18 @@ draw() {
  drawCircle(x,y,r,c,borderW,borderC)
 
  ctx.restore()
-
 }
 
 
 }  // end of circle class
 
 var Circles = [];
+
+// redCircle[0],redCircle[1],redCircle[2],redCircle[3]
+// ,redCircle[4],redCircle[5]
+
+
+Circles.push(new circle(0,275,8.333333333333334,'red',4.545454545454546,'black'));
     function mainloop() {
       colorRect(0, 0, canvas.width, canvas.height, 'blue');
       drawGrid(canvas.width, canvas.height, 'grid');
@@ -145,7 +153,7 @@ var Circles = [];
       }
 
       drawTrack();
-
+      drawCircles();
 
     } //end of mainloop function()
 
@@ -153,14 +161,21 @@ var Circles = [];
 //will be used to send circles on a timer
 
         //this code runs every second
-            var i =  new circle(xa2,ya2,gridSize/5,'green',gridSize/9,'white');
-              Circles.push (i);
+  //       var i = new  circle(xa2,ya2,gridSize/5,'green',gridSize/9,'white');
+  //
+  // Circles.push (redCircle);
 }, 1000);
 
 
 
  // const circ = new circle(xa2,ya2,gridSize/5,'green',gridSize/9,'white');
  // console.log(circ);
+
+
+   function drawCircles() {
+Circles.forEach(circle => circle.draw()); //drawas circles
+
+}
 
 
 
@@ -177,24 +192,33 @@ var Circles = [];
 
 
 
-      for (a = gridAmount; a < gridAmount * 2; a++) {
+      for (a = 0; a < gridAmount * 2; a++) {
         var i = a - gridAmount;
         // console.log(i);
+        let change  = 1;
+        if(i == gridAmount-1 ||i==0) {
+          change = 1.5;
+        }  //this makes it that the 1st and last line a 1.5 tiem longer to
+        //problem wherer track stops and stars half way inbetween grid points
+
 
         gridDirection = currentTrack[i];
         if (gridDirection == 'up') {
-          currentTrack[i] = [xa, ya - gridSize];
-          ya -= gridSize;
+          currentTrack[i] = [xa, ya - gridSize*change];
+          ya -= gridSize*change;
         } else if (gridDirection == 'down') {
-          currentTrack[i] = [xa, ya + gridSize];
+          currentTrack[i] = [xa, ya + gridSize*change];
           ya += gridSize;
         } else if (gridDirection == 'left') {
-          currentTrack[i] = [xa - gridSize, ya];
-          xa -= gridSize;
+          currentTrack[i] = [xa - gridSize*change, ya];
+          xa -= gridSize*change;
         } else if (gridDirection == 'right') {
-          currentTrack[i] = [xa + gridSize, ya];
-          xa += gridSize ;
+          currentTrack[i] = [xa + gridSize*change, ya];
+          xa += gridSize*change ;
         }
+
+
+
       }
       gridAmount = 0;
 
