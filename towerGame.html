@@ -10,14 +10,34 @@
   <canvas id="gameCanvas" width="600" height="600"></canvas>
   <script type="text/javascript">
     var canvas, ctx;
-
+    var onTrack = false;
     window.onload = function() {
       canvas = document.getElementById('gameCanvas');
       ctx = canvas.getContext('2d');
       // resizeCanvas();
       canvas.addEventListener("mousedown", function(evt) {
         getMousePosition(canvas, evt);
-        console.log(mouseX, mouseY);
+
+
+          //red blue grteen yellow pink balck white lead zebra camo rainbow regen ceramic reinforced led reninforced ceramic  moab reinfoced mobab bfb reinforced bfb , zomg, reinforced zomg,dtd ,bad
+
+
+      let columnClicked = Math.floor(mouseX/gridSize);
+      let rowClicked = Math.floor(mouseY/gridSize);
+
+      for(i=0;i<trackL;i++) {
+        onTrack = false;
+        let trackColumn = Math.floor(currentTrack[i][0]/gridSize);
+        let trackRow = Math.floor(currentTrack[i][1]/gridSize);
+
+          if(columnClicked == trackColumn && rowClicked == trackRow) {
+            onTrack = true;
+          //will make traps menu come up when clikd on track
+            break;
+          }
+
+      }
+  console.log(onTrack);
       });
 
       setInterval(mainloop, 1000 / 50);
@@ -25,7 +45,6 @@
 
 
     } // end of onloead function()
-
 
 
     var mouseX, mouseY;
@@ -51,21 +70,6 @@
     var currentTrack = '';
     var gameActive = false;
 
-    function mainloop() {
-
-      colorRect(0, 0, canvas.width, canvas.height, 'blue');
-      drawGrid(canvas.width, canvas.height, 'grid');
-
-      if (gameActive == false) {
-        currentTrack = track2;
-        gameActive = true;
-      }
-
-      drawTrack();
-     drawCircles();
-
-
-    } //end of mainloop function()
 
     //grid variables
     var gridCount = 12;
@@ -80,10 +84,83 @@
     var trackL = '';
     var gridAmount = '';
     var gridDirection = '';
-    var xa = 0; //xa and ya used for track cooradanets
-    var ya = TotalGridSize / 2 - gridSize;
-    var xa2 = 0; //the 2nd one is for starting x,y
-    var ya2 = TotalGridSize / 2 - gridSize;
+    var xa = gridSize/2; //xa and ya used for track cooradanets
+    var ya = TotalGridSize / 2 - gridSize/2;
+    var xa2 = gridSize/2; //the 2nd one is for starting x,y
+    var ya2 = TotalGridSize / 2 - gridSize/2;
+
+
+    class circle { //this will creawte circles which go around track
+      //defaugt circle values so no empty stuff
+
+   constructor (
+       x = 0,
+       y = 0,
+       r = 0,
+       c = '',
+       borderW= gridSize/10,
+       borderC=''
+) {
+
+   this.x = Number(x)
+   this.y = Number(y)
+   this.r = Number(r)  //makes all numbers incase mistype
+   this.c = Number(c)
+   this.c = c
+   this.borderW = borderW
+   this.borderC = borderC
+}
+
+get area () { //this is incase i want to compare circles and know whcih one
+     // is bigger to put smaller one on top for visual clarity
+  return this.radius^2 * Math.PI;
+}
+//might a make a shorcut fucniotn thing for each circle type
+
+draw() {
+
+    var   {
+      x, y, r, c , borderW,borderC
+    } = this
+
+    ctx.save()  //so doesnt save over other ones
+
+ drawCircle(x,y,r,c,borderW,borderC)
+
+ ctx.restore()
+
+}
+
+
+}  // end of circle class
+
+var Circles = [];
+    function mainloop() {
+      colorRect(0, 0, canvas.width, canvas.height, 'blue');
+      drawGrid(canvas.width, canvas.height, 'grid');
+
+      if (gameActive == false) {
+        currentTrack = track2;
+        gameActive = true;
+      }
+
+      drawTrack();
+
+
+    } //end of mainloop function()
+
+    setInterval(function(){
+//will be used to send circles on a timer
+
+        //this code runs every second
+            var i =  new circle(xa2,ya2,gridSize/5,'green',gridSize/9,'white');
+              Circles.push (i);
+}, 1000);
+
+
+
+ // const circ = new circle(xa2,ya2,gridSize/5,'green',gridSize/9,'white');
+ // console.log(circ);
 
 
 
@@ -110,20 +187,20 @@
           ya -= gridSize;
         } else if (gridDirection == 'down') {
           currentTrack[i] = [xa, ya + gridSize];
-          ya += gridSize
+          ya += gridSize;
         } else if (gridDirection == 'left') {
           currentTrack[i] = [xa - gridSize, ya];
           xa -= gridSize;
         } else if (gridDirection == 'right') {
           currentTrack[i] = [xa + gridSize, ya];
-          xa += gridSize
+          xa += gridSize ;
         }
       }
       gridAmount = 0;
 
 
       for (var a = 0; a < trackL; a++) {
-        console.log(i);
+        // console.log(i);
         var i=  a;
         ctx.lineTo(currentTrack[i][0], currentTrack[i][1]);
       }
@@ -163,18 +240,9 @@
     }; //end of drawGrid Funtion()
 
 
-var ballX = 200;
-var ballY = 200;
-var ballR =gridSize/5;
-var ballC = 'green';
-var ballBorderW= gridSize/10;
-var ballBorderC='white';
-
-function drawCircles() {
-drawCircle(ballX,ballY,ballR,ballC,ballBorderW,ballBorderC);
 
 
-}
+
 
 
 
