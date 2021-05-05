@@ -19,25 +19,25 @@
         getMousePosition(canvas, evt);
 
 
-          //red blue grteen yellow pink balck white lead zebra camo rainbow regen ceramic reinforced led reninforced ceramic  moab reinfoced mobab bfb reinforced bfb , zomg, reinforced zomg,dtd ,bad
+        //red blue grteen yellow pink balck white lead zebra camo rainbow regen ceramic reinforced led reninforced ceramic  moab reinfoced mobab bfb reinforced bfb , zomg, reinforced zomg,dtd ,bad reinfocec bad
 
 
-      let columnClicked = Math.floor(mouseX/gridSize);
-      let rowClicked = Math.floor(mouseY/gridSize);
+        let columnClicked = Math.floor(mouseX / gridSize);
+        let rowClicked = Math.floor(mouseY / gridSize);
 
-      for(i=0;i<trackL;i++) {
-        onTrack = false;
-        let trackColumn = Math.floor(currentTrack[i][0]/gridSize);
-        let trackRow = Math.floor(currentTrack[i][1]/gridSize);
+        for (i = 0; i < trackL; i++) {
+          onTrack = false;
+          let trackColumn = Math.floor(currentTrack[i][0] / gridSize);
+          let trackRow = Math.floor(currentTrack[i][1] / gridSize);
 
-          if(columnClicked == trackColumn && rowClicked == trackRow) {
+          if (columnClicked == trackColumn && rowClicked == trackRow) {
             onTrack = true;
-          //will make traps menu come up when clikd on track
+            //will make traps menu come up when clikd on track
             break;
           }
 
-      }
-  console.log(onTrack);
+        }
+        console.log(onTrack);
       });
 
       setInterval(mainloop, 1000 / 50);
@@ -57,14 +57,14 @@
 
 
     var track = ['right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down','up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+      'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
       'down', 'down', 'down',
     ];
 
-    var track2 = ['right','down','up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-    'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
-     'down', 'down','down'
-   ];
+    var track2 = ['right', 'down', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+      'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
+      'down', 'down', 'down'
+    ];
 
 
     var currentTrack = '';
@@ -85,64 +85,72 @@
     var gridAmount = '';
     var gridDirection = '';
     var xa = 0; //xa and ya used for track cooradanets
-    var ya = TotalGridSize / 2 - gridSize/2;
+    var ya = TotalGridSize / 2 - gridSize / 2;
     var xa2 = 0; //the 2nd one is for starting x,y
-    var ya2 = TotalGridSize / 2 - gridSize/2;
-                   //x start     y start               //radius            //color          //border widht  border Colour  
-var redCircle = Number(xa2) +','+Number(ya2)+','+Number(gridSize/6)+',' +'"red"'+','+Number(gridSize/11)+','+'"black"';
+    var ya2 = TotalGridSize / 2 - gridSize / 2;
+    //x start     y start               //radius            //color          //border widht  border Colour
 
+    var redCircle =[xa2,ya2,gridSize/6,'red',gridSize/11,'black'];
+    var blueCircle = [xa2+50,ya2,gridSize/6,'blue',gridSize/13,'black'];
+     var greenCircle = [xa2+100,ya2,gridSize/12,'green',gridSize/13,'black'];
     class circle { //this will creawte circles which go around track
       //defaugt circle values so no empty stuff
 
-   constructor (
-       x = 0,
-       y = 0,
-       r = 0,
-       c = '',
-       borderW= gridSize/10,
-       borderC=''
-) {
+      constructor(
+        x = 0,
+        y = 0,
+        r = 0,
+        c = '',
+        borderW = '',
+        borderC = ''
+      ) {
 
-   this.x = Number(x)
-   this.y = Number(y)
-   this.r = Number(r)  //makes all numbers incase mistype
+        this.x = Number(x)
+        this.y = Number(y)
+        this.r = Number(r) //makes all numbers incase mistype
 
-   this.c = c
-   this.borderW = borderW
-   this.borderC = borderC
-}
+        this.c = c
+        this.borderW = borderW
+        this.borderC = borderC
+      }
 
-get area () { //this is incase i want to compare circles and know whcih one
-     // is bigger to put smaller one on top for visual clarity
-  return this.radius^2 * Math.PI;
-}
-//might a make a shorcut fucniotn thing for each circle type
+      get area() { //this is incase i want to compare circles and know whcih one
+        // is bigger to put smaller one on top for visual clarity
+        return this.radius ^ 2 * Math.PI;
+      }
+      //might a make a shorcut fucniotn thing for each circle type
 
-
-
-draw() {
-
-    var   {
-      x, y, r, c , borderW,borderC
-    } = this
-
-    ctx.save()  //so doesnt save over other ones
-
- drawCircle(x,y,r,c,borderW,borderC)
-
- ctx.restore()
-}
+      
 
 
-}  // end of circle class
+      draw() {
 
-var Circles = [];
+        var {
+          x,
+          y,
+          r,
+          c,
+          borderW,
+          borderC
+        } = this
 
-// redCircle[0],redCircle[1],redCircle[2],redCircle[3]
-// ,redCircle[4],redCircle[5]
+        ctx.save() //so doesnt save over other ones
+
+        drawCircle(x, y, r, c, borderW, borderC)
+
+        ctx.restore()
+      }
 
 
-Circles.push(new circle(0,275,8.333333333333334,'red',4.545454545454546,'black'));
+    } // end of circle class
+
+    var redCircles = [];
+
+
+    addCircle("red");
+
+
+
     function mainloop() {
       colorRect(0, 0, canvas.width, canvas.height, 'blue');
       drawGrid(canvas.width, canvas.height, 'grid');
@@ -157,32 +165,38 @@ Circles.push(new circle(0,275,8.333333333333334,'red',4.545454545454546,'black')
 
     } //end of mainloop function()
 
-    setInterval(function(){
-//will be used to send circles on a timer
+    setInterval(function() {
+      //will be used to send circles on a timer
 
-        //this code runs every second
-  //       var i = new  circle(xa2,ya2,gridSize/5,'green',gridSize/9,'white');
-  //
-  // Circles.push (redCircle);
-}, 1000);
-
-
-
- // const circ = new circle(xa2,ya2,gridSize/5,'green',gridSize/9,'white');
- // console.log(circ);
+      //this code runs every second
+      //       var i = new  circle(xa2,ya2,gridSize/5,'green',gridSize/9,'white');
+      //
+      // Circles.push (redCircle);
+    }, 1000);
 
 
-   function drawCircles() {
-Circles.forEach(circle => circle.draw()); //drawas circles
 
-}
+  function addCircle(x) {
+    var type = eval(x + 'Circle');
+        redCircles.push(new circle(type[0],type[1],type[2],type[3],type[4],type[5]));
+  }
+
+
+    function drawCircles() {
+      redCircles.forEach(circle => x+=10);
+
+
+
+      redCircles.forEach(circle => circle.draw()); //drawas circles
+
+    }
 
 
 
     function drawTrack() { // to draw the track
 
-       trackL = currentTrack.length;
-       gridAmount = currentTrack.length;
+      trackL = currentTrack.length;
+      gridAmount = currentTrack.length;
       ctx.strokeStyle = 'rgb(7,7,7)';
       ctx.lineWidth = trackWidth;
 
@@ -195,26 +209,26 @@ Circles.forEach(circle => circle.draw()); //drawas circles
       for (a = 0; a < gridAmount * 2; a++) {
         var i = a - gridAmount;
         // console.log(i);
-        let change  = 1;
-        if(i == gridAmount-1 ||i==0) {
+        let change = 1;
+        if (i == gridAmount - 1 || i == 0) {
           change = 1.5;
-        }  //this makes it that the 1st and last line a 1.5 tiem longer to
+        } //this makes it that the 1st and last line a 1.5 tiem longer to
         //problem wherer track stops and stars half way inbetween grid points
 
 
         gridDirection = currentTrack[i];
         if (gridDirection == 'up') {
-          currentTrack[i] = [xa, ya - gridSize*change];
-          ya -= gridSize*change;
+          currentTrack[i] = [xa, ya - gridSize * change];
+          ya -= gridSize * change;
         } else if (gridDirection == 'down') {
-          currentTrack[i] = [xa, ya + gridSize*change];
+          currentTrack[i] = [xa, ya + gridSize * change];
           ya += gridSize;
         } else if (gridDirection == 'left') {
-          currentTrack[i] = [xa - gridSize*change, ya];
-          xa -= gridSize*change;
+          currentTrack[i] = [xa - gridSize * change, ya];
+          xa -= gridSize * change;
         } else if (gridDirection == 'right') {
-          currentTrack[i] = [xa + gridSize*change, ya];
-          xa += gridSize*change ;
+          currentTrack[i] = [xa + gridSize * change, ya];
+          xa += gridSize * change;
         }
 
 
@@ -225,7 +239,7 @@ Circles.forEach(circle => circle.draw()); //drawas circles
 
       for (var a = 0; a < trackL; a++) {
         // console.log(i);
-        var i=  a;
+        var i = a;
         ctx.lineTo(currentTrack[i][0], currentTrack[i][1]);
       }
       i = i - trackL;
@@ -275,17 +289,16 @@ Circles.forEach(circle => circle.draw()); //drawas circles
       ctx.fillRect(x, y, w, h);
     } //end of colorRect
 
-   function drawCircle(x,y, radius,c,borderWidth, borderColor) {
-     ctx.strokeStyle = borderColor;
-     ctx.lineWidth = borderWidth;
-     ctx.fillStyle = c;
-     ctx.beginPath();
-     ctx.arc(x,y,radius,0,2*Math.PI);
+    function drawCircle(x, y, radius, c, borderWidth, borderColor) {
+      ctx.strokeStyle = borderColor;
+      ctx.lineWidth = borderWidth;
+      ctx.fillStyle = c;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, 2 * Math.PI);
       ctx.stroke();
       ctx.fill();
 
-   }
-
+    }
   </script>
 
 </body>
@@ -302,3 +315,4 @@ Circles.forEach(circle => circle.draw()); //drawas circles
     height: 650px;
   } */
 </style>
+<!-- append To the sky of the god-->
