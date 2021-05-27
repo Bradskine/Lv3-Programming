@@ -1,17 +1,28 @@
 <!DOCTYPE html>
 
-<title>Game</title>
-
-<meta charset="utf-8">
+<head>
+  <title>Game</title>
+  <script src="circles.js"></script>
+  <meta charset="utf-8">
 
 </head>
 
+
+
 <body>
-  <canvas id="gameCanvas" width="600" height="600"></canvas>
+  <canvas id="gameCanvas" width="800" height="800"></canvas>
+
+
   <script type="text/javascript">
+    //grid variables
+    var gridCount = 20;
+    // cavas.height and width are 600
+    var TotalGridSize = 800;
+    var gridSize = TotalGridSize / gridCount;
     var canvas, ctx;
     var onTrack = false;
-      var frameRate = 60;
+    var frameRate = 60;
+
     window.onload = function() {
       canvas = document.getElementById('gameCanvas');
       ctx = canvas.getContext('2d');
@@ -19,32 +30,46 @@
       canvas.addEventListener("mousedown", function(evt) {
         getMousePosition(canvas, evt);
 
-
-        //red blue grteen yellow pink balck white lead zebra camo rainbow regen ceramic reinforced led reninforced ceramic  moab reinfoced mobab bfb reinforced bfb , zomg, reinforced zomg,dtd ,bad reinfocec bad
-
-
         let columnClicked = Math.floor(mouseX / gridSize);
         let rowClicked = Math.floor(mouseY / gridSize);
 
+
         for (i = 0; i < trackL; i++) {
           onTrack = false;
-          let trackColumn = Math.floor(currentTrack[i][0] / gridSize);
-          let trackRow = Math.floor(currentTrack[i][1] / gridSize);
+          let trackColumn = Math.floor(currentTrackXY[i][0] / gridSize);
+          let trackRow = Math.floor(currentTrackXY[i][1] / gridSize);
 
+
+
+          // console.log(trackColumn,trackRow);
+          //will have to chagne current tracdk above to change 1st and last variable
           if (columnClicked == trackColumn && rowClicked == trackRow) {
             onTrack = true;
+
             //will make traps menu come up when clikd on track
             break;
           }
 
         }
-   if(onTrack==false) {
-         towerMenu([columnClicked*gridSize,rowClicked*gridSize]);
-   }
-//will need an or below that chekcs that ontrack is outside of box
-   if(onTrack==true) {
-     towerMenuActive = false;
-   }
+
+        if (towerMenuActive == false) {
+          if (onTrack == false) {
+            towerMenu([columnClicked * gridSize, rowClicked * gridSize]);
+          } // else { will be to add traps
+        } else {
+          // else if ((rowClicked == tMenuGridY || rowClicked == tMenuGridY + 1 || rowClicked == tMenuGridY + 2) && ) {
+          if (columnClicked == tMenuGridX || columnClicked == tMenuGridX + 1 || columnClicked == tMenuGridX + 2) {
+
+            for (i = 0; i < towerCount; i++) {
+              if (rowClicked == tMenuGridY + i) {
+                addTower(i + 1)
+              }
+            }
+          }
+
+          towerMenuActive = false;
+        }
+
 
       });
 
@@ -66,7 +91,10 @@
 
     var track = ['right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
       'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down',
+      'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right', 'down', 'down', 'down', 'right', 'right', 'right', 'right',
+      'right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+      'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+      'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right'
     ];
 
     var track2 = ['right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
@@ -76,6 +104,7 @@
 
 
     var currentTrack = '';
+    var currentTrackXY = '';
     var gameActive = false;
 
 
@@ -83,127 +112,76 @@
     var lifes = 150;
     var time = 0;
 
-    //grid variables
-    var gridCount = 12;
-    // cavas.height and width are 600
-    var TotalGridSize = 600;
-    var gridSize = TotalGridSize / gridCount;
+    //towerMenu variables
+    var towerMenuActive = false;
+    var tMenuX = 0; //actual menu xps
+    var tMenuY = 0; //actual menu ypos
+    var tMenuSquareX = 0;
+    var tMenuSquareY = 0;
+    var tMenuGridX = 0; //grid point of Menu xpos
+    var tMenuGridY = 0; //grid poing of Menu Yposs
+    var tower = ['IceMaker', 'tower2', 'tower3', 'tower4', 'tower5'];
 
-  //towerMenu variables
-  var towerMenuActive = false;
-  var tMenuX = 0;
-  var tMenuY = 0;
-  var tower = ['tower1','tower2','tower3'];
+    //tower vareiabels
+    var towerCount = tower.length;
+    var towerWidth = 9;
+    var tFontS = gridSize * 2.5 / 3;
+    var tColor = 'grey';
+    var tFont = 'px Ariel';
+    var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards
+    //teirr 3 more shards  teir 4 bigger ball to little ball to lots of shardes teir 5abality ice ball
+    //rolls down track killing every baloon and half of moab; work();
+     // sniper shot with perice
+     //presedtion gaurds
+    // 
+    // var
 
-//tower vareiabels
-  var towerCount = 3;
-  var tFontS = gridSize/3;
-  var tColor = 'orange';
-  var tFont = 'Ariel';
-
-
-   // track variables
-       var trackWidth = gridSize;
+    // track variables
+    var trackWidth = gridSize;
     var trackL = '';
     var gridAmount = '';
     var gridDirection = '';
     var xa = 0; //xa and ya used for track cooradanets
-    var ya = TotalGridSize / 2 + 2 *gridSize - gridSize / 2;
+    var ya = TotalGridSize / 2 + 2 * gridSize - gridSize / 2;
     var xa2 = 0; //the 2nd one is for starting x,y
-    var ya2 = TotalGridSize / 2 + 2*gridSize - gridSize / 2 ;
+    var ya2 = TotalGridSize / 2 + 2 * gridSize - gridSize / 2;
+
+
+    //track variables
     var Circles = [];
-    var size = 3;
-    //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber]
-    var redCircle = [xa2, ya2, gridSize / 6, 'red', gridSize / 11, 'black', 1.5, 0, 0, 1];
-    var blueCircle = [xa2, ya2, gridSize / 6, 'blue', gridSize / 13, 'black', 2, 0, 0, 2];
-    var greenCircle = [xa2, ya2, gridSize / 12, 'green', gridSize / 13, 'black', 3, 0, 0, 3];
-    class circle { //this will creawte circles which go around track
+    var size = 3; ///rbe is red ballon equivelent / damdge
+    //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
+    var redSpeed = gridSize / 70;
+    var redSize = gridSize / 5;
+    var redBorderS = gridSize / 15;
+    var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed, 0, 0, 1, 1];
+    var blueCircle = [xa2, ya2, redSize, 'rgb(11, 196, 255)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2, 1];
+    var greenCircle = [xa2, ya2, redSize, 'rgb(0,155,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 3, 1];
+    var yellowCircle = [xa2, ya2, redSize, 'rgb(255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.2, 0, 0, 4, 1];
+    var pinkCircle = [xa2, ya2, redSize, 'rgb(255,182,194,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.5, 0, 0, 5, 1];
+    var blackCircle = [xa2, ya2, redSize / 2, 'rgb(0,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 11, 1];
+    var purpleCircle = [xa2, ya2, redSize, 'rgb(28,0,128,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3, 0, 0, 11, 1];
+    var whiteCircle = [xa2, ya2, redSize / 3 * 2, 'rgb(255,255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 2, 0, 0, 11, 1];
+    var leadCircle = [xa2, ya2, redSize, 'rgb(105,105,105,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed, 0, 0, 23, 1];
+    var zebraCircle = [xa2, ya2, redSize / 2, 'rgb(0,0,0,1)', redBorderS * 2, 'rgb(255,255,255,1)', redSpeed * 1.8, 0, 0, 23, 1];
+    var rainbowCircle = [xa2, ya2, redSize / 2, 'rgb(255,255,0,1)', redBorderS * 2, 'rgb(28,0,128,1)', redSpeed * 2.2, 0, 0, 47, 1];
+    var ceramicCircle = [xa2, ya2, redSize, 'rgb(100,65,54,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 2.5, 0, 0, 104, 10];
+    var moabCircle = [xa2, ya2, redSize * 8, 'rgb(1, 196, 255)', redBorderS, 'rgb(255,255,255,1)', redSpeed, 0, 0, 381, 200];
+    var bfbCircle = [xa2, ya2, redSize * 15, 'rgb(255,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.25, 0, 0, 381, 200];
+    var zomgCircle = [xa2, ya2, redSize * 18, 'rgb(255,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.18, 0, 0, 381, 200];
+    var ddtCircle = [xa2, ya2, redSize * 5, 'rgb(6,6,7,1)', redBorderS, 'rgb(105,105,105,1)', redSpeed * 2.75, 0, 0, 381, 200];
+    var badCircle = [xa2, ya2, redSize * 25, 'rgb(255,182,194,1)', redBorderS, 'rgb(255,182,194,1)', redSpeed * 0.18, 0, 0, 381, 200];
+    // https://bloons.fandom.com/wiki/Bloons_TD_6_Bloons_Stats
 
-      constructor(
-        x = 0,
-        y = 0,
-        r = 0,
-        c = '',
-        borderW = '',
-        borderC = '',
-        speed = 0,
-        numberCo = 0,
-        nextCo = 0,
-        height =0
-
-      ) {
-
-        this.x = Number(x)
-        this.y = Number(y)
-        this.r = Number(r) //makes all numbers incase mistype
-
-        this.c = c
-        this.borderW = borderW
-        this.borderC = borderC
-        this.speed = speed
-        this.numberCo = numberCo
-        this.nextCo = [currentTrack[numberCo][0], currentTrack[numberCo][1]]
-        this.height = Number(height)
-      }
-
-
-      get area() { //this is incase i want to compare circles and know whcih one
-        // is bigger to put smaller one on top for visual clarity
-        return this.radius ^ 2 * Math.PI;
-      }
-      //might a make a shorcut fucniotn thing for each circle type
-
-      draw() {
-
-        var {
-          x,
-          y,
-          r,
-          c,
-          borderW,
-          borderC,
-          height
-        } = this
-
-        ctx.save() //so doesnt save over other ones
-
-        drawCircle(x, y, r, c, borderW, borderC)
-
-        ctx.restore()
-      }
-
-      followTrack() { //will make another one for tower that sends circle to start
-        if (this.x > this.nextCo[0] + this.speed || this.x < this.nextCo[0] - this.speed || this.y < this.nextCo[1] - this.speed || this.y > this.nextCo[1] + this.speed) {
-          if (this.x - this.nextCo[0] < -this.speed) {
-            this.x += this.speed;
-          } else if (this.x - this.nextCo[0] > this.speed) {
-            this.x -= this.speed;
-          }
-
-          if (this.y - this.nextCo[1] < -(this.speed)) {
-            this.y += this.speed;
-          } else if (this.y - this.nextCo[1] > this.speed) {
-            this.y -= this.speed;
-          }
-
-        } else {
-          this.numberCo += 1;
-          this.nextCo = [currentTrack[this.numberCo][0], currentTrack[this.numberCo][1]];
-        }
-
-
-      }
-
-
-    } // end of circle class
-
+    //red blue grteen yellow pink balck purple white lead zebra rainbow ceramic   moab  bfb     zomg, ,      dtd        bad
+    //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
 
     function mainloop() {
       colorRect(0, 0, canvas.width, canvas.height, 'blue');
       drawGrid(canvas.width, canvas.height, 'grid');
-
       if (gameActive == false) {
-        currentTrack = track2;
+        currentTrack = JSON.parse(JSON.stringify(track));
+        currentTrackXY = JSON.parse(JSON.stringify(track));
         gameActive = true;
       }
 
@@ -211,49 +189,65 @@
       drawCircles();
       drawScore();
 
-      if(towerMenuActive == true) {
-          drawTowerMenu();
+      if (towerMenuActive == true) {
+        drawTowerMenu();
       }
     } //end of mainloop function()
+
     var i = 0
     setInterval(function() {
 
       //will be used to send circles on a timer
-
-      //this code runs every second
-      //       var i = new  circle(xa2,ya2,gridSize/5,'green',gridSize/9,'white');
-      //
-      ; //lol i dum
-      if (i < 3) {
+      if (i < 1) {
         addCircle('red');
-
-      } else if(i<5) {
+      } else if (i < 2) {
         addCircle('blue');
-      }  else {
-        addCircle('red')
+      } else if (i < 3) {
+        addCircle('green');
+      } else if (i < 4) {
+        addCircle('yellow');
+      } else if (i < 5) {
+        addCircle('black');
+      } else if (i < 6) {
+        addCircle('purple');
+      } else if (i < 7) {
+        addCircle('white');
+      } else if (i < 8) {
+        addCircle('lead');
+      } else if (i < 9) {
+        addCircle('ceramic');
+      } else if (i < 10) {
+        addCircle('moab');
+      } else if (i < 11) {
+        addCircle('bfb');
+      } else if (i < 12) {
+        addCircle('zomg');
+      } else if (i < 13) {
+        addCircle('ddt');
+      } else if (i < 14) {
+        addCircle('bad');
+        i = 0;
       }
-          i++;
-    }, 1000);
+
+      i++;
+    }, 2500);
 
 
-   function drawTowerMenu() {
-     ctx.font = tFontS+tFont;
-     ctx.fillStyle = tColor;
+    function drawTowerMenu() {
+      ctx.font = tFontS + tFont;
+      ctx.fillStyle = tColor;
 
-    for(i=0;i<towerCount;i++) {
-          ctx.fillText(tower[i], tMenuX, gridSize/1.5+tMenuY+gridSize*i);
+      for (i = 0; i < towerCount; i++) {
+        ctx.fillText(tower[i], tMenuX, gridSize / 1.5 + tMenuY + gridSize * i);
+      }
 
-
+      ctx.fillStyle = "darkGreen";
+      ctx.fillRect(tMenuSquareX * gridSize, tMenuSquareY * gridSize, gridSize, gridSize);
     }
-
-
-
-   }
-
 
     function addCircle(x) {
       var type = eval(x + 'Circle');
-      Circles.push(new circle(type[0], type[1], type[2], type[3], type[4], type[5], type[6], type[7], type[8], type[9], [type[10]], type[11]));
+      Circles.push(new circle(type[0], type[1], type[2], type[3], type[4], type[5], type[6], type[7], type[8], type[9], [type[10]], type[11], type[12])); //[pushs]each thing from circle arrary
     }
 
 
@@ -266,20 +260,22 @@
 
     }
 
+    function addTower(x) {
+
+      console.log(x);
+    }
 
 
     function drawTrack() { // to draw the track
 
       trackL = currentTrack.length;
       gridAmount = currentTrack.length;
-      ctx.strokeStyle = 'rgb(7,7,7)';
+      ctx.strokeStyle = 'rgb(71,67,77)';
       ctx.lineWidth = trackWidth;
 
 
       ctx.beginPath();
       ctx.moveTo(xa2, ya2);
-
-
 
       for (a = 0; a < gridAmount * 2; a++) {
         var i = a - gridAmount;
@@ -290,23 +286,24 @@
         } //this makes it that the 1st and last line a 1.5 tiem longer to
         //problem wherer track stops and stars half way inbetween grid points
 
-
         gridDirection = currentTrack[i];
         if (gridDirection == 'up') {
           currentTrack[i] = [xa, ya - gridSize * change];
+          currentTrackXY[i] = [xa, ya - gridSize];
           ya -= gridSize * change;
         } else if (gridDirection == 'down') {
           currentTrack[i] = [xa, ya + gridSize * change];
+          currentTrackXY[i] = [xa, ya + gridSize];
           ya += gridSize;
         } else if (gridDirection == 'left') {
           currentTrack[i] = [xa - gridSize * change, ya];
+          currentTrackXY[i] = [xa - gridSize, ya];
           xa -= gridSize * change;
         } else if (gridDirection == 'right') {
           currentTrack[i] = [xa + gridSize * change, ya];
+          currentTrackXY[i] = [xa + gridSize, ya];
           xa += gridSize * change;
         }
-
-
 
       }
       gridAmount = 0;
@@ -327,14 +324,29 @@
 
     function towerMenu(x) {
 
-// console.log(x);
-  towerMenuActive = true;
-  tMenuX = x[0];
-  tMenuY = x[1];
-    }
+      // console.log(x);
+      towerMenuActive = true;
+      if (Math.floor(x[0] / gridSize) < gridCount - towerWidth) { //for when menu on left of screen draws to right
+        tMenuX = x[0] + gridSize * 2;
+      } else {
+        tMenuX = x[0] - gridSize * 4;
+      }
 
+      if (Math.floor(x[1] / gridSize) < gridCount - towerCount + 1) {
+        if (Math.floor(x[1] / gridSize) < 1) {
+          tMenuY = x[1] + gridSize;
+        } else {
+          tMenuY = x[1];
+        }
+      } else {
+        tMenuY = x[1] - gridSize * towerCount;
+      }
+      tMenuSquareX = Math.floor(x[0] / gridSize);
+      tMenuSquareY = Math.floor(x[1] / gridSize);
+      tMenuGridX = Math.floor(tMenuX / gridSize);
+      tMenuGridY = Math.floor(tMenuY / gridSize);
 
-
+    } //end of twoerMenu(x) function
 
     var drawGrid = function(w, h, id) {
 
@@ -363,12 +375,6 @@
 
     }; //end of drawGrid Funtion()
 
-    // function checkfilesincomputer() {
-    //   /*are you worried yet?*/
-    //   good = true;
-    //
-    //   // check for a file called 'verygoodgame.html'
-    // }
 
     function colorRect(x, y, w, h, c) { //to draw things
       ctx.fillStyle = c;
@@ -385,22 +391,20 @@
       ctx.fill();
 
     }
+
     function drawScore() {
-        ctx.font = "30px Times New Roman";
-        ctx.fillStyle = "red";
+      ctx.font = "30px Times New Roman";
+      ctx.fillStyle = "red";
 
-        ctx.fillText("lifes: " + lifes, canvas.width / 4, 30);
-  ctx.fillText("time: " + Math.floor(time/frameRate), canvas.width / 1.8, 30);
+      ctx.fillText("lifes: " + lifes, canvas.width / 4, 30);
+      ctx.fillText("time: " + Math.floor(time / frameRate), canvas.width / 1.8, 30);
 
-        // if (gameActive == true) {
-            time += 1;
-        // }
+      // if (gameActive == true) {
+      time += 1;
+      // }
 
 
     }
-
-
-
   </script>
 
 </body>
