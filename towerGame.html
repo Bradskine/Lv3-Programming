@@ -3,6 +3,7 @@
 <head>
   <title>Game</title>
   <script src="circles.js"></script>
+  <script src="towers.js"></script>
   <meta charset="utf-8">
 
 </head>
@@ -62,7 +63,7 @@
 
             for (i = 0; i < towerCount; i++) {
               if (rowClicked == tMenuGridY + i) {
-                addTower(i + 1)
+                addTower(i)
               }
             }
           }
@@ -120,20 +121,25 @@
     var tMenuSquareY = 0;
     var tMenuGridX = 0; //grid point of Menu xpos
     var tMenuGridY = 0; //grid poing of Menu Yposs
-    var tower = ['IceMaker', 'tower2', 'tower3', 'tower4', 'tower5'];
+    var towerNames = ['soldier', 'IceMaker', 'tower3', 'tower4', 'tower5'];
 
     //tower vareiabels
-    var towerCount = tower.length;
-    var towerWidth = 9;
+    var Towers = [];
+    var towerCount = towerNames.length;
+    var towerWidth = 5;
     var tFontS = gridSize * 2.5 / 3;
     var tColor = 'grey';
     var tFont = 'px Ariel';
+    //tower common variables
+     //var tower = [attackSpeed/perice/range/damdge]
+    var soldier = [50,1,2,1];
+    //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
     var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards
     //teirr 3 more shards  teir 4 bigger ball to little ball to lots of shardes teir 5abality ice ball
     //rolls down track killing every baloon and half of moab; work();
      // sniper shot with perice
      //presedtion gaurds
-    // 
+    //
     // var
 
     // track variables
@@ -238,7 +244,7 @@
       ctx.fillStyle = tColor;
 
       for (i = 0; i < towerCount; i++) {
-        ctx.fillText(tower[i], tMenuX, gridSize / 1.5 + tMenuY + gridSize * i);
+        ctx.fillText(towerNames[i], tMenuX, gridSize / 1.5 + tMenuY + gridSize * i);
       }
 
       ctx.fillStyle = "darkGreen";
@@ -261,8 +267,9 @@
     }
 
     function addTower(x) {
+     var towerType = eval(towerNames[x]);
 
-      console.log(x);
+      Towers.push(new tower(towerType[0],towerType[1],towerType[2],towerType[3]));
     }
 
 
