@@ -9,10 +9,11 @@ class tower { //this will creawte circles which go around track
   range=0,
   damage = 0,
   color = '',
+  bulletSpeed =0,
+  bulletSize = 0,
+  bulletColor = '',
   width = 0,
   height = 0,
-  bulletSize = 0,
-  bulletColor = '';
   ) {
     this.x=x;
     this.y=y;
@@ -21,10 +22,11 @@ class tower { //this will creawte circles which go around track
     this.range = range;
     this.damage = damage;
     this.color = color;
-    this.width = gridSize;
-    this.height = gridSize;
+    this.bulletSpeed=bulletSpeed,
     this.bulletSize = bulletSize;
     this.bulletColor = bulletColor;
+    this.width = gridSize;
+    this.height = gridSize;
   }
 
 

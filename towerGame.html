@@ -4,6 +4,7 @@
   <title>Game</title>
   <script src="circles.js"></script>
   <script src="towers.js"></script>
+  <script src="projectiles.js"></script>
   <meta charset="utf-8">
 
 </head>
@@ -152,12 +153,12 @@
     var Projectiles = [];
 
     //tower common variables
-    //var tower = [attackSpeed/perice/range/damdge/color/borderColor/bulletSize/bulletSpeed/bulletCOlor]
-    var soldier = [50, 1, gridSize * 1, 1, 'brown',gridSize/4,gridSize/30,'brown'];
-    var iceMaker = [30, 4, gridSize * 4, 4, 'lightGrey',gridSize/4,gridSize/40,'white'];
-    var sniperOrginal = [10, 10, TotalGridSize, 10, 'black',gridSize/4,gridSize/20,'black'];
-    var fireboy = [20, 2, gridSize * 2, 2, 'red',gridSize/4,gridSize/35,'crimson'];
-    var watergirl = [20, 1, gridSize * 2, 1, 'blue',gridSize/4,gridSize/35,'lightBlue'];
+    //var tower = [attackSpeed/perice/range/damdge/borderColor/bulletSpeed/bulletSize/bulletCOlor]
+    var soldier = [50, 1, gridSize * 1, 1, 'brown',gridSize/30,gridSize*0.8,'brown'];
+    var iceMaker = [30, 4, gridSize * 3, 4, 'lightGrey',gridSize/40,gridSize*0.8,'white'];
+    var sniperOrginal = [10, 10, TotalGridSize, 10, 'black',gridSize/4,gridSize*0.8,'black'];
+    var fireboy = [20, 2, gridSize * 2, 2, 'red',gridSize/35,gridSize*0.8,'crimson'];
+    var watergirl = [20, 1, gridSize * 2, 1, 'blue',gridSize/35,gridSize*0.8,'lightBlue'];
     //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
     // var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards
     //teirr 3 more shards  teir 4 bigger ball to little ball to lots of shardes teir 5abality ice ball
@@ -296,25 +297,36 @@
 
     function addTower(x) {
       var towerType = eval(towerNames[x]);
-      Towers.push(new tower(tMenuSquareX * gridSize, tMenuSquareY * gridSize, towerType[0], towerType[1], towerType[2], towerType[3], towerType[4], towerType[5]));
+      Towers.push(new tower(tMenuSquareX * gridSize, tMenuSquareY * gridSize, towerType[0], towerType[1], towerType[2], towerType[3], towerType[4], towerType[5],towerType[6],towerType[7]));
     }
+
+
 
     function drawTowers() {
       Towers.forEach(tower => tower.draw());
     }
+  var oneBullet = false;
 
-    function runTowers() {
+    function runTowers() {//this draws the towers and creates projectiles
 
       Towers.forEach(function(tower) {
         Circles.forEach(function(circle) {
-          if ((circle.x>tower.x-tower.range&&circle.x<tower.x+tower.range)//x range
-          &&(circle.y>tower.y-tower.range&&circle.y<tower.y+tower.range))//y range
-              Projectiles.push(new projectile(tower.x,tower.y,tower.bulletSize,tower.pierce,tower.damage,tower.bulletSpeed,tower.bulletColor));
+          ///i nned to change tower y to make it cente and x will make it so that actual x and y are center and tower.draw bases of center
+          if ((circle.x>tower.x+tower.width/2-tower.range&&circle.x<tower.x+tower.width/2+tower.range)//x range
+          &&(circle.y>tower.y+tower.height/2-tower.range&&circle.y<tower.y+tower.height+tower.range))//y range
+              // Projectiles.push(new projectile(tower.x,tower.y,tower.pierce,tower.damage,tower.bulletSize,tower.bulletSpeed,tower.bulletColor));
+   if(oneBullet==false) {
+     Projectiles.push(new projectile(tower.x,tower.y,tower.pierce,tower.damage,tower.bulletSize,tower.bulletSpeed,tower.bulletColor));
+     console.log(circle.x,circle.y);
+// Projectiles.push('hello');
+     // x=0, y=0,pierce= 0damage = 0,  bulletSize=0,bulletSpeed = 0, bulletColor = ''
+ oneBullet =true;
+   }
         });
       });
 
       if (Projectiles.length > 0) {
-        Projectiles.forEach(projectile => draw());
+        Projectiles.forEach(projectile => projectile.draw());
       }
     }
 
