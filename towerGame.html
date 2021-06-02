@@ -22,6 +22,7 @@
     var gridSize = TotalGridSize / gridCount;
     var canvas, ctx;
     var onTrack = false;
+    var onTower = false;
     var frameRate = 60;
 
     window.onload = function() {
@@ -35,12 +36,10 @@
         let rowClicked = Math.floor(mouseY / gridSize);
 
 
-        for (i = 0; i < trackL; i++) {
+        for (i = 0; i < trackL; i++) { //checks each track cooradanets to see if mouse clikc on track then passes through ontrack is true or false
           onTrack = false;
           let trackColumn = Math.floor(currentTrackXY[i][0] / gridSize);
           let trackRow = Math.floor(currentTrackXY[i][1] / gridSize);
-
-
 
           // console.log(trackColumn,trackRow);
           //will have to chagne current tracdk above to change 1st and last variable
@@ -50,12 +49,31 @@
             //will make traps menu come up when clikd on track
             break;
           }
-
         }
+
+        if (onTrack == false && Towers.length > 0) { //echects if they clikc on a toer
+          for (i = 0; i < Towers.length; i++) {
+            onTower = false;
+            let towerColumn = Math.floor(Towers[i].x / gridSize);
+            let towerRow = Math.floor(Towers[i].y / gridSize);
+            if (columnClicked == towerColumn && rowClicked == towerRow) {
+              onTower = true;
+              break; ///if this happnes it stops for loop as they have clikced on a tower and doesnt need to check anything more
+            }
+          }
+        }
+
+
 
         if (towerMenuActive == false) {
           if (onTrack == false) {
-            towerMenu([columnClicked * gridSize, rowClicked * gridSize]);
+            ////will need to add an if statement //
+            if (onTower == true) {
+              console.log('upgradTower');
+            } else {
+              towerMenu([columnClicked * gridSize, rowClicked * gridSize]);
+            }
+
           } // else { will be to add traps
         } else {
           // else if ((rowClicked == tMenuGridY || rowClicked == tMenuGridY + 1 || rowClicked == tMenuGridY + 2) && ) {
@@ -121,7 +139,7 @@
     var tMenuSquareY = 0;
     var tMenuGridX = 0; //grid point of Menu xpos
     var tMenuGridY = 0; //grid poing of Menu Yposs
-    var towerNames = ['soldier', 'IceMaker', 'tower3', 'tower4', 'tower5'];
+    var towerNames = ['soldier', 'iceMaker', 'sniperOrginal', 'fireboy', 'watergirl'];
 
     //tower vareiabels
     var Towers = [];
@@ -130,15 +148,22 @@
     var tFontS = gridSize * 2.5 / 3;
     var tColor = 'grey';
     var tFont = 'px Ariel';
+    //projectile variables
+    var Projectiles = [];
+
     //tower common variables
-     //var tower = [attackSpeed/perice/range/damdge]
-    var soldier = [50,1,2,1];
+    //var tower = [attackSpeed/perice/range/damdge/color/borderColor/bulletSize/bulletSpeed/bulletCOlor]
+    var soldier = [50, 1, gridSize * 1, 1, 'brown',gridSize/4,gridSize/30,'brown'];
+    var iceMaker = [30, 4, gridSize * 4, 4, 'lightGrey',gridSize/4,gridSize/40,'white'];
+    var sniperOrginal = [10, 10, TotalGridSize, 10, 'black',gridSize/4,gridSize/20,'black'];
+    var fireboy = [20, 2, gridSize * 2, 2, 'red',gridSize/4,gridSize/35,'crimson'];
+    var watergirl = [20, 1, gridSize * 2, 1, 'blue',gridSize/4,gridSize/35,'lightBlue'];
     //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
-    var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards
+    // var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards
     //teirr 3 more shards  teir 4 bigger ball to little ball to lots of shardes teir 5abality ice ball
     //rolls down track killing every baloon and half of moab; work();
-     // sniper shot with perice
-     //presedtion gaurds
+    // sniper shot with perice
+    //presedtion gaurds
     //
     // var
 
@@ -174,7 +199,7 @@
     var ceramicCircle = [xa2, ya2, redSize, 'rgb(100,65,54,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 2.5, 0, 0, 104, 10];
     var moabCircle = [xa2, ya2, redSize * 8, 'rgb(1, 196, 255)', redBorderS, 'rgb(255,255,255,1)', redSpeed, 0, 0, 381, 200];
     var bfbCircle = [xa2, ya2, redSize * 15, 'rgb(255,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.25, 0, 0, 381, 200];
-    var zomgCircle = [xa2, ya2, redSize * 18, 'rgb(255,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.18, 0, 0, 381, 200];
+    var zomgCircle = [xa2, ya2, redSize * 18, 'rgb(0,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.18, 0, 0, 381, 200];
     var ddtCircle = [xa2, ya2, redSize * 5, 'rgb(6,6,7,1)', redBorderS, 'rgb(105,105,105,1)', redSpeed * 2.75, 0, 0, 381, 200];
     var badCircle = [xa2, ya2, redSize * 25, 'rgb(255,182,194,1)', redBorderS, 'rgb(255,182,194,1)', redSpeed * 0.18, 0, 0, 381, 200];
     // https://bloons.fandom.com/wiki/Bloons_TD_6_Bloons_Stats
@@ -190,7 +215,10 @@
         currentTrackXY = JSON.parse(JSON.stringify(track));
         gameActive = true;
       }
-
+      if (Towers.length > 0) {
+        drawTowers();
+        runTowers();
+      }
       drawTrack();
       drawCircles();
       drawScore();
@@ -236,7 +264,7 @@
       }
 
       i++;
-    }, 2500);
+    }, 2500); //speed
 
 
     function drawTowerMenu() {
@@ -267,11 +295,28 @@
     }
 
     function addTower(x) {
-     var towerType = eval(towerNames[x]);
-
-      Towers.push(new tower(towerType[0],towerType[1],towerType[2],towerType[3]));
+      var towerType = eval(towerNames[x]);
+      Towers.push(new tower(tMenuSquareX * gridSize, tMenuSquareY * gridSize, towerType[0], towerType[1], towerType[2], towerType[3], towerType[4], towerType[5]));
     }
 
+    function drawTowers() {
+      Towers.forEach(tower => tower.draw());
+    }
+
+    function runTowers() {
+
+      Towers.forEach(function(tower) {
+        Circles.forEach(function(circle) {
+          if ((circle.x>tower.x-tower.range&&circle.x<tower.x+tower.range)//x range
+          &&(circle.y>tower.y-tower.range&&circle.y<tower.y+tower.range))//y range
+              Projectiles.push(new projectile(tower.x,tower.y,tower.bulletSize,tower.pierce,tower.damage,tower.bulletSpeed,tower.bulletColor));
+        });
+      });
+
+      if (Projectiles.length > 0) {
+        Projectiles.forEach(projectile => draw());
+      }
+    }
 
     function drawTrack() { // to draw the track
 

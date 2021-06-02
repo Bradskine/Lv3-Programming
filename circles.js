@@ -49,9 +49,6 @@ class circle { //this will creawte circles which go around track
       c,
       borderW,
       borderC,
-      height,
-      rbe,
-      health
     } = this
 
     ctx.save() //so doesnt save over other ones
