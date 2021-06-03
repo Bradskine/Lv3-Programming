@@ -12,7 +12,8 @@ class circle { //this will creawte circles which go around track
     nextCo = 0,
     height = 0,
     rbe = 0,
-    health= 0
+    health= 0,
+    distanceTraveled=0
   ) {
 
     this.x = Number(x);
@@ -28,6 +29,7 @@ class circle { //this will creawte circles which go around track
     this.height = Number(height);
     this.rbe = rbe;
     this.health = health;
+    this.distanceTraveled=0;
   }
 
 
@@ -59,6 +61,9 @@ class circle { //this will creawte circles which go around track
 
   followTrack() { //will make another one for tower that sends circle to start
     if (this.x > this.nextCo[0] + this.speed || this.x < this.nextCo[0] - this.speed || this.y < this.nextCo[1] - this.speed || this.y > this.nextCo[1] + this.speed) {
+ //above checks that circle is not at next point
+      this.distanceTraveled += this.speed;
+
       if (this.x - this.nextCo[0] < -this.speed) {
         this.x += this.speed;
       } else if (this.x - this.nextCo[0] > this.speed) {

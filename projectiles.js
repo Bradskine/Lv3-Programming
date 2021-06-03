@@ -10,8 +10,8 @@ class projectile { //for projectiles created by towers
   bulletSpeed = 0,
   bulletColor = ''
   ) {
-  this.x = x;
-  this.y=y;
+  this.x = x-bulletSize/2;
+  this.y=y +(Math.sqrt(3)/2*bulletSize)/2;
   this.pierce = pierce;
   this.damage = damage;
   this.bulletSize = bulletSize;
@@ -24,7 +24,6 @@ class projectile { //for projectiles created by towers
    var {
      x,
      y,
-     bulletSize,
      bulletColor,
      bulletSize,
      size= bulletSize*Math.cos(Math.PI /6)
@@ -33,7 +32,7 @@ class projectile { //for projectiles created by towers
 ctx.save();
    ctx.beginPath();
    // //will work out trinage around x/y center points
-  
+
 
    ctx.moveTo(x, y);
    ctx.lineTo(x+bulletSize, y);

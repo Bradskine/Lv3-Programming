@@ -12,6 +12,7 @@ class tower { //this will creawte circles which go around track
   bulletSpeed =0,
   bulletSize = 0,
   bulletColor = '',
+  targeting = '',
   width = 0,
   height = 0,
   ) {
@@ -25,6 +26,7 @@ class tower { //this will creawte circles which go around track
     this.bulletSpeed=bulletSpeed,
     this.bulletSize = bulletSize;
     this.bulletColor = bulletColor;
+    this.targeting = targeting;
     this.width = gridSize;
     this.height = gridSize;
   }
