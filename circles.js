@@ -59,7 +59,9 @@ class circle { //this will creawte circles which go around track
     ctx.restore()
   }
 
-  followTrack() { //will make another one for tower that sends circle to start
+  followTrack(x) { //will make another one for tower that sends circle to start
+    var s = this.speed *x;
+    console.log(x); // this does not work as needs to be foe loop as else does not work
     if (this.x > this.nextCo[0] + this.speed || this.x < this.nextCo[0] - this.speed || this.y < this.nextCo[1] - this.speed || this.y > this.nextCo[1] + this.speed) {
  //above checks that circle is not at next point
       this.distanceTraveled += this.speed;
@@ -81,8 +83,38 @@ class circle { //this will creawte circles which go around track
       this.nextCo = [currentTrack[this.numberCo][0], currentTrack[this.numberCo][1]];
     }
 
-
   }
+
+
+
+
+//   predictTrack(d) { //ill predict what would happend to x if it followed track for time that projectile will take
+//     if (this.x > this.nextCo[0] + this.speed || this.x < this.nextCo[0] - this.speed || this.y < this.nextCo[1] - this.speed || this.y > this.nextCo[1] + this.speed) {
+//  //above checks that circle is not at next point
+//       this.distanceTraveled += this.speed;
+
+//       if (this.x - this.nextCo[0] < -this.speed) {
+//         this.x += this.speed;
+//       } else if (this.x - this.nextCo[0] > this.speed) {
+//         this.x -= this.speed;
+//       }
+
+//       if (this.y - this.nextCo[1] < -(this.speed)) {
+//         this.y += this.speed;
+//       } else if (this.y - this.nextCo[1] > this.speed) {
+//         this.y -= this.speed;
+//       }
+
+//     } else {
+//       this.numberCo += 1;
+//       this.nextCo = [currentTrack[this.numberCo][0], currentTrack[this.numberCo][1]];
+//     }
+
+//   }
+
+
+
+
 
 
 } // end of circle class

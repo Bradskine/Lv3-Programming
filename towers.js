@@ -5,6 +5,7 @@ class tower { //this will creawte circles which go around track
   x=0,
   y=0,
   attackSpeed = 0,
+  coolDown = 0,
   pierce =  0,
   range=0,
   damage = 0,
@@ -18,6 +19,7 @@ class tower { //this will creawte circles which go around track
   ) {
     this.x=x;
     this.y=y;
+    this.coolDown = coolDown;
     this.attackSpeed = attackSpeed;
     this.pierce = pierce;
     this.range = range;
