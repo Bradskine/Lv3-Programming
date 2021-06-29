@@ -46,7 +46,7 @@ class tower { //this will creawte circles which go around track
 
     ctx.save() //so doesnt save over other ones
     ctx.fillStyle = color;
-    ctx.fillRect(x, y, width, height);
+    ctx.fillRect(x-gridSize/2, y-gridSize/2, width, height);
     ctx.restore()
 
   }

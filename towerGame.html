@@ -1,4 +1,4 @@
-c
+
 <!DOCTYPE html>
 
 <head>
@@ -15,10 +15,9 @@ c
 <body>
   <canvas id="gameCanvas" width="800" height="800"></canvas>
 
-
   <script type="text/javascript">
     //grid variables
-    var gridCount = 20;
+    var gridCount = 40;
     // cavas.height and width are 600
     var TotalGridSize = 800;
     var gridSize = TotalGridSize / gridCount;
@@ -66,8 +65,6 @@ c
             }
           }
         }
-
-
 
         if (towerMenuActive == false) {
           if (onTrack == false) {
@@ -160,13 +157,13 @@ c
     var Projectiles = [];
 
     //tower common variables
-    //var tower = [attackSpeed/frateASconstant/perice/range/damdge/borderColor/bulletSpeed/bulletSize/bulletCOlor/targeting]
-    var soldier = [50, frameRate, 1, gridSize * 1.5, 1, 'brown', gridSize / 50, gridSize * 1.8, 'brown', '1st'];
-    var iceMaker = [60, frameRate, 4, gridSize * 3, 4, 'lightGrey', gridSize / 50, gridSize * 1.8, 'white', '1st'];
-    var sniperOrginal = [10, frameRate, 10, TotalGridSize, 10, 'black', gridSize / 20, gridSize * 1.8, 'black', '1st'];
-    var fireboy = [20, frameRate, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 1.8, 'crimson', '1st'];
-    var watergirl = [20, frameRate, 1, gridSize * 2, 1, 'blue', gridSize / 35, gridSize * 1.8, 'lightBlue', '1st'];
-    var randomDice = [50, frameRate, 1, gridSize * 1.5, 1, 'purple', gridSize / 30, gridSize * 1.8, 'purple', '1st']
+    //var tower = [attackSpeedvariable/attackspeedconstant/perice/range/damdge/borderColor/bulletSpeed/bulletSize/bulletCOlor/targeting]
+    var soldier = [frameRate/60, 2, 1, gridSize * 1.5, 1, 'brown', gridSize / 50, gridSize * 0.2, 'brown', '1st'];
+    var iceMaker = [60, 2, 4, gridSize * 3, 4, 'lightGrey', gridSize / 50, gridSize * 0.2, 'white', '1st'];
+    var sniperOrginal = [0.4, 5, 10, TotalGridSize*10, 10, 'black', gridSize / 20, gridSize * 0.2, 'black', '1st'];
+    var fireboy = [20, 2, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st'];
+    var watergirl = [20, 2, 1, gridSize * 2, 1, 'blue', gridSize / 35, gridSize * 0.2, 'lightBlue', '1st'];
+    var randomDice = [50, 2, 1, gridSize * 1.5, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st']
     //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
     // var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards
     //teirr 3 more shards  teir 4 bigger ball to little ball to lots of shardes teir 5abality ice ball
@@ -191,7 +188,7 @@ c
     var Circles = [];
     var size = 3; ///rbe is red ballon equivelent / damdge
     //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
-    var redSpeed = gridSize / 70;
+    var redSpeed = gridSize/50;
     var redSize = gridSize / 5;
     var redBorderS = gridSize / 15;
     var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed, 0, 0, 1, 1];
@@ -325,21 +322,20 @@ c
 
     function addTower(x) {
       var towerType = eval(towerNames[x]);
-      Towers.push(new tower(tMenuSquareX * gridSize, tMenuSquareY * gridSize, towerType[0], towerType[1], towerType[2],
+      Towers.push(new tower(tMenuSquareX * gridSize + gridSize/2, tMenuSquareY * gridSize+gridSize/2, towerType[0], towerType[1], towerType[2],
         towerType[3], towerType[4], towerType[5], towerType[6], towerType[7], towerType[8], towerType[9]));
     }
 
-
+var what = true;
 
     function drawTowers() {
       Towers.forEach(tower => tower.draw());
     }
-    var oneBullet = false;
 
     function runTowers() { //this draws the towers and creates projectiles
       var test = 0;
       Towers.forEach(function (tower) {
-
+         if(tower.coolDown <= 0 ) {
         // todo
         //will check tower targeting array here and sort array based of targeting to chekc circles in correct order
         let dTraveledCircles = JSON.parse(JSON.stringify(Circles));
@@ -365,82 +361,118 @@ c
             (dTraveledCircles[i].y > tower.y + tower.height / 2 - tower.range && dTraveledCircles[i].y < tower.y +
               tower.height + tower.range)) { //y range
             // Projectiles.push(new projectile(tower.x,tower.y,tower.pierce,tower.damage,tower.bulletSize,tower.bulletSpeed,tower.bulletColor));
-            if (oneBullet == false||oneBullet == true) {
 
               //need to change if stament above to fit
               var rad = 180 / Math.PI;
-              //preditoin for circle 
-              var gradient = (Math.atan((dTraveledCircles[i].y - tower.y) / (dTraveledCircles[i].x - tower
-                .x)));
+              //preditoin for circle   <+<+<=<=,+,=<==,,=
+              var gradient = (Math.atan((dTraveledCircles[i].y - tower.y) / (dTraveledCircles[i].x - tower.x)));
+                if (dTraveledCircles[i].x -dTraveledCircles[i].speed> tower.x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
+                var   directionX = 'right';
+              } else if (dTraveledCircles[i].x +dTraveledCircles[i].speed< tower.x ){
+                  var directionX = 'left';
+                } else {
+                //   if(dTraveledCircles[i].x>tower.x) {
+                //   var   directionX = 'right';
+                //   } else {
+                // var     directionX = 'left';
+                //   }
+                var directionX = 'horizontal';
+                }
 
-              if (dTraveledCircles[i].x > tower
-                .x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
-                var directionX = 'right';
-              } else {
-                var directionX = 'left';
-              }
-
-              if (dTraveledCircles[i].y > tower.y) {
-                directionY = 'down';
-              } else {
-                directionY = 'up';
-              }
-              var testProjectile = new projectile(tower.x + gridSize / 2, tower.y + gridSize / 2, tower.pierce,
+                if (dTraveledCircles[i].y -dTraveledCircles[i].speed> tower.y) {
+                  var  directionY = 'down';
+                } else if(dTraveledCircles[i].y +dTraveledCircles[i].speed< tower.y){
+              var      directionY = 'up'; //somehting wrong with direciotns
+                }   else {
+                //   if(dTraveledCircles[i].y>tower.y) {
+                //   var   directionY = 'down';
+                //   } else {
+                // var     directionY = 'up';
+                //   }
+                var directionY = 'verticle';
+                }
+              var testProjectile = new projectile(tower.x, tower.y, tower.pierce,
                 tower
                 .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
                 gradient);
 
               var testCircle = new circle(dTraveledCircles[i].x,dTraveledCircles[i].y,dTraveledCircles[i].r,'',dTraveledCircles[i].borderW,'',dTraveledCircles[i].speed,
-              dTraveledCircles[i].numberCo,dTraveledCircles[i].nextCo,dTraveledCircles[i].height,dTraveledCircles[i].rbe,dTraveledCircles.health,dTraveledCircles.distanceTraveled); // am making a clone 
-  
+              dTraveledCircles[i].numberCo,dTraveledCircles[i].nextCo,dTraveledCircles[i].height,dTraveledCircles[i].rbe,dTraveledCircles.health,dTraveledCircles.distanceTraveled); // am making a clone
 
-              for (var a = 100, b = i; a > 0; a--) {
-                  // console.log('count');
+
+              for (var a = 600, b = i; a > 0; a--) {
+                  console.log('count');
+
                 gradient = (Math.atan((testCircle.y - tower.y) / (testCircle.x - tower
                   .x)));
 
-                if (dTraveledCircles[b].x > tower
-                  .x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
+
+
+
+                if (testCircle.x -testCircle.speed>tower.x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
                   directionX = 'right';
-                } else {
+                } else if (testCircle.x +testCircle.speed< tower.x ){
                   directionX = 'left';
+                } else {
+                  // if(testCircle.x>tower.x) {
+                  //   directionX = 'right';
+                  // } else {
+                  //   directionX = 'left';
+                  // }
+                     directionX = 'horizontal';
                 }
 
-                if (dTraveledCircles[b].y > tower.y) {
-                  directionY = 'down';
-                } else {
-                  directionY = 'up';
+                if (testCircle.y -testCircle.speed> tower.y) {
+                   directionY = 'down';
+                } else if(testCircle.y +testCircle.speed< tower.y){
+                   directionY = 'up'; //somehting wrong with direciotns
+                }   else {
+                  // if(testCircle.y>tower.y) {
+                  //   directionY = 'down';
+                  // } else {
+                  //   directionY = 'up';
+                  // }
+                         directionY = 'verticle';
                 }
-                testProjectile = new projectile(tower.x + gridSize / 2, tower.y + gridSize / 2, tower.pierce, tower
+                testProjectile = new projectile(tower.x, tower.y, tower.pierce, tower
                   .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
                   gradient);
+                  // console.log(testCircle.x,tower.x);
 
-                for (i = 10; i > 0; i--) { //runs fake track 3 times to predict // need to replacd this with .move(x) to reduce lag
-                 
-                  for(c=a;c <51;c++) {
-                  testProjectile.move(1);
-              }
-                  testCircle.followTrack(1);
-                 
-                }
-                  
-                    // if(test<50) {
-                    //   console.log(testProjectile,testCircle);
-                    //   test ++;
+                //  var distance = Math.sqrt(Math.abs(testCircle.x-tower.x,2)+Math.pow(testCircle.y-tower.y,2));
+                //  console.log(distance);
+                    // if(distance>200) {
+                    //     var count = 50;
+                    // }  else {
+                    //   var count = 1;
                     // }
-                 
-                    if ((testProjectile.x <= testCircle.x + testCircle.height*gridSize/2 && testProjectile.x >= testCircle
-                      .x - testCircle.height*gridSize/2) &&
-                    (testProjectile.y <= testCircle.y +  testCircle.height*gridSize/2 && testProjectile.y >= testCircle.y -
-                    testCircle.height*gridSize/2)) {
-                   
+              var count = 601 -a;
+              testProjectile.move(count);
+                    testCircle.followTrack();
+
+
+                        if(what == true) {
+                          console.log(Math.floor(testProjectile.x),Math.floor(testCircle.x),Math.floor(testProjectile.y),Math.floor(testCircle.y));
+                          
+                        }
+
+                    if ((testProjectile.x <= testCircle.x + 4.5 && testProjectile.x >= testCircle
+                      .x - 4.5) &&
+                    (testProjectile.y <= testCircle.y +  4.5 && testProjectile.y >= testCircle.y -
+                    4.5)) {
+
                   //  console.log(directionX,directionY,gradient);
-                 
+
                   //   // return directionX,directionY,gradient;
-                  //   console.log('he')
+                    console.log('he')
                     a = 0;
-                   
+
                   }
+                  // else if(a==1) {
+                  //
+                  //    console.log(Math.floor(testProjectile.x),Math.floor(dTraveledCircles[i]));
+                  //
+                  // }
                 // }
 
               }
@@ -448,33 +480,21 @@ c
 
 
 
-              // var gradient = (Math.atan((dTraveledCircles[i].y - tower.y) / (dTraveledCircles[i].x - tower
-              //   .x))); //rise over run gradient of line from tower to circle point with prediction after
-
-              // if (dTraveledCircles[i].x > tower.x) {
-              //   var directionX = 'left';
-              // } else {
-              //   var directionX = 'right';
-              // }
-
-              // if (dTraveledCircles[i].y > tower.y) {
-              //   directionY = 'down';
-              // } else {
-              //   directionY = 'up';
-              // }
-
          //am breaking this code need to fix
-         console.log('hello');
-              Projectiles.push(new projectile(tower.x + gridSize / 2, tower.y + gridSize / 2, tower.pierce, tower
+        //  console.log('hello');
+              Projectiles.push(new projectile(tower.x , tower.y , tower.pierce, tower
                 .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
                 gradient));
+                what = false;
+                 tower.coolDown = frameRate;
               // Projectiles.push('hello');
               // x=0, y=0,pierce= 0damage = 0,  bulletSize=0,bulletSpeed = 0, bulletColor = ''
-              oneBullet = true;
-            }
             break;
           }
         }
+      }    else {//end of cool down check
+        tower.coolDown -= tower.attackSpeed;
+      }
       });
 
       if (Projectiles.length > 0) {
@@ -483,12 +503,6 @@ c
       }
 
     } //end of run towers
-
-
-
-
-
-
 
 
     function drawTrack() { // to draw the track
@@ -647,29 +661,3 @@ c
   } */
 </style>
 <!-- append To the sky of the god-->
-
-
-<!-- 
-
-if (circleX > circle.nextCo[0] + circle.speed || circleX < circle.nextCo[0] - circle.speed ||
-circleY < circle
-.nextCo[1] - circle.speed || circleY > circle.nextCo[1] + circle.speed) {
-//above checks that circle is not at next point
-circle.distanceTraveled += circle.speed;
-
-if (circleX - circle.nextCo[0] < -circle.speed) {
-  circleX += circle.speed;
-} else if (circleX - circle.nextCo[0] > circle.speed) {
-  circleX -= circle.speed;
-}
-
-if (circleY - circle.nextCo[1] < -(circle.speed)) {
-  circleY += circle.speed;
-} else if (circleY - circle.nextCo[1] > circle.speed) {
-  circleY -= circle.speed;
-}
-
-} else {
-circle.numberCo += 1;
-circle.nextCo = [currentTrack[circle.numberCo][0], currentTrack[circle.numberCo][1]];
-} -->

@@ -19,7 +19,6 @@ class circle { //this will creawte circles which go around track
     this.x = Number(x);
     this.y = Number(y);
     this.r = Number(r); //makes all numbers incase mistype
-
     this.c = c;
     this.borderW = borderW;
     this.borderC = borderC;
@@ -59,9 +58,8 @@ class circle { //this will creawte circles which go around track
     ctx.restore()
   }
 
-  followTrack(x) { //will make another one for tower that sends circle to start
-    var s = this.speed *x;
-    console.log(x); // this does not work as needs to be foe loop as else does not work
+  followTrack() {
+
     if (this.x > this.nextCo[0] + this.speed || this.x < this.nextCo[0] - this.speed || this.y < this.nextCo[1] - this.speed || this.y > this.nextCo[1] + this.speed) {
  //above checks that circle is not at next point
       this.distanceTraveled += this.speed;
@@ -89,19 +87,19 @@ class circle { //this will creawte circles which go around track
 
 
 //   predictTrack(d) { //ill predict what would happend to x if it followed track for time that projectile will take
-//     if (this.x > this.nextCo[0] + this.speed || this.x < this.nextCo[0] - this.speed || this.y < this.nextCo[1] - this.speed || this.y > this.nextCo[1] + this.speed) {
+//     if (this.x > this.nextCo[0] + s || this.x < this.nextCo[0] - sp || this.y < this.nextCo[1] - sp || this.y > this.nextCo[1] + sp) {
 //  //above checks that circle is not at next point
-//       this.distanceTraveled += this.speed;
+//       this.distanceTraveled += sp;
 
-//       if (this.x - this.nextCo[0] < -this.speed) {
-//         this.x += this.speed;
-//       } else if (this.x - this.nextCo[0] > this.speed) {
-//         this.x -= this.speed;
+//       if (this.x - this.nextCo[0] < -sp) {
+//         this.x += sp;
+//       } else if (this.x - this.nextCo[0] > sp) {
+//         this.x -= sp;
 //       }
 
-//       if (this.y - this.nextCo[1] < -(this.speed)) {
-//         this.y += this.speed;
-//       } else if (this.y - this.nextCo[1] > this.speed) {
+//       if (this.y - this.nextCo[1] < -(sp)) {
+//         this.y += sp;
+//       } else if (this.y - this.nextCo[1] > sp) {
 //         this.y -= this.speed;
 //       }
 

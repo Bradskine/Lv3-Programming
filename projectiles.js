@@ -13,8 +13,8 @@ class projectile { //for projectiles created by towers
     directionY = 0,
     gradient = 0
   ) {
-    this.x = x - bulletSize / 2;
-    this.y = y + (Math.sqrt(3) / 2 * bulletSize) / 2;
+    this.x = x ;
+    this.y = y ;
     this.pierce = pierce;
     this.damage = damage;
     this.bulletSize = bulletSize;
@@ -28,21 +28,33 @@ class projectile { //for projectiles created by towers
   }
 
   move(n) {  //makes the projectiles move in straing line based of direction and gradient of line created
-
+    // console.log(n);
+  
     let xV = Math.abs((Math.cos(this.gradient)) * this.bulletSpeed*n);
     let yV =  Math.abs((Math.sin(this.gradient)) * this.bulletSpeed*n);
 
     if (this.directionX == 'right') { // have to find the maji number
       this.x += xV;
-    } else {
+    } else if (this.directionX =='left') {
       this.x -= xV;
-    }
+    }  else {
+      //x stays the same // add corection
+      this.x = this.x;
+    
+  }
+
+
 
     if (this.directionY == 'down') {
       this.y += yV;
-    } else {
+    } else if(this.directionY == 'up') {
       this.y -=  yV;
+    }  else {
+      this.y = this.y;
+      //y staksy same will add corection
     }
+
+
 }  //end of move funtion
 
 
@@ -50,23 +62,35 @@ class projectile { //for projectiles created by towers
 
 
 
+// draw() {
+//   var {
+//     x,
+//     y,
+//     bulletColor,
+//     bulletSize,
+//     size = bulletSize * Math.cos(Math.PI / 6)
+//   } = this
+
+
 draw() {
   var {
-    x,
-    y,
+    x ,
+    y ,
     bulletColor,
     bulletSize,
-    size = bulletSize * Math.cos(Math.PI / 6)
+    size = bulletSize * 2* Math.cos(Math.PI / 6)
   } = this
 
+  x -= bulletSize;
+  y += (bulletSize)*1.732 - bulletSize;
   ctx.save();
   ctx.beginPath();
   // //will work out trinage around x/y center points
 
 
-  ctx.moveTo(x, y);
-  ctx.lineTo(x + bulletSize, y);
-  ctx.lineTo(x + bulletSize / 2, y - size);
+  ctx.moveTo(x,y); 
+  ctx.lineTo(x+bulletSize*2, y);
+  ctx.lineTo(x+bulletSize, y-size);
   ctx.closePath();
 
   // the outline
@@ -80,7 +104,6 @@ draw() {
   ctx.restore();
 
 }
-
 
 
 
