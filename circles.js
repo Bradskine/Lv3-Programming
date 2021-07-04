@@ -12,8 +12,8 @@ class circle { //this will creawte circles which go around track
     nextCo = 0,
     height = 0,
     rbe = 0,
-    health= 0,
-    distanceTraveled=0
+    health = 0,
+    distanceTraveled = 0
   ) {
 
     this.x = Number(x);
@@ -28,7 +28,7 @@ class circle { //this will creawte circles which go around track
     this.height = Number(height);
     this.rbe = rbe;
     this.health = health;
-    this.distanceTraveled=0;
+    this.distanceTraveled = 0;
   }
 
 
@@ -61,7 +61,7 @@ class circle { //this will creawte circles which go around track
   followTrack() {
 
     if (this.x > this.nextCo[0] + this.speed || this.x < this.nextCo[0] - this.speed || this.y < this.nextCo[1] - this.speed || this.y > this.nextCo[1] + this.speed) {
- //above checks that circle is not at next point
+      //above checks that circle is not at next point
       this.distanceTraveled += this.speed;
 
       if (this.x - this.nextCo[0] < -this.speed) {
@@ -77,38 +77,38 @@ class circle { //this will creawte circles which go around track
       }
 
     } else {
-      this.numberCo += 1;
-      this.nextCo = [currentTrack[this.numberCo][0], currentTrack[this.numberCo][1]];
+      if (this.numberCo == currentTrack.length - 1) {
+ 
+        // deltet the circle
+
+        delete this.x;
+
+        delete this.y;
+        delete this.r; //makes all numbers incase mistype
+        delete this.c;
+        delete this.borderW;
+        delete this.borderC;
+        delete this.speed;
+        delete this.numberCo;
+        delete this.nextCo;
+        delete this.height;
+        delete this.rbe;
+        delete this.health;
+        delete this.distanceTraveled;
+        
+
+
+      } else {
+
+        this.numberCo += 1;
+        this.nextCo = [currentTrack[this.numberCo][0], currentTrack[this.numberCo][1]];
+      }
     }
 
+
+
+
   }
-
-
-
-
-//   predictTrack(d) { //ill predict what would happend to x if it followed track for time that projectile will take
-//     if (this.x > this.nextCo[0] + s || this.x < this.nextCo[0] - sp || this.y < this.nextCo[1] - sp || this.y > this.nextCo[1] + sp) {
-//  //above checks that circle is not at next point
-//       this.distanceTraveled += sp;
-
-//       if (this.x - this.nextCo[0] < -sp) {
-//         this.x += sp;
-//       } else if (this.x - this.nextCo[0] > sp) {
-//         this.x -= sp;
-//       }
-
-//       if (this.y - this.nextCo[1] < -(sp)) {
-//         this.y += sp;
-//       } else if (this.y - this.nextCo[1] > sp) {
-//         this.y -= this.speed;
-//       }
-
-//     } else {
-//       this.numberCo += 1;
-//       this.nextCo = [currentTrack[this.numberCo][0], currentTrack[this.numberCo][1]];
-//     }
-
-//   }
 
 
 

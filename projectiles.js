@@ -13,7 +13,7 @@ class projectile { //for projectiles created by towers
     directionY = 0,
     gradient = 0
   ) {
-    this.x = x ;
+    this.x = x;
     this.y = y ;
     this.pierce = pierce;
     this.damage = damage;
