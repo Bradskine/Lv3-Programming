@@ -171,18 +171,18 @@
     var tColor = 'grey';
     var tFont = 'px Ariel';
     //projectile variables
-    var Projectiles = [];
+    var Projectiles = [];  
 
     //tower common variables
-    //var tower = [attackSpeedvariable/attackspeedconstant/perice/range/damdge/borderColor/bulletSpeed/bulletSize/bulletCOlor/targeting]
-    var soldier = [frameRate/60, 2, 1, gridSize * 1.5, 1, 'brown', gridSize / 50, gridSize * 0.2, 'brown', '1st'];
-    var iceMaker = [60, 2, 4, gridSize * 3, 4, 'lightGrey', gridSize / 50, gridSize * 0.2, 'white', '1st'];
-    var sniperOrginal = [0.4, 5, 10, TotalGridSize*10, 10, 'black', gridSize / 20, gridSize * 0.2, 'black', '1st'];
-    var fireboy = [20, 2, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st'];
-    var watergirl = [20, 2, 1, gridSize * 2, 1, 'blue', gridSize / 35, gridSize * 0.2, 'lightBlue', '1st'];
-    var randomDice = [50, 2, 1, gridSize * 1.5, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st']
+    //var tower = [attackSpeedvariable/attackspeedconstant/perice/range/damdge/borderColor/bulletSpeed/bulletSize/bulletCOlor/targeting/maxRange]
+    var soldier = [frameRate/60, 2, 1, gridSize * 1.8, 1, 'brown', gridSize / 50, gridSize * 0.2, 'brown', '1st', gridSize *3.6];
+    var iceMaker = [60, 2, 4, gridSize * 3, 4, 'lightGrey', gridSize / 50, gridSize * 0.2, 'white', '1st', gridSize *6];
+    var sniperOrginal = [0.4, 5, 10, TotalGridSize*10, 10, 'black', gridSize / 20, gridSize * 0.2, 'black', '1st', TotalGridSize*10];
+    var fireboy = [20, 2, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st', gridSize*4];
+    var watergirl = [20, 2, 1, gridSize * 2, 1, 'blue', gridSize / 35, gridSize * 0.2, 'lightBlue', '1st', gridSize*4];
+    var randomDice = [50, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', gridSize*3.6]
     //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
-    // var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards
+    // var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards                             3,6,total*10,4,3
     //teirr 3 more shards  teir 4 bigger ball to little ball to lots of shardes teir 5abality ice ball
     //rolls down track killing every baloon and half of moab; work();
     // sniper shot with perice
@@ -329,17 +329,9 @@
 
 
     function drawCircles() {
-
-  
       Circles.forEach(function (circle) {
-   
-        if(isNaN(circle[0])) {  //circle.x not circle[0] whoops
-          // console.log('shdf');
-        }
-
         circle.followTrack(1);
       });
-
 
       Circles.forEach(circle => circle.draw()); //drawas circles
 
@@ -348,7 +340,7 @@
     function addTower(x) {
       var towerType = eval(towerNames[x]);
       Towers.push(new tower(tMenuSquareX * gridSize + gridSize/2, tMenuSquareY * gridSize+gridSize/2, towerType[0], towerType[1], towerType[2],
-        towerType[3], towerType[4], towerType[5], towerType[6], towerType[7], towerType[8], towerType[9]));
+        towerType[3], towerType[4], towerType[5], towerType[6], towerType[7], towerType[8], towerType[9],towerType[10]));
     }
 
 var what = true;
@@ -357,6 +349,7 @@ var what = true;
       Towers.forEach(tower => tower.draw());
     }
 
+    var circleMissing = false;
     function runTowers() { //this draws the towers and creates projectiles
       var test = 0;
       Towers.forEach(function (tower) {
@@ -380,6 +373,7 @@ var what = true;
         })
 
         for (i = 0; i < dTraveledCircles.length; i++) {
+          circleMissing = false;
           if ((dTraveledCircles[i].x > tower.x + tower.width / 2 - tower.range && dTraveledCircles[i].x < tower.x +
               tower.width / 2 + tower.range) //x range
             &&
@@ -414,9 +408,10 @@ var what = true;
                 gradient);
 
               var testCircle = new circle(dTraveledCircles[i].x,dTraveledCircles[i].y,dTraveledCircles[i].r,'',dTraveledCircles[i].borderW,'',dTraveledCircles[i].speed,
-              dTraveledCircles[i].numberCo,dTraveledCircles[i].nextCo,dTraveledCircles[i].height,dTraveledCircles[i].rbe,dTraveledCircles.health,dTraveledCircles.distanceTraveled); // am making a clone
+              dTraveledCircles[i].numberCo,dTraveledCircles[i].nextCo,dTraveledCircles[i].height,dTraveledCircles[i].rbe,dTraveledCircles.health,0); // am making a clone
+                                                                                                                                                      //need to test if this owrks
 
-
+              
               for (var a = 2000, b = i; a > 0; a--) {
                   // console.log('count');
 
@@ -450,18 +445,21 @@ var what = true;
               testProjectile.move(count);
                     testCircle.followTrack();
 
-                    if ((testProjectile.x <= testCircle.x + (4) && testProjectile.x >= testCircle
-                      .x - 4) &&
-                    (testProjectile.y <= testCircle.y +  4 && testProjectile.y >= testCircle.y -
-                    4)) {
+                    if ((testProjectile.x <= testCircle.x + 4.5 && testProjectile.x >= testCircle
+                      .x - 4.5) &&
+                    (testProjectile.y <= testCircle.y +  4.5 && testProjectile.y >= testCircle.y -
+                    4.5)) {
                     a = 0;
-
+                  } else if (circleMissing == true) {
+                    a = 0;
+                    console.log('test');
+                 
                   }
   
 
               }
-
-              Projectiles.push(new projectile(tower.x , tower.y , tower.pierce, tower
+              if(circleMissing == false) {
+                Projectiles.push(new projectile(tower.x , tower.y , tower.pierce, tower
                 .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
                 gradient));
                 what = false;
@@ -469,6 +467,11 @@ var what = true;
               // Projectiles.push('hello');
               // x=0, y=0,pierce= 0damage = 0,  bulletSize=0,bulletSpeed = 0, bulletColor = ''
             break;
+              } else {
+                //will reset loop and target the next circle .. may cause lag not sure
+              }
+ 
+         
           }
         }
       }    else {//end of cool down check
