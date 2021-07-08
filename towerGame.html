@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <head>
@@ -69,7 +68,7 @@
         if (towerMenuActive == false) {
           if (onTrack == false) {
             ////will need to add an if statement //
-            if (onTower == true) {
+            if (onTower) {
               console.log('upgradTower');
             } else {
               towerMenu([columnClicked * gridSize, rowClicked * gridSize]);
@@ -118,24 +117,28 @@
       'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up', 'up',
       'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
       'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right',
-      'right','right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+      'right', 'right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
       'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up', 'up',
       'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
       'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down', 'down', 'down','down','left','down', 'down', 'down', 'down', 'down','down','down', 'down', 'down', 'down', 'down','down',
-      'down', 'down', 'down', 'down', 'down','down','down', 'down', 'down', 'down', 'down','down','left','left','left','left'
-      ,'left','left','left','left','left','left','left','left','left','left','left','left','left','left'
-      ,'left','left','left','left','left','left','left','left','left','left','left','left','left','left','left'
-      ,'left','left','left','left','left','left','left','left','left','left','left','up','up','up'
-      ,'up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up'
-      ,'up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up','up' ,
-      'right', 'right','right','right','right','right','right','right','right','right','right','right','right',
-      'right','right','right','right','right','right','right','right','right','right','right','right','down','down'
-      ,'down','down','down','down','down','down','down','down','down','down','down','down','down','down','down'
-      ,'down','down','down','down','down','down','down','down','down','down','down','down','down','down','down','down'
-      ,'down','down','down','down','down','down','down','down','down','down','down','down','down','down','down'
-      
-   
+      'down', 'down', 'down', 'down', 'down', 'down', 'left', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
+      'down', 'down', 'down', 'down', 'down',
+      'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left',
+      'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
+      'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
+      'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
+      'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+      'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+      'up', 'up', 'up', 'up', 'up', 'up', 'up',
+      'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right',
+      'right',
+      'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right',
+      'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
+      'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
+      'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
+      'down', 'down', 'down', 'down', 'down', 'down', 'down'
+
+
     ];
 
     var track2 = ['right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
@@ -171,16 +174,24 @@
     var tColor = 'grey';
     var tFont = 'px Ariel';
     //projectile variables
-    var Projectiles = [];  
+    var Projectiles = [];
 
     //tower common variables
     //var tower = [attackSpeedvariable/attackspeedconstant/perice/range/damdge/borderColor/bulletSpeed/bulletSize/bulletCOlor/targeting/maxRange]
-    var soldier = [frameRate/60, 2, 1, gridSize * 1.8, 1, 'brown', gridSize / 50, gridSize * 0.2, 'brown', '1st', gridSize *3.6];
-    var iceMaker = [60, 2, 4, gridSize * 3, 4, 'lightGrey', gridSize / 50, gridSize * 0.2, 'white', '1st', gridSize *6];
-    var sniperOrginal = [0.4, 5, 10, TotalGridSize*10, 10, 'black', gridSize / 20, gridSize * 0.2, 'black', '1st', TotalGridSize*10];
-    var fireboy = [20, 2, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st', gridSize*4];
-    var watergirl = [20, 2, 1, gridSize * 2, 1, 'blue', gridSize / 35, gridSize * 0.2, 'lightBlue', '1st', gridSize*4];
-    var randomDice = [50, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', gridSize*3.6]
+    var soldier = [frameRate / 60, 2, 1, gridSize * 1.8, 1, 'brown', gridSize / 50, gridSize * 0.2, 'brown', '1st',
+      gridSize * 3.6
+    ];
+    var iceMaker = [60, 2, 4, gridSize * 3, 4, 'lightGrey', gridSize / 50, gridSize * 0.2, 'white', '1st', gridSize *
+    6];
+    var sniperOrginal = [0.4, 5, 10, TotalGridSize * 10, 10, 'black', gridSize / 20, gridSize * 0.2, 'black', '1st',
+      TotalGridSize * 10
+    ];
+    var fireboy = [20, 2, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st', gridSize * 4];
+    var watergirl = [20, 2, 1, gridSize * 2, 1, 'blue', gridSize / 35, gridSize * 0.2, 'lightBlue', '1st', gridSize *
+    4];
+    var randomDice = [50, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', gridSize *
+      3.6
+    ]
     //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
     // var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards                             3,6,total*10,4,3
     //teirr 3 more shards  teir 4 bigger ball to little ball to lots of shardes teir 5abality ice ball
@@ -205,10 +216,10 @@
     var Circles = [];
     var size = 3; ///rbe is red ballon equivelent / damdge
     //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
-    var redSpeed = gridSize/50;
+    var redSpeed = gridSize / 50;
     var redSize = gridSize / 5;
     var redBorderS = gridSize / 15;
-    var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed*20, 0, 0, 1, 1];
+    var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 20, 0, 0, 1, 1];
     var blueCircle = [xa2, ya2, redSize, 'rgb(11, 196, 255)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2, 1];
     var greenCircle = [xa2, ya2, redSize, 'rgb(0,155,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 3, 1];
     var yellowCircle = [xa2, ya2, redSize, 'rgb(255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.2, 0, 0, 4, 1];
@@ -265,7 +276,7 @@
         runTowers();
       }
 
-      if (towerMenuActive == true) {
+      if (towerMenuActive) {
         drawTowerMenu();
       }
     } //end of mainloop function()
@@ -339,293 +350,309 @@
 
     function addTower(x) {
       var towerType = eval(towerNames[x]);
-      Towers.push(new tower(tMenuSquareX * gridSize + gridSize/2, tMenuSquareY * gridSize+gridSize/2, towerType[0], towerType[1], towerType[2],
-        towerType[3], towerType[4], towerType[5], towerType[6], towerType[7], towerType[8], towerType[9],towerType[10]));
+      Towers.push(new tower(tMenuSquareX * gridSize + gridSize / 2, tMenuSquareY * gridSize + gridSize / 2, towerType[
+        0], towerType[1], towerType[2],
+        towerType[3], towerType[4], towerType[5], towerType[6], towerType[7], towerType[8], towerType[9], towerType[
+          10]));
     }
 
-var what = true;
+    var what = true;
 
     function drawTowers() {
       Towers.forEach(tower => tower.draw());
     }
 
     var circleMissing = false;
+
     function runTowers() { //this draws the towers and creates projectiles
-      var test = 0;
       Towers.forEach(function (tower) {
-         if(tower.coolDown <= 0 ) {
-        // todo
-        //will check tower targeting array here and sort array based of targeting to chekc circles in correct order
-        let dTraveledCircles = JSON.parse(JSON.stringify(Circles));
-        // Circles[2].distanceTraveled
-        dTraveledCircles.sort(function (a, b) {
-          let A = a.distanceTraveled + a.height;
-          let B = b.distanceTraveled + a.height;
-          if (A < B) {
-            return +1;
-          }
-          if (A > B) {
-            return -1;
-          }
-          if (A == B) {
-            return 0;
-          }
-        })
+          if (tower.coolDown <= 0) {
+            // todo
+            //will check tower targeting array here and sort array based of targeting to chekc circles in correct order
+            let dTraveledCircles = JSON.parse(JSON.stringify(Circles));
+            // Circles[2].distanceTraveled
+            dTraveledCircles.sort(function (a, b) {
+              let A = a.distanceTraveled + a.height;
+              let B = b.distanceTraveled + a.height;
+              if (A < B) {
+                return +1;
+              }
+              if (A > B) {
+                return -1;
+              }
+              if (A == B) {
+                return 0;
+              }
+            })
 
-        for (i = 0; i < dTraveledCircles.length; i++) {
-          circleMissing = false;
-          if ((dTraveledCircles[i].x > tower.x + tower.width / 2 - tower.range && dTraveledCircles[i].x < tower.x +
-              tower.width / 2 + tower.range) //x range
-            &&
-            (dTraveledCircles[i].y > tower.y + tower.height / 2 - tower.range && dTraveledCircles[i].y < tower.y +
-              tower.height + tower.range)) { //y range
-            // Projectiles.push(new projectile(tower.x,tower.y,tower.pierce,tower.damage,tower.bulletSize,tower.bulletSpeed,tower.bulletColor));
+            for (i = 0; i < dTraveledCircles.length; i++) {
+              circleMissing = false;
+              if ((dTraveledCircles[i].x > tower.x + tower.width / 2 - tower.range && dTraveledCircles[i].x < tower
+                  .x +
+                  tower.width / 2 + tower.range) //x range
+                &&
+                (dTraveledCircles[i].y > tower.y + tower.height / 2 - tower.range && dTraveledCircles[i].y < tower.y +
+                  tower.height + tower.range)) { //y range
+                // Projectiles.push(new projectile(tower.x,tower.y,tower.pierce,tower.damage,tower.bulletSize,tower.bulletSpeed,tower.bulletColor));
 
-              //need to change if stament above to fit
-              var rad = 180 / Math.PI;
-              //preditoin for circle   <+<+<=<=,+,=<==,,=
-              var gradient = (Math.atan((dTraveledCircles[i].y - tower.y) / (dTraveledCircles[i].x - tower.x)));
-                if (dTraveledCircles[i].x -dTraveledCircles[i].speed> tower.x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
-                var   directionX = 'right';
-              } else if (dTraveledCircles[i].x +dTraveledCircles[i].speed< tower.x ){
+                //need to change if stament above to fit
+                var rad = 180 / Math.PI;
+                //preditoin for circle   <+<+<=<=,+,=<==,,=
+                var gradient = (Math.atan((dTraveledCircles[i].y - tower.y) / (dTraveledCircles[i].x - tower.x)));
+                if (dTraveledCircles[i].x - dTraveledCircles[i].speed > tower
+                  .x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
+                  var directionX = 'right';
+                } else if (dTraveledCircles[i].x + dTraveledCircles[i].speed < tower.x) {
                   var directionX = 'left';
                 } else {
-    
-                var directionX = 'horizontal';
+
+                  var directionX = 'horizontal';
                 }
 
-                if (dTraveledCircles[i].y -dTraveledCircles[i].speed> tower.y) {
-                  var  directionY = 'down';
-                } else if(dTraveledCircles[i].y +dTraveledCircles[i].speed< tower.y){
-              var      directionY = 'up'; //somehting wrong with direciotns
-                }   else {
-
-                var directionY = 'verticle';
-                }
-              var testProjectile = new projectile(tower.x, tower.y, tower.pierce,
-                tower
-                .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
-                gradient);
-
-              var testCircle = new circle(dTraveledCircles[i].x,dTraveledCircles[i].y,dTraveledCircles[i].r,'',dTraveledCircles[i].borderW,'',dTraveledCircles[i].speed,
-              dTraveledCircles[i].numberCo,dTraveledCircles[i].nextCo,dTraveledCircles[i].height,dTraveledCircles[i].rbe,dTraveledCircles.health,0); // am making a clone
-                                                                                                                                                      //need to test if this owrks
-
-              
-              for (var a = 2000, b = i; a > 0; a--) {
-                  // console.log('count');
-
-                gradient = (Math.atan((testCircle.y - tower.y) / (testCircle.x - tower
-                  .x)));
-
-
-
-
-                if (testCircle.x -testCircle.speed>tower.x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
-                  directionX = 'right';
-                } else if (testCircle.x +testCircle.speed< tower.x ){
-                  directionX = 'left';
+                if (dTraveledCircles[i].y - dTraveledCircles[i].speed > tower.y) {
+                  var directionY = 'down';
+                } else if (dTraveledCircles[i].y + dTraveledCircles[i].speed < tower.y) {
+                  var directionY = 'up'; //somehting wrong with direciotns
                 } else {
-                     directionX = 'horizontal';
-                }
 
-                if (testCircle.y -testCircle.speed> tower.y) {
-                   directionY = 'down';
-                } else if(testCircle.y +testCircle.speed< tower.y){
-                   directionY = 'up'; //somehting wrong with direciotns
-                }   else {
-
-                         directionY = 'verticle';
+                  var directionY = 'verticle';
                 }
-                testProjectile = new projectile(tower.x, tower.y, tower.pierce, tower
+                var testProjectile = new projectile(tower.x, tower.y, tower.pierce,
+                  tower
                   .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
                   gradient);
 
-              var count = 2001 -a;
-              testProjectile.move(count);
-                    testCircle.followTrack();
+                var testCircle = new circle(dTraveledCircles[i].x, dTraveledCircles[i].y, dTraveledCircles[i].r, '',
+                  dTraveledCircles[i].borderW, '', dTraveledCircles[i].speed,
+                  dTraveledCircles[i].numberCo, dTraveledCircles[i].nextCo, dTraveledCircles[i].height,
+                  dTraveledCircles[i].rbe, dTraveledCircles.health, 0); // am making a clone
+                //need to test if this owrks
+
+
+                for (var a = 2000, b = i; a > 0; a--) {
+                  // console.log('count');
+
+                  gradient = (Math.atan((testCircle.y - tower.y) / (testCircle.x - tower
+                    .x)));
+
+                  if (testCircle.x - testCircle.speed > tower
+                    .x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
+                    directionX = 'right';
+                  } else if (testCircle.x + testCircle.speed < tower.x) {
+                    directionX = 'left';
+                  } else {
+                    directionX = 'horizontal';
+                  }
+
+                  if (testCircle.y - testCircle.speed > tower.y) {
+                    directionY = 'down';
+                  } else if (testCircle.y + testCircle.speed < tower.y) {
+                    directionY = 'up'; //somehting wrong with direciotns
+                  } else {
+
+                    directionY = 'verticle';
+                  }
+                  testProjectile = new projectile(tower.x, tower.y, tower.pierce, tower
+                    .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
+                    gradient);
+
+                  var count = 2001 - a;
+                  testProjectile.move(count);
+                  testCircle.followTrack();
+
+                  if ((testCircle.x > tower.x + tower.width / 2 - tower.maxRange && testCircle.x <
+                      tower.x +
+                      tower.width / 2 + tower.maxRange) //x range
+                    &&
+                    (testCircle.y > tower.y + tower.height / 2 - tower.maxRange &&testCircle.y < tower
+                      .y +
+                      tower.height + tower.maxRange)) {
+                      
+            // cant be bo0ther re weriritiengdfgjdff
+                      } else {
+                        circleMissing = true;
+                      }
+
 
                     if ((testProjectile.x <= testCircle.x + 4.5 && testProjectile.x >= testCircle
-                      .x - 4.5) &&
-                    (testProjectile.y <= testCircle.y +  4.5 && testProjectile.y >= testCircle.y -
-                    4.5)) {
-                    a = 0;
-                  } else if (circleMissing == true) {
-                    a = 0;
-                    console.log('test');
-                 
-                  }
-  
+                        .x - 4.5) &&
+                      (testProjectile.y <= testCircle.y + 4.5 && testProjectile.y >= testCircle.y -
+                        4.5)) {
+                      a = 0;
+                    } else if (circleMissing) {
+                      a = 0;
+                    }
 
+
+                  }
+                  if (circleMissing == false) {
+                    Projectiles.push(new projectile(tower.x, tower.y, tower.pierce, tower
+                      .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
+                      gradient));
+                    what = false;
+                    tower.coolDown = frameRate;
+                    // Projectiles.push('hello');
+                    // x=0, y=0,pierce= 0damage = 0,  bulletSize=0,bulletSpeed = 0, bulletColor = ''
+                    break;
+                  } else {
+                    //will reset loop and target the next circle .. may cause lag not sure
+                  }
+
+
+                }
               }
-              if(circleMissing == false) {
-                Projectiles.push(new projectile(tower.x , tower.y , tower.pierce, tower
-                .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
-                gradient));
-                what = false;
-                 tower.coolDown = frameRate;
-              // Projectiles.push('hello');
-              // x=0, y=0,pierce= 0damage = 0,  bulletSize=0,bulletSpeed = 0, bulletColor = ''
-            break;
-              } else {
-                //will reset loop and target the next circle .. may cause lag not sure
-              }
- 
-         
+            } else { //end of cool down check
+              tower.coolDown -= tower.attackSpeed;
+            }
+          });
+
+        if (Projectiles.length > 0) {
+          Projectiles.forEach(projectile => projectile.draw(1));
+          Projectiles.forEach(projectile => projectile.move(1));
+        }
+
+      } //end of run towers
+
+
+      function drawTrack() { // to draw the track
+
+        trackL = currentTrack.length;
+        gridAmount = currentTrack.length;
+        ctx.strokeStyle = 'rgb(71,67,77)';
+        ctx.lineWidth = trackWidth;
+
+
+        ctx.beginPath();
+        ctx.moveTo(xa2, ya2);
+
+        for (a = 0; a < gridAmount * 2; a++) {
+          var i = a - gridAmount;
+          // console.log(i);
+          let change = 1;
+          if (i == gridAmount - 1 || i == 0) {
+            change = 1.5;
+          } //this makes it that the 1st and last line a 1.5 tiem longer to
+          //problem wherer track stops and stars half way inbetween grid points
+
+          gridDirection = currentTrack[i];
+          if (gridDirection == 'up') {
+            currentTrack[i] = [xa, ya - gridSize * change];
+            currentTrackXY[i] = [xa, ya - gridSize];
+            ya -= gridSize * change;
+          } else if (gridDirection == 'down') {
+            currentTrack[i] = [xa, ya + gridSize * change];
+            currentTrackXY[i] = [xa, ya + gridSize];
+            ya += gridSize;
+          } else if (gridDirection == 'left') {
+            currentTrack[i] = [xa - gridSize * change, ya];
+            currentTrackXY[i] = [xa - gridSize, ya];
+            xa -= gridSize * change;
+          } else if (gridDirection == 'right') {
+            currentTrack[i] = [xa + gridSize * change, ya];
+            currentTrackXY[i] = [xa + gridSize, ya];
+            xa += gridSize * change;
+          }
+
+        }
+        gridAmount = 0;
+
+
+        for (var i = 0; i < trackL; i++) {
+
+          ctx.lineTo(currentTrack[i][0], currentTrack[i][1]);
+        }
+
+
+        ctx.stroke();
+
+
+      } //end of draw Track
+
+      ///to do create tower of the godskine
+
+      function towerMenu(x) {
+
+        // console.log(x);
+        towerMenuActive = true;
+        if (Math.floor(x[0] / gridSize) < gridCount - towerWidth) { //for when menu on left of screen draws to right
+          tMenuX = x[0] + gridSize * 2;
+        } else {
+          tMenuX = x[0] - gridSize * 4;
+        }
+
+        if (Math.floor(x[1] / gridSize) < gridCount - towerCount + 1) {
+          if (Math.floor(x[1] / gridSize) < 1) {
+            tMenuY = x[1] + gridSize;
+          } else {
+            tMenuY = x[1];
+          }
+        } else {
+          tMenuY = x[1] - gridSize * towerCount;
+        }
+        tMenuSquareX = Math.floor(x[0] / gridSize);
+        tMenuSquareY = Math.floor(x[1] / gridSize);
+        tMenuGridX = Math.floor(tMenuX / gridSize);
+        tMenuGridY = Math.floor(tMenuY / gridSize);
+
+      } //end of twoerMenu(x) function
+
+      var drawGrid = function (w, h, id) {
+
+        var vStep = canvas.height / gridCount;
+        var hStep = canvas.width / gridCount;
+
+        ctx.canvas.width = w;
+        ctx.canvas.height = h;
+
+
+        for (x = 0; x <= w; x += hStep) { //drawas a line for entrei height width gaps of hstep
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+
+          for (y = 0; y <= h; y += vStep) { //draws horizalt lines with vStep gaps
+            var d = x % 150;
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
           }
         }
-      }    else {//end of cool down check
-        tower.coolDown -= tower.attackSpeed;
-      }
-      });
 
-      if (Projectiles.length > 0) {
-        Projectiles.forEach(projectile => projectile.draw(1));
-        Projectiles.forEach(projectile => projectile.move(1));
-      }
+        ctx.strokeStyle = "rgb(150,150,150, 0.5)";
 
-    } //end of run towers
+        ctx.stroke();
 
 
-    function drawTrack() { // to draw the track
-
-      trackL = currentTrack.length;
-      gridAmount = currentTrack.length;
-      ctx.strokeStyle = 'rgb(71,67,77)';
-      ctx.lineWidth = trackWidth;
+      }; //end of drawGrid Funtion()
 
 
-      ctx.beginPath();
-      ctx.moveTo(xa2, ya2);
+      function colorRect(x, y, w, h, c) { //to draw things
+        ctx.fillStyle = c;
+        ctx.fillRect(x, y, w, h);
+      } //end of colorRect
 
-      for (a = 0; a < gridAmount * 2; a++) {
-        var i = a - gridAmount;
-        // console.log(i);
-        let change = 1;
-        if (i == gridAmount - 1 || i == 0) {
-          change = 1.5;
-        } //this makes it that the 1st and last line a 1.5 tiem longer to
-        //problem wherer track stops and stars half way inbetween grid points
-
-        gridDirection = currentTrack[i];
-        if (gridDirection == 'up') {
-          currentTrack[i] = [xa, ya - gridSize * change];
-          currentTrackXY[i] = [xa, ya - gridSize];
-          ya -= gridSize * change;
-        } else if (gridDirection == 'down') {
-          currentTrack[i] = [xa, ya + gridSize * change];
-          currentTrackXY[i] = [xa, ya + gridSize];
-          ya += gridSize;
-        } else if (gridDirection == 'left') {
-          currentTrack[i] = [xa - gridSize * change, ya];
-          currentTrackXY[i] = [xa - gridSize, ya];
-          xa -= gridSize * change;
-        } else if (gridDirection == 'right') {
-          currentTrack[i] = [xa + gridSize * change, ya];
-          currentTrackXY[i] = [xa + gridSize, ya];
-          xa += gridSize * change;
-        }
+      function drawCircle(x, y, radius, c, borderWidth, borderColor) {
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = borderWidth;
+        ctx.fillStyle = c;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fill();
 
       }
-      gridAmount = 0;
+
+      function drawScore() {
+        ctx.font = "30px Times New Roman";
+        ctx.fillStyle = "red";
+
+        ctx.fillText("lifes: " + lifes, canvas.width / 4, 30);
+        ctx.fillText("time: " + Math.floor(time / frameRate), canvas.width / 1.8, 30);
+
+        // if (gameActive ) {
+        time += 1;
+        // }
 
 
-      for (var i = 0; i < trackL; i++) {
-
-        ctx.lineTo(currentTrack[i][0], currentTrack[i][1]);
       }
-
-
-      ctx.stroke();
-
-
-    } //end of draw Track
-
-    ///to do create tower of the godskine
-
-    function towerMenu(x) {
-
-      // console.log(x);
-      towerMenuActive = true;
-      if (Math.floor(x[0] / gridSize) < gridCount - towerWidth) { //for when menu on left of screen draws to right
-        tMenuX = x[0] + gridSize * 2;
-      } else {
-        tMenuX = x[0] - gridSize * 4;
-      }
-
-      if (Math.floor(x[1] / gridSize) < gridCount - towerCount + 1) {
-        if (Math.floor(x[1] / gridSize) < 1) {
-          tMenuY = x[1] + gridSize;
-        } else {
-          tMenuY = x[1];
-        }
-      } else {
-        tMenuY = x[1] - gridSize * towerCount;
-      }
-      tMenuSquareX = Math.floor(x[0] / gridSize);
-      tMenuSquareY = Math.floor(x[1] / gridSize);
-      tMenuGridX = Math.floor(tMenuX / gridSize);
-      tMenuGridY = Math.floor(tMenuY / gridSize);
-
-    } //end of twoerMenu(x) function
-
-    var drawGrid = function (w, h, id) {
-
-      var vStep = canvas.height / gridCount;
-      var hStep = canvas.width / gridCount;
-
-      ctx.canvas.width = w;
-      ctx.canvas.height = h;
-
-
-      for (x = 0; x <= w; x += hStep) { //drawas a line for entrei height width gaps of hstep
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, h);
-
-        for (y = 0; y <= h; y += vStep) { //draws horizalt lines with vStep gaps
-          var d = x % 150;
-          ctx.moveTo(0, y);
-          ctx.lineTo(w, y);
-        }
-      }
-
-      ctx.strokeStyle = "rgb(150,150,150, 0.5)";
-
-      ctx.stroke();
-
-
-    }; //end of drawGrid Funtion()
-
-
-    function colorRect(x, y, w, h, c) { //to draw things
-      ctx.fillStyle = c;
-      ctx.fillRect(x, y, w, h);
-    } //end of colorRect
-
-    function drawCircle(x, y, radius, c, borderWidth, borderColor) {
-      ctx.strokeStyle = borderColor;
-      ctx.lineWidth = borderWidth;
-      ctx.fillStyle = c;
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, 2 * Math.PI);
-      ctx.stroke();
-      ctx.fill();
-
-    }
-
-    function drawScore() {
-      ctx.font = "30px Times New Roman";
-      ctx.fillStyle = "red";
-
-      ctx.fillText("lifes: " + lifes, canvas.width / 4, 30);
-      ctx.fillText("time: " + Math.floor(time / frameRate), canvas.width / 1.8, 30);
-
-      // if (gameActive == true) {
-      time += 1;
-      // }
-
-
-    }
   </script>
 
 </body>

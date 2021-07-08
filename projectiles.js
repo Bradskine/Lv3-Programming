@@ -40,9 +40,7 @@ class projectile { //for projectiles created by towers
     }  else {
       //x stays the same // add corection
       this.x = this.x;
-    
-  }
-
+    }
 
 
     if (this.directionY == 'down') {
@@ -53,6 +51,32 @@ class projectile { //for projectiles created by towers
       this.y = this.y;
       //y staksy same will add corection
     }
+
+
+
+      if(n == 1) {
+        
+  // triangle = (x,y)(x+bulletSize*2, y)(x+bulletSize, y-size)
+  // circle = x,y,r
+  Circles.forEach(function (circle) {
+    var collide = require('this-circle-collision');
+
+    var triangle = [[this.x,this.y], [this.x+bulletSize*2,y], [this.x+bulletSize, this.y-size]];
+    var point = [circle.x,circle.y],
+         radius = circle.bulletSize;
+    
+    //returns true if collision occurs
+    console.log( collide(triangle, point, radius) )
+
+
+
+  });
+
+
+
+  }
+
+
 
 
 }  //end of move funtion
@@ -92,6 +116,7 @@ draw() {
   ctx.lineTo(x+bulletSize*2, y);
   ctx.lineTo(x+bulletSize, y-size);
   ctx.closePath();
+
 
   // the outline
   // context.lineWidth = 10;

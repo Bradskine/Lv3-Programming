@@ -1,0 +1,1536 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0043)http://www.phatcode.net/articles.php?id=459 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--.............................................-->
+<!--. Phat Code                                 .-->
+<!--. http://www.phatcode.net/                  .-->
+<!--.                                           .-->
+<!--. Copyright (c) 2003-2021 Jon Petrosky.     .-->
+<!--. All Rights Reserved.                      .-->
+<!--.                                           .-->
+<!--. And as we wind on down the road           .-->
+<!--. Our shadows taller than our soul          .-->
+<!--. There walks a lady we all know            .-->
+<!--. Who shines white light and wants to show  .-->
+<!--. How everything still turns to gold        .-->
+<!--. And if you listen very hard               .-->
+<!--. The tune will come to you at last         .-->
+<!--. When all are one and one is all           .-->
+<!--. To be a rock and not to roll              .-->
+<!--.............................................-->
+
+<meta name="description" content="Algorithm and pseudocode for detecting circle/triangle intersections">
+<meta name="keywords" content="Algorithm and pseudocode for detecting circle/triangle intersections">
+<!--[if IE]><link rel="stylesheet" type="text/css" href="/old.css"><![endif]-->
+<!--[if !IE]><!--><link rel="stylesheet" type="text/css" href="./trainagleCircleColliosn_files/style.css"><!--<![endif]-->
+<link rel="icon" href="http://www.phatcode.net/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="http://www.phatcode.net/favicon.ico" type="image/x-icon">
+<title>phatcode.net / articles / graphics / tutorials / circle-triangle intersection method</title>
+</head>
+<body>
+<table cellpadding="0" cellspacing="0" width="100%" style="height:100%;">
+<tbody><tr><td valign="top">
+<table cellpadding="10" cellspacing="0" width="100%" style="height:56px;">
+<tbody><tr><td class="shade" valign="top">
+<a href="http://www.phatcode.net/"><img src="./trainagleCircleColliosn_files/phatcode.png" alt="phat code" border="0" width="251" height="52"></a>
+</td><td class="shade" align="right" valign="top" width="100%"><span class="brighter">A narrow mind has a broad tongue.</span></td></tr></tbody></table>
+</td></tr>
+<tr><td height="100%">
+<table cellpadding="0" cellspacing="0" width="100%" style="height:100%;">
+<tbody><tr><td rowspan="2" width="140" valign="top" style="height:100%;">
+<!--[if IE]><table cellspacing="0" cellpadding="10" width="100%" style="height:100%;"><tbody><tr><td class="shade_fade" valign="top" style="height:100%;"><![endif]-->
+<!--[if !IE]><!--><table cellspacing="0" cellpadding="10" width="100%"><tbody><tr><td class="shade_fade" valign="top"><!--<![endif]-->
+<a href="http://www.phatcode.net/" class="nav_main">Main</a><br>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+<td width="12"></td>
+<td valign="top">
+<p class="nav_item"><a href="http://www.phatcode.net/news.php" class="nav_item">News</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/scene.php" class="nav_item">Scene News</a></p>
+<p class="nav_item"><a href="http://forum.phatcode.net/" class="nav_item">Forum</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/hosting.php" class="nav_item">Hosting</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/about.php" class="nav_item">About</a></p>
+</td>
+</tr>
+</tbody></table>
+<br>
+<a href="http://www.phatcode.net/projects.php" class="nav_main">Projects</a><br>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+<td width="12"></td>
+<td valign="top">
+<p class="nav_item"><a href="http://www.phatcode.net/projects.php?id=281" class="nav_item">Turbo XT BIOS</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/projects.php?id=102" class="nav_item">EMS Magic</a></p>
+</td>
+</tr>
+</tbody></table>
+<br>
+<a href="http://www.phatcode.net/downloads.php" class="nav_main">Downloads</a><br>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+<td width="12"></td>
+<td valign="top">
+<p class="nav_item"><a href="http://www.phatcode.net/downloads.php?sub=games" class="nav_item">Games</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/downloads.php?sub=demos" class="nav_item">Demos</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/downloads.php?sub=libraries" class="nav_item">Libraries</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/downloads.php?sub=compilers" class="nav_item">Compilers</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/downloads.php?sub=utilities" class="nav_item">Utilities</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/downloads.php?sub=other" class="nav_item">Other</a></p>
+</td>
+</tr>
+</tbody></table>
+<br>
+<a href="http://www.phatcode.net/articles.php" class="nav_main">Articles</a><br>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+<td width="12"></td>
+<td valign="top">
+<p class="nav_item"><a href="http://www.phatcode.net/articles.php?sub=assembly" class="nav_item">Assembly</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/articles.php?sub=audio" class="nav_item">Audio</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/articles.php?sub=graphics" class="nav_item">Graphics</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/articles.php?sub=memory" class="nav_item">Memory</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/articles.php?sub=collections" class="nav_item">Collections</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/articles.php?sub=other" class="nav_item">Other</a></p>
+</td>
+</tr>
+</tbody></table>
+<br>
+<a href="http://www.phatcode.net/links.php" class="nav_main">Links</a><br>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+<td width="12"></td>
+<td valign="top">
+<p class="nav_item"><a href="http://www.phatcode.net/links.php?sub=programming" class="nav_item">Programming</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/links.php?sub=demoscene" class="nav_item">Demoscene</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/links.php?sub=hardware" class="nav_item">Hardware</a></p>
+<p class="nav_item"><a href="http://www.phatcode.net/links.php?sub=retro" class="nav_item">Retro</a></p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+</td><td style="padding:10px;" valign="top">
+<table cellpadding="6" cellspacing="0" width="100%"><tbody><tr><td nowrap="" class="shade_darker"><h1><a href="http://www.phatcode.net/articles.php">Articles</a></h1></td><td class="shade_darker" align="right"><h2><a href="http://www.phatcode.net/articles.php?sub=graphics">Graphics</a></h2></td></tr></tbody></table>
+<table cellpadding="3" cellspacing="0" width="100%">
+<tbody><tr><form action="http://www.phatcode.net/articles.php" method="GET"></form><td class="shade_darkest" align="left" nowrap="">
+<input type="hidden" name="action" value="search">
+search for <input name="find" type="text" size="20" maxlength="128"> in <select name="sub">
+<option value="all">All</option>
+<option value="assembly">Assembly</option>
+<option value="audio">Audio</option>
+<option value="graphics" selected="">Graphics</option>
+<option value="memory">Memory</option>
+<option value="collections">Collections</option>
+<option value="other">Other</option>
+</select> &nbsp;&nbsp;<input class="submit" type="submit" value="find"></td><td class="shade_darkest" align="right" valign="center"><a href="http://www.phatcode.net/articles.php?sub=graphics#tutorials">Tutorials</a> / <a href="http://www.phatcode.net/articles.php?sub=graphics#references">References</a></td></tr></tbody></table>
+<div style="line-height:30px; margin-top:0px; margin-bottom:0px;">&nbsp;</div>
+<div align="center">
+<table class="box" cellpadding="2" cellspacing="0" style="max-width:1000px;" width="95%">
+<tbody><tr><td nowrap="" class="bigbox_title" align="left"><h2>Circle-Triangle Intersection Method</h2></td></tr>
+<tr><td class="bigbox_contents">
+<table cellpadding="4" cellspacing="0"><tbody><tr><td align="right" valign="top" class="brighter">Author</td><td>The_Grey_Beast (Gabriel Ivăncescu)</td></tr>
+<tr><td align="right" valign="top" class="brighter">Email</td><td><a href="mailto:grey_predator@yahoo.com">grey_predator@yahoo.com</a></td></tr>
+<tr><td align="right" valign="top" class="brighter">Website</td><td><i>None</i></td></tr>
+<tr><td align="right" valign="top" class="brighter">Released</td><td>Nov 1 2006</td></tr>
+<tr><td align="right" valign="middle" class="brighter">Platform</td><td><img src="./trainagleCircleColliosn_files/all.png" alt="All" width="16" height="16" align="absbottom"></td></tr>
+<tr><td align="right" valign="top" class="brighter">Language</td><td>pseudo/C</td></tr>
+<tr><td align="right" valign="top" class="brighter" style="line-height:150%">Summary</td><td><p>This article presents a method for checking whether a circle intersects a triangle (i.e true/false). It does not need precalculated normals for each edge of the triangle, nor does it need to "normalize" the normals -- in other words, it doesn't require square roots nor normal precalculation.</p></td></tr>
+</tbody></table></td></tr></tbody></table>
+<div style="line-height:30px; margin-top:0px; margin-bottom:0px;">&nbsp;</div>
+<table class="box" cellpadding="2" cellspacing="0" style="max-width:1000px;" width="95%">
+<tbody><tr><td nowrap="" class="bigbox_title" align="left" style="border-right:0px;"><h3>Article Text</h3></td><td class="bigbox_title" align="right" style="border-left:0px;"><a href="http://www.phatcode.net/articles.php?id=459&amp;action=print" target="_blank">Printable Version</a> / <a href="http://www.phatcode.net/articles.php?id=459&amp;action=download">Download Article</a></td></tr>
+<tr><td colspan="2" class="bigbox_contents">
+<h1 align="center">Circle-Triangle Intersection Method</h1>
+<div style="line-height:10px; margin-top:0px; margin-bottom:0px;">&nbsp;</div>
+<h3 align="center" class="normal_color">by <a href="mailto:grey_predator@yahoo.com">The_Grey_Beast</a> (Gabriel Ivăncescu)</h3>
+<div style="line-height:10px; margin-top:0px; margin-bottom:0px;">&nbsp;</div>
+<h3 class="article">Foreword</h3>
+
+<p class="article">In this article I present a method for checking whether a circle intersects a triangle (i.e true/false). It does not
+need precalculated normals for each edge of the triangle, nor does it need to "normalize" the normals -- in other words,
+it doesn't require square roots nor normal precalculation. The method is the result of my own thoughts -- thus I have
+never read an article about circle-triangle intersection. However, as this algorithm may be common, it would be the case
+that this will not be "original" at all -- but rest assured as I designed it myself without ever reading these kind of
+algorithms, and that's a good thing since I can explain exactly what was in my mind and each steps which otherwise
+could've been impossible to explain, since it wouldn't be me thinking about the method from scratch. :)</p>
+
+<p class="article">I am the kind of guy that thinks tutorials should be easy to follow, with examples and diagrams, not short and straight
+to the point -- this is because, in my opinion, some algorithms are so blurred inside heavy mathematical formulas that I
+cannot simply comprehend them at all. Some of the articles I read about other things were based on complex mathematical
+terms without even describing the "bare bones" and how it got there. This article will focus on simplicity; the heavy
+stuff (i.e stuff that I didn't figure out very quickly) will have more detailed explanations, and since I know how I
+designed this, a step-by-step approach is taken in consideration.</p>
+
+<p class="article">I like tutorials to be understandable, enjoyable; not to make the readers just go into the code section and copy &amp;
+paste that code. It just bugs me -- the pseudo-code I use is very much C-ish, except for a few things, but is very much
+natural and should be easy to grasp the idea. The code is not intended to be copied, rather to give you an example of how
+it might look. I encourage everyone to write their own routine, specific for their environment or platform, and even apply
+further specific-optimizations to it. All the low-level optimizations are best done in assembly anyway; don't bash
+optimization or assembly language, as you will see the design phase is the one difficult; then you just have to focus on
+the code for optimizations. However, choosing assembly at the first stage (i.e when designing) is not a good idea since
+you will change design often, and you'll have to start all over again. It's best if we first decide on our design and,
+when we choose a method and start to code it, then implement and optimize it. But be better than others and write it
+yourself for your specific needs, that's just my advice :)</p>
+
+<p class="article">Anyway without further ado let's start, shall we?</p>
+
+<h3 class="article">Analyzing the Goals</h3>
+
+<p class="article">Now what do we wish to accomplish? Oh yes, if a circle and a triangle intersect... let's analyze this "goal". We notice
+the triangle uses 3 vectors for it's <b>vertices</b>, and the circle just a <b>centre</b> and a <b>radius</b>. Now, for a solid
+circle (i.e not just it's outer-most ring) to intersect a triangle, the centre can be anywhere near or inside the triangle
+so the triangle is within the radius.</p>
+
+<p class="article">As we know, any point on the same circle is of equal distance from the centre. By distance we mean the length of the
+vector with origin located at the circle centre.</p>
+
+<p class="article">What do we mean with a triangle? 3 points connected through segments (edges). Of course, we use a solid triangle and a
+solid circle (a solid circle is also called a "ball", but that's another story), so anything within these edges is within
+the triangle, because it's solid (i.e not wireframe).</p>
+
+<p class="article">The first test that might arise in our heads is the one checking whether each of the triangle's vertices is within the
+circle's radius -- this means that it intersects the circle, right? Take a look at the following fig:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads.php">
+</div>
+
+<p class="article">At the pic above it is easy to observe that the triangle is intersecting the circle, because a vertex of the triangle
+is inside the circle. This test is very simple, but of course doesn't handle the full intersection. The circle can be
+totally inside the triangle, thus not intersecting vertices and neither edges.</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(1).php">
+</div>
+
+<p class="article">Now, are there any other cases where the circle might intersect the triangle? Actually yes, the circle may intersect an
+edge, no vertex, and it's centre could be outside the triangle. To simplify the vizualization, look at the following fig:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(2).php">
+</div>
+
+<p class="article">Ok, now that we observed three cases that can occur, it's natural to ask ourselves: is it necessary to test all these
+cases? Of course not, as you have unlimited designs you can choose, some more efficient than others, but nevertheless you
+don't need to do these three tests if you work out a completely different algorithm. However it is always a good idea to
+analyze the situations that can occur before we decide on our algorithms because if we later discover that something else
+can happen and our algorithm can't handle it, it might require a rewrite.</p>
+
+<p class="article">My method also uses three tests, but that is not the reason why I have shown the above "cases" which can occur. Now that
+we analyzed the goals, it's time to move on to the intersection stages. My method presented below will use three tests to
+check for the three cases discussed above. Again this is not the only way... actually I thought about another method (which
+scales the triangle by an offset amount representing the radius, however it required that I either normalize or precalculate
+normals which was not my goal).</p>
+
+<h3 class="article">Test 1: Vertex Within Circle</h3>
+
+<p class="article">This test checks if a triangle's vertex is inside the circle or not -- it is actually simpler than you think. A
+circle's radius represents a size (scalar). Now, if you create a vector straight up (parallel to the Y-axis) and make
+it's size equal the radius, then rotating it around the centre will actually make a "circle" shape. Look at the following
+fig:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(3).php">
+</div>
+
+<p class="article">In the above fig, the radius is initially vertical, fading as it is rotated in clockwise order (just to give you an
+impression of continuation for the rotation). Sorry if the image doesn't make sense... It is easy to see that, as long as
+a point relative to the circle's centre (which means it's origin is at the circle's centre) is smaller than the radius, it
+falls inside the circle, right?</p>
+
+<p class="article">First let's define a few variables: <b>c1</b>, <b>c2</b> and <b>c3</b>. These represent each vertex of the triangle, but
+with the origin at the circle's centre. To do that we need to subtract the vectors. Simple enough:</p>
+
+<div class="code">
+c1 = v1 - centre<br>
+c2 = v2 - centre<br>
+c3 = v3 - centre<br>
+</div>
+
+<p class="article"><b>v1</b>, <b>v2</b> and <b>v3</b> are the triangle's vertices, and <b>centre</b> is the circle's centre. Note however
+that the centre and the vertices must have the same origin. Usually, when you do operation with vectors, they should be
+adjusted to have the same origin before doing the calculation. It is also true in this case. Before attempting to subtract,
+make sure that the triangle's vertices have the same origin. Manipulating the origin is easy: use the addition and
+subtraction of vectors.. but that's not the scope of this article :P</p>
+
+<p class="article">Now that we computed the vertices relative to the circle's centre, we can easily see if their size is smaller than the
+circle's radius. Here's a pic:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(4).php">
+</div>
+
+<p class="article">In the above pic the vertex we test is outside the circle because <b>c1</b>'s length is larger than the radius
+(<b>r</b>). I'm sure nobody had a problem seeing this, it's simple! We can calculate the length with Pythagorean
+theorem (sqrt is the square root):</p>
+
+<div class="code">
+sqrt(x� + y�)<br>
+</div>
+
+<p class="article">and then see if it is smaller than the radius.</p>
+
+<div class="code">
+if sqrt(c1x*c1x + c1y*c1y) &lt;= radius<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article"><b>c1x</b> is the <b>x</b> component of <b>c1</b>, and <b>c1y</b> is the <b>y</b> component, of course. We should test
+these for the other vertices as well. I know some of you might be thinking to evade that square root, but don't worry:
+that's the part of optimizations -- but for now let's focus on the design. :)</p>
+
+<h3 class="article">Test 2: Circle Centre Within Triangle</h3>
+
+<p class="article">Now that we know the circle doesn't intersect any of the triangle's vertices, we can go and test whether the circle's
+<b>centre</b> is inside the triangle or not. This isn't actually very difficult -- it's enough to see if the centre, which
+is a point, is on the positive side of all lines that make up the triangle. An edge is a segment of a line, but it doesn't
+matter because we check if it is in front of ALL the three lines. This condition is true only when the point tested
+(centre) is within the triangle. It doesn't matter that a line is infinite, because we test all of three of them and the
+point has to be in front of ALL to actually be within the triangle. To make things clearer, look at the following diagram:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(5).php">
+</div>
+
+<p class="article">It is easy to see that all the line equations agree only within the triangle. Imagine that each normal points inward.
+Then the test is positive if the point is on the side with the normal, negative otherwise. Now, examine all the three lines
+and test all of them at once. You'll see that the result will only be positive within the triangle, since the point we test
+will only be in front of each line at that area.</p>
+
+<p class="article"><b>NOTE:</b> The normals point "inward" because I assume we have our vertices in clockwise order. If you have your
+vertices set up in <i>counter-clockwise</i> order, please reverse the comparison or operators specific to the sign of the result
+(i.e instead of <b>&gt; 0</b>, use <b>&lt; 0</b> because in <i>counter-clockwise</i> all the normals point outward, hence the test is negative for all
+three lines only when we're inside the triangle this time; but you can also flip the equation without changing the
+comparison at all). This line equation stuff is pretty basic, that's why I won't cover it in detail here. If you don't
+know what a line equation is, imagine it's the same as a plane (in 3D), only that a line is a 2D plane. That's basically it.</p>
+
+<p class="article">Ok, now how do we implement all this stuff? Well, let's take a look at the line equation:</p>
+
+<div class="code">
+Ax + By + C = 0<br>
+</div>
+
+<p class="article"><b>A</b> and <b>B</b> are the <b>x</b> and <b>y</b> components of the <i>normal of the line</i>, <b>x</b> and <b>y</b> are the
+coordinates of any point on the line, and <b>C</b> is the distance from the origin to the line. This origin is the origin
+of the triangle's vertices... just think of it as the absolute position (you know :)</p>
+
+<p class="article">What does this equation mean, exactly? It simply says that any point on the line makes up the line, which is more than
+logical (i.e you don't create a line with points outside it, do you?). But in fact, the result (i.e <b>0</b> in the
+equation) is the "signed" distance from the tested point to the line. Why have I said "signed"? Because if it's on the
+positive side of the normal to the line, then the distance is positive, otherwise negative. That's also why the equation
+says it's <b>0</b> because any point on the line is actually on the line, so it's distance to the line is <b>0</b>, right?
+Let's see an example:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(6).php">
+</div>
+
+<p class="article"><b>N</b> is the normal of the line. <b>a</b> is obviously further than <b>c</b>. <b>b</b> is on the line. Since <b>a</b>
+is on the positive side of the normal, it has a positive distance. Since <b>b</b> is on the line, it's distance is 0.
+<b>c</b> is on the negative side so it'll have a negative distance, but also a smaller distance than <b>a</b>. A simple
+example for distances with arbitrary values would be: <b>a</b>:2, <b>b</b>:0, <b>c</b>:-0.5   I hope you get it, because
+it's quite easy :)</p>
+
+<p class="article">Ok, now it's up to the math... Some of you might be screaming: "Hey, I thought your method does not involve normals?!?".
+Yes, well in fact it doesn't need to have any normals precalculated, because it avoids the "normalization" of the normals
+which is slow because of the square root involved. Well then how are we going to do this line equation if we don't have
+normals, huh?</p>
+
+<p class="article">The trick is to ask ourselves: "Do we REALLY need the distance from the point to the line?". Answer: "Nope, we don't.
+We only need the sign (positive/negative)."</p>
+
+<p class="article">But how do we get the correct sign without normals? Actually we DO calculate the normal, but we do NOT normalize it.
+Calculating this "fake" normal is not very difficult. This is actually common stuff, so I won't go into details, but
+anyway the normal of a line defined by 2 points <b>(x1,y1)</b> and <b>(x2,y2)</b> is:</p>
+
+<div class="code">
+A = (y2 - y1)<br>
+B = (x1 - x2)<br>
+</div>
+
+<p class="article">Alternatively, just for the sake of it, <b>B</b> can be rewritten as the following (note that this does not change the
+output at all):</p>
+
+<div class="code">
+B = -(x2 - x1)<br>
+</div>
+
+<p class="article">An interesting sidenote is that you can flip the sign of these equations and you'll get the flipped normal. Thus, for
+example if you have your vertices in <i>counter-clockwise</i> order, and you use the equations above you'll get all the
+normals pointing outward the triangle. To solve this, you can flip the sign of the equations, i.e:</p>
+
+<div class="code">
+A = -(y2 - y1) = (y1 - y2)<br>
+B = -(x1 - x2) = (x2 - x1)<br>
+</div>
+
+<p class="article">Now you'll get the normal pointing inward if you had your vertices in <i>counter-clockwise</i> order :)</p>
+
+<p class="article">As it can be seen from above, you can do all sorts of manipulations, some do not modify the output but may nevertheless
+be useful for specific optimization purposes, other manipulations such as the last explained one can lead to a different
+output. All is basic math.</p>
+
+<p class="article">Back to the point. We also have to calculate <b>C</b>, right? It turns out to not be necessary to do that, because I
+chose a different trick. Let's examine the line equation. <b>"Ax + By"</b> actually means the <i>dot product</i> between
+the normal and the point, doesn't it? Then we can also write the equation as:</p>
+
+<div class="code">
+N�p + C = 0<br>
+</div>
+
+<p class="article">Where <b>N</b> is the normal and <b>p</b> is the point we test (circle centre in our case). But the <i>dot product</i>
+is also:</p>
+
+<div class="code">
+N�p = |N|*|p|*cos(theta)<br>
+</div>
+
+<p class="article">Where |<b>N</b>| is the length of <b>N</b>, |<b>p</b>| is the length of <b>p</b>, and <b>θ</b> is the angle
+between <b>N</b> and <b>p</b>. To get rid of <b>C</b> we need to make sure <b>N⋅p</b> is 0 because the equation says the
+result must be 0. When will <b>N⋅p</b> be 0? When either one of the lengths is 0 (which isn't happening in this case), or
+when <b>cos(θ)</b> is 0. If the angle between <b>N</b> and <b>p</b> is 90 degrees, then it will be 0 since
+<b>cos(90�)</b>=0. We have to <i>dot</i> the normal and a vector perpendicular to it. The normal is already perpendicular
+to the line! This means the other "point" must be a vector parallel to the line. And this is the mighty segment between
+two points on the line:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(7).php">
+</div>
+
+<p class="article">In the diagram above, <b>V</b> is the edge between <b>v1</b> and <b>v2</b>. We can also say that <b>V</b> is the
+vector <b>v2</b> with the origin at <b>v1</b>. This "edge" vector is perpendicular to the normal, of course. So if we
+<i>dot</i> these two vectors, we will arrive at the line equation. Thus we can rewrite the equation as follows:</p>
+
+<div class="code">
+N�(v2 - v1) = 0<br>
+</div>
+
+<p class="article">Ok, so what? What good is this? It turns out that, by replacing <b>v2</b> with the point we wish to test (circle
+centre), then we'll get a positive result if the point is on the positive side of the normal, negative otherwise. This
+is exactly the same "sign" as the line equation. And we don't even need to normalize the normal, because it's length is
+always positive, so it won't affect the sign. And we're only interested in the sign. Thus for example:</p>
+
+<div class="code">
+N�(centre - v1) = sign<br>
+</div>
+
+<p class="article">If we recall how the normal to a line between two points <b>(x1,y1)</b> and <b>(x2,y2)</b> is calculated, and using
+the "two points" that define the line as the two vertices of the triangle that define the edge, of course, then we will
+arrive at:</p>
+
+<div class="code">
+&nbsp; &nbsp; &nbsp;Nx&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;edgex&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Ny&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;edgey<br>
+(v2y - v1y)(centrex - v1x) + (v1x - v2x)(centrey - v1y) = sign<br>
+</div>
+
+<p class="article">Or if you want to rearrange <b>Ny</b> and have the same output, then you can flip the + operator and the components
+inside the parantheses of <b>Ny</b> too:</p>
+
+<div class="code">
+&nbsp; &nbsp; &nbsp;Nx&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;edgex&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Ny&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;edgey<br>
+(v2y - v1y)(centrex - v1x) - (v2x - v1x)(centrey - v1y) = sign<br>
+</div>
+
+<p class="article">Mathematically, it is the same thing :)</p>
+
+<p class="article">Until here we only tested against the first edge <b>(v2 - v1)</b>. Here's our first algo that we use to see if the
+centre is on the positive side of ALL the edges:</p>
+
+<div class="code">
+if ((v2y - v1y)*(centrex - v1x) - (v2x - v1x)*(centrey - v1y)) &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;((v3y - v2y)*(centrex - v2x) - (v3x - v2x)*(centrey - v2y)) &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;((v1y - v3y)*(centrex - v3x) - (v1x - v3x)*(centrex - v3x)) &gt;= 0<br>
+&nbsp; &nbsp; &nbsp; &nbsp;return true<br>
+</div>
+
+<p class="article">And that's it! That's our "circle centre within triangle" test! Remember that you can play around with flipping
+signs to get the opposite normal and/or result. You can also flip the comparison, to make it work if you need to. Also
+remember that the arrangement of your vertices is important (i.e clockwise, counter-clockwise). It WILL affect the
+result. If it doesn't work in a way, try flipping the comparison or operation (i.e multiply it by <b>-1</b> and see what
+result you get). But don't do both. Reverse the comparison OR flip the sign, but not both because you'll arrive at the
+same result. It's all basic math :)</p>
+
+<p class="article"><b>NOTE:</b> This algo is made to work if your vertices are in <i>clockwise</i> order! If you have them in
+<i>counter-clockwise</i> order, then multiply the left side by <b>-1</b> or simply reverse the comparison
+(i.e &lt;= <b>0</b>). Again you shouldn't do both of them. One fact why you should choose this is because you can take
+advantage of specific optimizations from this manipulation. Here's a sample about multiplying the left side by <b>-1</b>
+and rearranging the terms a bit to be more optimal (without the unary '-'):</p>
+
+<div class="code">
+if ((v2x - v1x)*(centrey - v1y) - (v2y - v1y)*(centrex - v1x)) &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;((v3x - v2x)*(centrey - v2y) - (v3y - v2y)*(centrex - v2x)) &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;((v1x - v3x)*(centrex - v3x) - (v1y - v3y)*(centrex - v3x)) &gt;= 0<br>
+&nbsp; &nbsp; &nbsp; &nbsp;return true<br>
+</div>
+
+<h3 class="article">Test 3: Circle Intersects Edge</h3>
+
+<p class="article">We've come to the third test, and the worst of all :)</p>
+
+<p class="article">Now really, it isn't that hard.. It's just a matter of basic trigonometry. But first things first...</p>
+
+<p class="article">What we're trying to do is see if the circle intersects an edge of the triangle. We know at this point that the
+circle's centre is outside. How are we going to do this? A logical situation would be to check "the shortest distance
+from the centre to the edge", and see whether it is within the circle's radius. This is what we'll base our algorithm
+on, but of course doesn't handle everything. If you don't know, the big secret is that the perpendicular from a point
+to a line IS the shortest distance. So that means we just have to drop a perpendicular from the centre to the edge (line):</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(8).php">
+</div>
+
+<p class="article">Uh huh, but how do we calculate this "perpendicular"? Actually, since we do not have normals, it is not as trivial as
+you might think. But let's look at what we need: We do not need the perpendicular <i>vector</i>, but instead only it's
+<i>length</i>. Ok, but how does this help? Let's just think a bit here...</p>
+
+<p class="article">Aha, what if we draw an imaginary triangle with points <b>C</b> (centre), <b>v1</b> and <b>O</b> (perpendicular
+point)? This imaginary triangle is also a right-triangle, because the perpendicular forms a 90 degree angle:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(9).php">
+</div>
+
+<p class="article">In this triangle we know the <b>hypotenuse</b> (opposite side of the 90 degree angle) which is <b>p</b>. What do I
+mean about "we know"? Well, we know it because we can calculate it trivially since it's actually the length of the
+vector between the <b>centre</b> and <b>v1</b> (and even if this might require a square root at first glance, it can be
+optimized). On the other hand, we do not know the point O, and calculating it is not at all efficient; but we do not
+even have to, since we're not interested in the point location at all, only in the length.</p>
+
+<p class="article">If we sum this up, we realize we only know the <b>hypotenuse</b>, so it's not enough information to solve the
+triangle (i.e we do not know <b>d</b> nor <b>k</b>).. but look at the angle formed by (<b>centre</b>, <b>v1</b> and
+<b>O</b>). This angle is also the angle between the edge vector <b>(e1)</b> and the vector between the <b>centre</b>
+and <b>v1 (c1)</b>.</p>
+
+<p class="article">What kind of operation can we use in this angle-situation? The first one that should probably ring a bell is the
+<i>dot product</i>. Why? Recall that the <i>dot product</i> between <b>c1</b> and <b>e1</b> is:</p>
+
+<div class="code">
+c1�e1 = c1x*e1x + c1y*e1y<br>
+</div>
+
+<p class="article">But it is also:</p>
+
+<div class="code">
+c1�e1 = |c1|*|e1|*cos(theta)<br>
+</div>
+
+<p class="article">Where <b>θ</b> is the angle between them. Wait a minute. Did I say angle between them??? Yup, and it also
+happens that it uses the <b>cos</b> function. Ok, let's think about what we can do with this info, hmm...</p>
+
+<p class="article">Well, we know that our triangle is a right-triangle, correct?  So, the trigonometric functions work there, this
+means we can find a use for that <b>cos</b>... Let's see, <b>cos</b> is <b>Adjacent Side/Hypotenuse</b> if we recall this
+from basic trigonometric math, and this means for our angle <b>k</b>/<b>p</b>. Yup, that's what the cosine for that angle
+is.. If we replace it in our <i>dot product</i> equation:</p>
+
+<div class="code">
+c1�e1 = |c1|*|e1|*(k/p)<br>
+</div>
+
+<p class="article">As we have noted our variables, |<b>c1</b>| is <b>p</b>, so:</p>
+
+<div class="code">
+&nbsp; &nbsp; &nbsp; &nbsp; p*|e1|*k<br>
+c1�e1 = --------<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;p<br>
+</div>
+
+<p class="article">Therefore we can simplify this equation without <b>p</b>. Now we need to find <b>k</b>. Why? We need <b>d</b>, not
+<b>k</b>. Yes and no.. We'll see later that we DO need <b>k</b>. And besides, after we find out <b>k</b>, it's just a
+matter of Pythagorean theorem in our triangle to solve <b>d</b>, since we know 2 sides and wish to find the third. But
+for now let's find <b>k</b>:</p>
+
+<div class="code">
+&nbsp; &nbsp; c1�e1<br>
+k = -----<br>
+&nbsp; &nbsp; |e1|<br>
+</div>
+
+<p class="article">Now that we have <b>k</b> we can calculate <b>d</b> easily with Pythagorean theorem. This says:</p>
+
+<div class="code">
+Side� + Side� = Hypotenuse�<br>
+</div>
+
+<p class="article">And since we know a side <b>(k)</b> and the <b>hypotenuse</b> which is <b>(p)</b> we can replace 'em in the equation
+and solve for the other side. Simple enough:</p>
+
+<div class="code">
+d� = p� - k�<br>
+</div>
+
+<p class="article">Now all we have to do is check if <b>d</b> is within the radius... The above formula used the <i>squared</i> <b>d</b>
+but we can get the root with a square root:
+
+</p><div class="code">
+if sqrt(p*p - k*k) &lt;= radius<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article">Ok, before you start screamin' at me, just remember that this implementation is not optimized, so that square root is
+still there :P  Don't worry, we'll optimize this greatly and achieve no square roots at all; I wouldn't want to break my
+word :)</p>
+
+<p class="article">Alas we can't leave the design yet -- otherwise there would be bugs.. What?!? Well it turns out that we aren't done
+yet.. This algo will actually report <b>true</b> more than we'd like. Why? It so happens that our algo handles the
+intersection of the circle with a <i>line</i>, rather than an <i>edge</i>. An edge is not infinite, so we'll get
+intersections far beyond the edge (on the same line).. Look at these pics to see the two sides where the circle can
+intersect the line, but not the edge:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(10).php">
+<br class="article"><b>Perpendicular dropped at negative side of edge</b><br class="article"><br class="article">
+
+<img src="./trainagleCircleColliosn_files/downloads(11).php">
+<br class="article"><b>Perpendicular dropped beyond the edge (positive side)</b>
+</div>
+
+<p class="article">Handling each of these is done separately. Let's start with the negative side.</p>
+
+<p class="article">This check is not done on the perpendicular point as you might think, because we do not even calculate that point,
+since it's pretty expensive. Well then let's focus on the other information available, namely the circle's <b>centre</b>.
+Ok, what can we see about the centre when it is on the negative side? Well, first let's think about the vector <b>c1</b>
+which is actually the vector from <b>v1</b> to the <b>centre</b>.</p>
+
+<p class="article">Now for a bit of thinking and analyzing. Let's imagine two "circles", one that has it's perpendicular ON the edge
+(which can intersect the triangle, if it is close enough), and the other circle having the perpendicular outside the
+edge (negative side). Here's a pic to simplify this:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(12).php">
+</div>
+
+<p class="article">In the diagram above we see two circles, one which has it's perpendicular on the edge (the one at the bottom), and the
+other one which is obviously not intersecting the edge, but rather the line (the circle at the top). The dotted
+perpendicular line on the diagram represents the perpendicular to the edge, going through the point <b>v1</b>. The angles
+between the two vectors going from <b>v1</b> to each circle centres and the edge are also displayed. Go ahead and think a
+bit about it :)</p>
+
+<p class="article">The answer is: "If the angle between the edge vector and the vector from <b>v1</b> to the <b>centre</b> is more than
+90 degrees, then the perpendicular from the centre will fall on the negative side of the edge". Just look at the diagram.
+It is obvious that the top circle's centre (green vector) forms a big angle with the edge vector, bigger than 90� anyway.
+If it's exactly 90� then the perpendicular from that point is exactly on the origin (which is <b>v1</b>). Otherwise given
+a smaller angle, it falls on the positive side of the edge. If you don't understand, look again at the diagram and analyze
+it, with my words in your head, to see that analyzing graphically is a very good way of discovering things :)</p>
+
+<p class="article">Ok, now that we know that the angle is the one we need to check, the question of how this can be accomplished arises.
+How do we check the angle? We already did that with the <i>dot product</i> above. Let's see:</p>
+
+<div class="code">
+c1�e1 = |c1|*|e1|*cos(theta)<br>
+</div>
+
+<p class="article">Where <b>θ</b> is the angle between them, hence the one we wish to test, right? Okay, but how can we test it
+because it's inside that damn <b>cos</b>. Fortunately, <b>cos</b> is very helpful here :)</p>
+
+<p class="article">Remember the trigonometric <i>unit circle</i> (radius=1). <b>cos</b> is the <b>X</b> coordinate on that circle. The
+angle is counted as counter-clockwise -- that is you go counter-clockwise on the circle and, the more you go, the bigger
+the angle. I'm not going to explain this in detail since it's very basic trigonometric stuff, and it's probably explained
+much better elsewhere. And I assume you know this. Also remember we're only interested in the first 180� because the
+other half of the circle is exactly symmetric for the <b>cos</b> function and even the <i>dot product</i> has no clue :)</p>
+
+<p class="article">Let's see what <b>cos</b> is for angles bigger than <b>90�</b>. Well, on the <i>unit circle</i> it's obvious that the
+<b>X</b> coord for those angles (remember we're NOT interested in angles &gt; 180�) is negative, hence we only have to see
+if the result of the <i>dot product</i> is negative. And since we already calculated the dot product because we had to
+find <b>k</b> (explained above), then we can simply put a condition after we calculate the <i>dot product</i> to see
+whether it is negative or not. And that's it for this case:</p>
+
+<div class="code">
+if c1�e1 &gt; 0<br>
+</div>
+
+<p class="article">Then it falls on the positive side of the edge.. Phew :)</p>
+
+<p class="article"><b>NOTE:</b> If you're wondering why we can simply see if the <i>dot product</i> is negative since there are other
+variables involved besides <b>cos</b> (i.e |<b>c1</b>| and |<b>e1</b>|) then rest assured because |<b>c1</b>| and
+|<b>e1</b>| are only <i>lengths</i> and they are ALWAYS positive, so they will NOT affect the sign. Only <b>cos</b>
+decides the sign of the result.</p>
+
+<p class="article">However we also have to test if the perpendicular is dropped beyond the edge. This is very easy. Recall that we
+calculated <b>k</b> which is the length of the segment formed by the perpendicular and <b>v1</b>. If you're not sure,
+look at our "imaginary" triangle above (at the beginning of this section).</p>
+
+<p class="article">The only test we have to do is to check if <b>k</b> is larger than the edge's length, correct? Because if <b>k</b>
+is bigger, then the perpendicular certainly falls beyond the edge.. Simple enough:</p>
+
+<div class="code">
+if k &lt; len<br>
+</div>
+
+<p class="article">After these two tests can we finally go ahead with the "perpendicular length is within radius" test :)</p>
+
+<p class="article"><b>NOTE:</b> Some of you might be wondering: "What happens at the corners?". Our edge-intersection algo doesn't
+handle the corners well. That's because the "shortest" distance is not necessarily the "only" distance from the centre
+to the edge. The corners are problematic because the edge is not infinite, so the perpendicular may as well be outside
+while the circle might still intersect the edge. Look at this diagram to vizualize it easier:</p>
+
+<div align="center">
+<img src="./trainagleCircleColliosn_files/downloads(13).php">
+</div>
+
+<p class="article">Fortunately we are already done. It so happens that our first test (vertex within circle) handles this. At the
+corners, the circle intersects the vertices, so we don't have to worry one bit -- it won't even reach our
+edge-intersection algo because it will immediately see that the circle is intersecting the vertex. Phew :) Finally
+we're done with the design. We should seriously start to optimize this, but anyway here's the code so far...</p>
+
+<h3 class="article">First Working Implementation</h3>
+
+<div class="code">
+;<br>
+; TEST 1: Vertex within circle<br>
+;<br>
+c1x = v1x - centrex<br>
+c1y = v1y - centrey<br>
+<br>
+if sqrt(c1x*c1x + c1y*c1y) &lt;= radius<br>
+&nbsp; return true<br>
+<br>
+c2x = v2x - centrex<br>
+c2y = v2y - centrey<br>
+<br>
+if sqrt(c2x*c2x + c2y*c2y) &lt;= radius<br>
+&nbsp; return true<br>
+<br>
+c3x = v3x - centrex<br>
+c3y = v3y - centrey<br>
+<br>
+if sqrt(c3x*c3x + c3y*c3y) &lt;= radius<br>
+&nbsp; return true<br>
+<br>
+<br>
+;<br>
+; TEST 2: Circle centre within triangle<br>
+;<br>
+; NOTE: This works for clockwise ordered vertices!<br>
+;<br>
+if ((v2y - v1y)*(centrex - v1x) - (v2x - v1x)*(centrey - v1y)) &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;((v3y - v2y)*(centrex - v2x) - (v3x - v2x)*(centrey - v2y)) &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;((v1y - v3y)*(centrex - v3x) - (v1x - v3x)*(centrex - v3x)) &gt;= 0<br>
+&nbsp; &nbsp; &nbsp;return true<br>
+<br>
+<br>
+;<br>
+; TEST 3: Circle intersects edge<br>
+;<br>
+; Get the dot product...<br>
+;<br>
+c1x = centrex - v1x<br>
+c1y = centrey - v1y<br>
+e1x = v2x - v1x<br>
+e1y = v2y - v1y<br>
+<br>
+k = c1x*e1x + c1y*e1y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = sqrt(e1x*e1x + e1y*e1y)<br>
+&nbsp; k = k/len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if sqrt(c1x*c1x + c1y*c1y - k*k) &lt;= radius<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+; Second edge<br>
+c2x = centrex - v2x<br>
+c2y = centrey - v2y<br>
+e2x = v3x - v2x<br>
+e2y = v3y - v2y<br>
+<br>
+k = c2x*e2x + c2y*e2y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = sqrt(e2x*e2x + e2y*e2y)<br>
+&nbsp; k = k/len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if sqrt(c2x*c2x + c2y*c2y - k*k) &lt;= radius<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+; Third edge<br>
+c3x = centrex - v3x<br>
+c3y = centrey - v3y<br>
+e3x = v1x - v3x<br>
+e3y = v1y - v3y<br>
+<br>
+k = c3x*e3x + c3y*e3y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = sqrt(e3x*e3x + e3y*e3y)<br>
+&nbsp; k = k/len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if sqrt(c3x*c3x + c3y*c3y - k*k) &lt;= radius<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+; We're done, no intersection<br>
+return false<br>
+</div>
+
+<h3 class="article">Optimizations</h3>
+
+<p class="article">This piece of code is way too slow. Especially the edge test -- I believe it is even slower than calculating the
+normals on the fly. However this can be optimized greatly. This is what we'll now focus on: code. We'll not think
+anymore about math, etc... let's analyze the code.</p>
+
+<p class="article">The straightforward optimizations that do not require low-level attention should be attended first, at least in my
+opinion. We should attempt to reuse as many variables as possible, and never calculate anything twice, mainly if it
+requires a lot of operations or expensive operations. In C you can use "references" to other local variables such that
+you <i>reuse</i> them. You can also write it in assembly -- there you will have the greatest control over your variables. But
+it is a good idea to reuse them as much as possible.</p>
+
+<p class="article">We can see that <b>c1</b>, <b>c2</b> and <b>c3</b> are required both at tests 1 and 3. In fact, they are also
+required for the second test! Just look at the second test, where you will find expressions of the form
+<b>(centrex - v1x)</b>. That's exactly the <b>c1</b> we need. However, if you take a look at the first test we'll see
+that <b>c1</b> is defined as <b>(v1x - centrex)</b> which isn't the same thing...
+
+</p><p class="article">But in fact what do we need at the first test? We need <b>c1</b>'s length, not it's sense. We do not care if it is
+facing away from the centre or to the centre, the length is the same. So, we can rewrite the first test as:</p>
+
+<div class="code">
+c1x = centrex - v1x<br>
+c1y = centrey - v1y<br>
+<br>
+if sqrt(c1x*c1x + c1y*c1y) &lt;= radius<br>
+&nbsp; return true<br>
+<br>
+c2x = centrex - v2x<br>
+c2y = centrey - v2y<br>
+<br>
+if sqrt(c2x*c2x + c2y*c2y) &lt;= radius<br>
+&nbsp; return true<br>
+<br>
+c3x = centrex - v3x<br>
+c3y = centrey - v3y<br>
+<br>
+if sqrt(c3x*c3x + c3y*c3y) &lt;= radius<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article">Now that we precalculated <b>c1</b>, <b>c2</b> and <b>c3</b>, we can go and replace 'em in the second test
+accordingly and also remove their calculation from the third test. This is a good demonstration of "don't calculate
+anything twice" optimization. And also a bit of "reuse as many variables as possible". Ok let's see the second
+test in action:</p>
+
+<div class="code">
+if ((v2y - v1y)*c1x - (v2x - v1x)*c1y) &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;((v3y - v2y)*c2x - (v3x - v2x)*c2y) &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;((v1y - v3y)*c3x - (v1x - v3x)*c3y) &gt;= 0<br>
+&nbsp; &nbsp; &nbsp;return true<br>
+</div>
+
+<p class="article">Ok, it starts to be more compact.. However we can also precalculate <b>(v2y - v1y)</b> and the like.. why? That's
+exactly the edges we calculate in the third test. By calculating 'em in the second test, we can use them in the second
+test and also in the third test. Again, try to not calculate anything twice :)</p>
+
+<p class="article">Still don't get it? Look at the third test where we define our edges (<b>e1</b>, <b>e2</b> and <b>e3</b>). And now
+look at the second test. There are the same expressions found there, so why calculate them twice? Let's put this in the
+second test. We just have to remove their declaration from the third test. Here's the layout of the code:</p>
+
+<div class="code">
+c1x = centrex - v1x<br>
+c1y = centrey - v1y<br>
+<br>
+if sqrt(c1x*c1x + c1y*c1y) &lt;= radius<br>
+&nbsp; return true<br>
+<br>
+c2x = centrex - v2x<br>
+c2y = centrey - v2y<br>
+<br>
+if sqrt(c2x*c2x + c2y*c2y) &lt;= radius<br>
+&nbsp; return true<br>
+<br>
+c3x = centrex - v3x<br>
+c3y = centrey - v3y<br>
+<br>
+if sqrt(c3x*c3x + c3y*c3y) &lt;= radius<br>
+&nbsp; return true<br>
+<br>
+<br>
+<br>
+e1x = v2x - v1x<br>
+e1y = v2y - v1y<br>
+<br>
+e2x = v3x - v2x<br>
+e2y = v3y - v2y<br>
+<br>
+e3x = v1x - v3x<br>
+e3y = v1y - v3y<br>
+<br>
+if e1y*c1x - e1x*c1y &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;e2y*c2x - e2x*c2y &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;e3y*c3x - e3x*c3y &gt;= 0<br>
+&nbsp; &nbsp; &nbsp;return true<br>
+<br>
+<br>
+<br>
+k = c1x*e1x + c1y*e1y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = sqrt(e1x*e1x + e1y*e1y)<br>
+&nbsp; k = k/len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if sqrt(c1x*c1x + c1y*c1y - k*k) &lt;= radius<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+<br>
+k = c2x*e2x + c2y*e2y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = sqrt(e2x*e2x + e2y*e2y)<br>
+&nbsp; k = k/len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if sqrt(c2x*c2x + c2y*c2y - k*k) &lt;= radius<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+<br>
+k = c3x*e3x + c3y*e3y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = sqrt(e3x*e3x + e3y*e3y)<br>
+&nbsp; k = k/len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if sqrt(c3x*c3x + c3y*c3y - k*k) &lt;= radius<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+return false<br>
+</div>
+
+<p class="article">Ok, these straightforward optimizations won't make it much faster, but it's always a good idea to apply optimizations
+wherever possible. Now that we organized this up a bit, it's time to focus on the square roots. Don't worry we'll get
+back to these kind of optimizations but first let's finish off the square roots :)</p>
+
+<p class="article">By far the easiest approach to whack the square roots from the first test is to just test everything against the
+squared result. For example, in math:</p>
+
+<div class="code">
+x &lt;= r<br>
+</div>
+
+<p class="article">Can be rewritten as:</p>
+
+<div class="code">
+x� &lt;= r�<br>
+</div>
+
+<p class="article">Which is the same thing, right? So it turns out we just have to precalculate the squared radius and use it whenever
+the need arises. Thus in the first test:</p>
+
+<div class="code">
+c1x = centrex - v1x<br>
+c1y = centrey - v1y<br>
+<br>
+; Precalculate squared radius<br>
+radiusSqr = radius*radius<br>
+<br>
+if c1x*c1x + c1y*c1y &lt;= radiusSqr<br>
+&nbsp; return true<br>
+<br>
+c2x = centrex - v2x<br>
+c2y = centrey - v2y<br>
+<br>
+if c2x*c2x + c2y*c2y &lt;= radiusSqr<br>
+&nbsp; return true<br>
+<br>
+c3x = centrex - v3x<br>
+c3y = centrey - v3y<br>
+<br>
+if c3x*c3x + c3y*c3y &lt;= radiusSqr<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article">A similar approach is done for the third test too, where the comparison against the radius is done the same way. Also,
+as a tip, if you have a constant-size circle and don't need the "standard" radius at all (this algo doesn't need it),
+then you can replace it with the squared radius and precalculate it ONLY once for the entire application. Instead of
+keeping the radius you keep the squared radius. Or you can keep them both if you really need the standard radius.
+Anyway I'll best leave this to you :)</p>
+
+<p class="article">The second test has no square root so let's pass it. The third test, however, is bloated with square roots. Given
+our previous method of eliminating the square roots, here's how the third test looks for the first edge:</p>
+
+<div class="code">
+k = c1x*e1x + c1y*e1y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = sqrt(e1x*e1x + e1y*e1y)<br>
+&nbsp; k = k/len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if c1x*c1x + c1y*c1y - k*k &lt;= radiusSqr<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+</div>
+
+<p class="article">Well we still have a square root lying somewhere... but what if we do the same trick? I mean, instead of calculating
+<b>k</b> we'll calculate the squared <b>k</b>. I chose the same name instead of <b>kSqr</b>, but you can do however you
+like. Instead of calculating <b>len</b> we'll calculate the squared <b>len</b>. When we divide <b>k</b> by this squared
+<b>len</b>, we'll not do it mathematically correct. Look at this:</p>
+
+<div class="code">
+&nbsp;k<br>
+---<br>
+len<br>
+</div>
+
+<p class="article">Is not the same as:</p>
+
+<div class="code">
+&nbsp;k<br>
+----<br>
+len�<br>
+</div>
+
+<p class="article">If we square everything, it should be:</p>
+
+<div class="code">
+&nbsp;k�<br>
+----<br>
+len�<br>
+</div>
+
+<p class="article">So it means we have to use <b>k</b> = <b>k</b>*<b>k</b> / <b>len</b> to get the squared <b>k</b>. Simple enough:</p>
+
+<div class="code">
+k = c1x*e1x + c1y*e1y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = e1x*e1x + e1y*e1y&nbsp; &nbsp; &nbsp;; squared len<br>
+&nbsp; k = k*k/len&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;; squared k<br>
+<br>
+&nbsp; if k &lt; len&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; squared test; same<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if c1x*c1x + c1y*c1y - k &lt;= radiusSqr<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+</div>
+
+<p class="article">In case you're wondering why, at the last condition, we used <b>k</b> instead of <b>k</b>*<b>k</b>, rest assured as
+<b>k</b> is already squared. In my opinion, this method fits perfectly: we calculate the squared <b>k</b> and squared
+<b>len</b> to get rid of the square roots, and the Pythagorean theorem also requires the squared <b>k</b>. Like I said,
+it fits perfectly :)</p>
+
+<p class="article">Wahoo, we just got rid of the square roots. Quite an impressive achievement. We have absolutely no square root at all,
+nor need any precalculation of normals.. in short, it's quite fast. :)</p>
+
+<p class="article">There are also other general-purpose optimizations possible. Told ya' we'll get back to them. Let's see the first test
+where we calculate <b>c1</b>'s length. We check if this length (actually <i>squared length</i>) is within the (squared)
+radius. Ok, it's fine. But now look at test 3. We calculate <b>c1</b>'s length there too to see if the (squared) shortest
+distance is within the (squared) radius. So we calculate it twice. Let's precalculate it. The names used are <b>c1sqr</b>,
+<b>c2sqr</b> and <b>c3sqr</b>. Ok now here's the code so far:</p>
+
+<div class="code">
+;<br>
+; TEST 1: Vertex within circle<br>
+;<br>
+c1x = centrex - v1x<br>
+c1y = centrey - v1y<br>
+<br>
+radiusSqr = radius*radius<br>
+c1sqr = c1x*c1x + c1y*c1y<br>
+<br>
+if c1sqr &lt;= radiusSqr<br>
+&nbsp; return true<br>
+<br>
+c2x = centrex - v2x<br>
+c2y = centrey - v2y<br>
+c2sqr = c2x*c2x + c2y*c2y<br>
+<br>
+if c2sqr &lt;= radiusSqr<br>
+&nbsp; return true<br>
+<br>
+c3x = centrex - v3x<br>
+c3y = centrey - v3y<br>
+c3sqr = c3x*c3x + c3y*c3y<br>
+<br>
+if c3sqr &lt;= radiusSqr<br>
+&nbsp; return true<br>
+<br>
+<br>
+;<br>
+; TEST 2: Circle centre within triangle<br>
+;<br>
+; NOTE: This works for clockwise ordered vertices!<br>
+;<br>
+<br>
+;<br>
+; Calculate edges<br>
+;<br>
+e1x = v2x - v1x<br>
+e1y = v2y - v1y<br>
+<br>
+e2x = v3x - v2x<br>
+e2y = v3y - v2y<br>
+<br>
+e3x = v1x - v3x<br>
+e3y = v1y - v3y<br>
+<br>
+if e1y*c1x - e1x*c1y &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;e2y*c2x - e2x*c2y &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;e3y*c3x - e3x*c3y &gt;= 0<br>
+&nbsp; &nbsp; &nbsp;return true<br>
+<br>
+<br>
+;<br>
+; TEST 3: Circle intersects edge<br>
+;<br>
+; Get the dot product...<br>
+;<br>
+k = c1x*e1x + c1y*e1y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = e1x*e1x + e1y*e1y&nbsp; &nbsp; &nbsp;; squared len<br>
+&nbsp; k = k*k/len&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;; squared k<br>
+<br>
+&nbsp; if k &lt; len&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; squared test<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if c1sqr - k &lt;= radiusSqr<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+; Second edge<br>
+k = c2x*e2x + c2y*e2y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = e2x*e2x + e2y*e2y<br>
+&nbsp; k = k*k/len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if c2sqr - k &lt;= radiusSqr<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+; Third edge<br>
+k = c3x*e3x + c3y*e3y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = e3x*e3x + e3y*e3y<br>
+&nbsp; k = k*k/len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if c3sqr - k &lt;= radiusSqr<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+; We're done, no intersection<br>
+return false<br>
+</div>
+
+<p class="article">Further specific-wise optimizations should be handled now, as they are a bit more middle-level. This code is really
+just pseudo-code. It was intended to be understandable, not copied. I encourage you to write your own routine, and even
+apply specific optimizations for your needs; i.e my code was general-purpose. Now if you are blurred and don't know where
+to start from, then I'll give some short examples here :)</p>
+
+<p class="article">For instance, we use a comparison with <b>c1</b> against the squared <b>radius</b> two times -- one for the first
+test and one for the third test. We could optimize this for specific purpose; that is we could modify <b>c1sqr</b> such
+that the comparison is tested against <b>0</b>. In math:</p>
+
+<div class="code">
+x &lt;= y<br>
+</div>
+
+<p class="article">We can move <b>y</b> around in the equation, flipping it's sign when we move it to the other side. Just like a normal
+equation:</p>
+
+<div class="code">
+x - y &lt;= 0<br>
+</div>
+
+<p class="article">Why 0? There's nothing on the right after we move <b>y</b> on the left side, that's why.. this is very basic math,
+but just to remind you of it...</p>
+
+<p class="article">Now we can subtract from <b>c1sqr</b> the squared radius, so that we can test <b>c1sqr</b> against 0. How does this
+help? First let's see what happens:</p>
+
+<div class="code">
+c1x = centrex - v1x<br>
+c1y = centrey - v1y<br>
+<br>
+radiusSqr = radius*radius<br>
+c1sqr = c1x*c1x + c1y*c1y - radiusSqr<br>
+<br>
+if c1sqr &lt;= 0<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article">Ok this code doesn't look more optimal, but recall the third test that uses this condition:</p>
+
+<div class="code">
+if c1sqr - k &lt;= radiusSqr<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article">With our previous modification, <b>c1sqr</b> already contains the subtracted <b>radiusSqr</b>, so the comparison
+becomes:</p>
+
+<div class="code">
+if c1sqr - k &lt;= 0<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article">Which, by moving k to the right, becomes:</p>
+
+<div class="code">
+if c1sqr &lt;= k<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article">Which requires only a comparison instead of a subtraction and a comparison. Now we do not even need to store the
+squared radius after we compute <b>c1sqr</b>, <b>c2sqr</b> and <b>c3sqr</b>, so we can <i>reuse</i> the variable for
+storing other information, for example <b>c3sqr</b>. Look at this sample:</p>
+
+<div class="code">
+radiusSqr = radius*radius<br>
+<br>
+c1sqr = c1x*c1x + c1y*c1y - radiusSqr<br>
+c2sqr = c2x*c2x + c2y*c2y - radiusSqr<br>
+c3sqr = c3x*c3x + c3y*c3y - radiusSqr&nbsp; &nbsp;; at this point we do not need radiusSqr anymore<br>
+</div>
+
+<p class="article">So we can <i>reuse</i> <b>radiusSqr</b> (the variable in memory, I mean...). With C this can be done with
+references (i.e references are actually nothing -- they just provide an alternative access to a variable, or memory
+location, through a different name). Why do we use references instead of plain and simple <b>radiusSqr</b>? Because
+<b>c3sqr</b> is a much more convenient name for this purpose :)</p>
+
+<div class="code">
+&nbsp;radiusSqr = radius*radius&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;; here is the variable declaration<br>
+&nbsp;c1sqr = c1x*c1x + c1y*c1y - radiusSqr ; another variable<br>
+&nbsp;c2sqr = c2x*c2x + c2y*c2y - radiusSqr ; another variable<br>
+&amp;c3sqr = radiusSqr&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;; declare reference to radiusSqr<br>
+&nbsp;c3sqr = c3x*c3x + c3y*c3y - radiusSqr<br>
+</div>
+
+<p class="article">The last assignment will be stored in <b>radiusSqr</b>'s location in memory. Thus it is the same as if you wrote:</p>
+
+<b>radiusSqr = c3x*c3x + c3y*c3y - radiusSqr</b>
+
+<p class="article">References are very powerful optimizing tools that you can use. Even more powerful as this example because you can use
+different types (i.e access the lower 2 bytes of <b>unsigned long</b> variable <b>a</b> through a <b>unsigned short</b>
+reference <b>b</b>). Unlike what some people say, references do NOT eat any memory or do not generate extra code at ALL.
+They are nothing -- just name aliases. It's same as if you used <b>#define</b> directives, though some compilers will
+optimize better when you use references :)</p>
+
+<p class="article">In assembly this whole reference thing is very obvious and simple, since I suppose you know a thing or two about
+low-level programming (asm). You can write this algo in assembly and have even more control over your code.</p>
+
+<p class="article">We can extend this further with a sneaky trick to get rid of the division in the third test. How? Well, the third
+test looks like this (note that this takes in account the previous optimization):</p>
+
+<div class="code">
+k = k*k/len<br>
+<br>
+if k &lt; len<br>
+{<br>
+&nbsp; if c1sqr &lt;= k<br>
+&nbsp; &nbsp; return true<br>
+}<br>
+</div>
+
+<p class="article">What happens if we don't divide? Look at how the first assignment looks mathematically:</p>
+
+<div class="code">
+&nbsp;k�<br>
+--- &lt; len<br>
+len<br>
+</div>
+
+<p class="article">We can take out the division if we multiply the right side with the denominator:</p>
+
+<div class="code">
+k� &lt; len * len<br>
+</div>
+
+<p class="article">Thus now we have:</p>
+
+<div class="code">
+k = k*k<br>
+<br>
+if k &lt; len*len<br>
+{<br>
+&nbsp; if c1sqr &lt;= k/len<br>
+&nbsp; &nbsp; return true<br>
+}<br>
+</div>
+
+<p class="article">In case you're wondering why there is a <b>k</b>/<b>len</b> in the second comparison, well it's because we didn't
+divide <b>k</b> by <b>len</b> as we were supposed to, and we didn't fix the second comparison yet. How about we fix it,
+eh? Ok, we can use the same thing really:</p>
+
+<div class="code">
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; k<br>
+c1sqr &lt;= ---<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;len<br>
+</div>
+
+<p class="article">Which, by using the same method, gives us the following code:</p>
+
+<div class="code">
+k = k*k<br>
+<br>
+if k &lt; len*len<br>
+{<br>
+&nbsp; if c1sqr*len &lt;= k<br>
+&nbsp; &nbsp; return true<br>
+}<br>
+</div>
+
+<p class="article">We can also optimize this even more. Look at the first assignment: it calculates the squared <b>k</b>. And then look
+at the condition that follows: it checks if the squared <b>k</b> is less than the squared <b>len</b>. So:</p>
+
+<div class="code">
+k� &lt; len�<br>
+</div>
+
+<p class="article">But, by doing the inverse of our trick that we used in eliminating the square roots, we can write this as:</p>
+
+<div class="code">
+k &lt; len<br>
+</div>
+
+<p class="article">Same thing, right? Instead of squaring everything, we took the square root of everything, which is the same thing
+for a comparison, right? Ok, so we have this piece of code:</p>
+
+<div class="code">
+if k &lt; len&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; non-squared k checked against len<br>
+{<br>
+&nbsp; if c1sqr*len &lt;= k*k ; we need to calculate squared k<br>
+&nbsp; &nbsp; return true<br>
+}<br>
+</div>
+
+<p class="article">Note however that you can have more overflow problems than with the divide method, because you work with much larger
+numbers. This is especially an issue if you use fixed point formats. Be sure to keep overflowing under control. This
+overflow handling, and more assembly-level or specific optimizations are left to you as an exercise.</p>
+
+<p class="article">Now I will briefly discuss optimizations that you can do to the second test too. If we look at it, it's easy to
+realize that we can use the same "comparison" trick here too. Let's take a look at it:</p>
+
+<div class="code">
+if e1y*c1x - e1x*c1y &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;e2y*c2x - e2x*c2y &gt;= 0&nbsp; AND<br>
+&nbsp; &nbsp;e3y*c3x - e3x*c3y &gt;= 0<br>
+&nbsp; &nbsp; &nbsp;return true<br>
+</div>
+
+<p class="article">We can move the second statements to the right side, thus having only a comparison instead of (on some platforms) a
+subtraction and a comparison:</p>
+
+<div class="code">
+if e1y*c1x &gt;= e1x*c1y&nbsp; AND<br>
+&nbsp; &nbsp;e2y*c2x &gt;= e2x*c2y&nbsp; AND<br>
+&nbsp; &nbsp;e3y*c3x &gt;= e3x*c3y<br>
+&nbsp; &nbsp; &nbsp;return true<br>
+</div>
+
+<p class="article">Or if you want to evade three conditions, you can optimize this better. However I'll give you only one example as
+this tends to be specific-purpose.</p>
+
+<p class="article">Ok, assume we have our numbers in a simple format that supports bitwise logical operators <b>(and, or, xor, not)</b>,
+preferably <i>fixed point</i> format. And assume that the most significant bit (i.e left-most bit in the number) is
+<b>1</b> when the number is negative, and <b>0</b> when positive (examples include <b>two's complement</b>,
+<b>one's complement</b>, <b>signed magnitude</b> and other representations). Ok, my example is actually based on <b>x86</b>
+architecture with fixed point types (integers). Now, what can we do in this situation? Simple.</p>
+
+<p class="article">We can use a bitwise operation to indicate that ALL the numbers had the most-significant bit <b>0</b> (positive). What
+kind of bitwise operation? Answer: <b>OR</b> (written as '|'). Why? Because if <i>at least</i> one of the line equations
+is negative (<b>1</b> in the most significant bit), then the result MUST be negative, so we can be sure it certainly
+isn't inside the triangle. If ALL three of them were positive (<b>0</b> in most significant bit) then the result's most
+significant bit should also be <b>0</b> and in this case we know it is inside the triangle:</p>
+
+<div class="code">
+k = (e1y*c1x - e1x*c1y) | (e2y*c2x - e2x*c2y) | (e3y*c3x - e3x*c3y)<br>
+<br>
+if (signed)k &gt; 0<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article">Why have I used the term "signed"? Well because, if you used that representation, the signed value of <b>k</b>
+should be positive if the most significant bit is <b>0</b>, thus &gt;= 0. If the most significant bit is <b>1</b>, then the
+number is &lt; 0. If you're still confused, you can also use:</p>
+
+<div class="code">
+if (k &amp; 0x80000000) == 0<br>
+&nbsp; return true<br>
+</div>
+
+<p class="article">This is assuming <b>k</b> is 32-bits wide. <b>0x80000000</b> means a hexadecimal value with a <b>1</b> only at the
+most significant bit, and <b>&amp;</b> is the bitwise <b>AND</b> operator. You can do all sorts of these low-level
+optimizations. But anyway much of this stuff is better done in assembly. Be creative and inspire yourself with sneaky
+algos :)</p>
+
+<p class="article">I believe I have covered enough optimization examples. As a brief overall view of our optimizations:</p>
+
+<div class="code">
+;<br>
+; TEST 1: Vertex within circle<br>
+;<br>
+c1x = centrex - v1x<br>
+c1y = centrey - v1y<br>
+<br>
+radiusSqr = radius*radius<br>
+c1sqr = c1x*c1x + c1y*c1y - radiusSqr<br>
+<br>
+if c1sqr &lt;= 0<br>
+&nbsp; return true<br>
+<br>
+c2x = centrex - v2x<br>
+c2y = centrey - v2y<br>
+c2sqr = c2x*c2x + c2y*c2y - radiusSqr<br>
+<br>
+if c2sqr &lt;= 0<br>
+&nbsp; return true<br>
+<br>
+c3x = centrex - v3x<br>
+c3y = centrey - v3y<br>
+<br>
+&amp;c3sqr = radiusSqr&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;; reference to radiusSqr<br>
+&nbsp;c3sqr = c3x*c3x + c3y*c3y - radiusSqr<br>
+<br>
+if c3sqr &lt;= 0<br>
+&nbsp; return true<br>
+<br>
+<br>
+;<br>
+; TEST 2: Circle centre within triangle<br>
+;<br>
+<br>
+;<br>
+; Calculate edges<br>
+;<br>
+e1x = v2x - v1x<br>
+e1y = v2y - v1y<br>
+<br>
+e2x = v3x - v2x<br>
+e2y = v3y - v2y<br>
+<br>
+e3x = v1x - v3x<br>
+e3y = v1y - v3y<br>
+<br>
+if signed((e1y*c1x - e1x*c1y) | (e2y*c2x - e2x*c2y) | (e3y*c3x - e3x*c3y)) &gt;= 0<br>
+&nbsp; &nbsp; &nbsp;return true<br>
+<br>
+<br>
+;<br>
+; TEST 3: Circle intersects edge<br>
+;<br>
+k = c1x*e1x + c1y*e1y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = e1x*e1x + e1y*e1y&nbsp; &nbsp; &nbsp;; squared len<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if c1sqr * len &lt;= k*k<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+; Second edge<br>
+k = c2x*e2x + c2y*e2y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = e2x*e2x + e2y*e2y<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if c2sqr * len &lt;= k*k<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+; Third edge<br>
+k = c3x*e3x + c3y*e3y<br>
+<br>
+if k &gt; 0<br>
+{<br>
+&nbsp; len = e3x*e3x + e3y*e3y<br>
+<br>
+&nbsp; if k &lt; len<br>
+&nbsp; {<br>
+&nbsp; &nbsp; if c3sqr * len &lt;= k*k<br>
+&nbsp; &nbsp; &nbsp; return true<br>
+&nbsp; }<br>
+}<br>
+<br>
+; We're done, no intersection<br>
+return false<br>
+</div>
+
+<p class="article">This was only an example to give you an overall impression of our optimizations. Note that I included the "specific"
+optimizations which may not work for your specific needs -- this was only an example. Go ahead and adjust it to work for
+you, or optimize it specifically. :)</p>
+
+<p class="article">Well, what's to say? We have completed a method of checking whether a circle intersects a triangle, analyzed it, and
+optimized it... the rest is up to you to do what you want with it.</p>
+
+<h3 class="article">Summary</h3>
+
+<p class="article">This article focused on a step-by-step approach -- that is, how you should (in my opinion) create a method. First you
+have to design it, and think in high-level terms. This is because you don't need to be confused at this important stage.
+After you have a workable version, go and optimize it like hell. And remember, the design is the difficult part, not
+writing the code, nor the low-level optimizations -- you should really take the time to optimize or implement it in
+assembly. Even if it isn't a really noticeable result, it's always worth optimizing. You'll see that assembly or other
+low-level languages do not take very much extra time. It's the design that's difficult.</p>
+
+<p class="article">If you find any errors, or want to comment about articles, methods and optimizations, or simply need to contact me,
+drop me a mail at
+<a href="mailto:grey_predator@yahoo.com">grey_predator@yahoo.com</a>.
+However as I'm not very frequent on the net, I cannot guarantee immediate
+response, so please do not get frustrated if I do not reply very soon. I will do my best.</p>
+
+<p class="article">I can also be found on forums. My nicks are usually <b>The_Grey_Beast</b> or <b>Bidirectional</b>. However some people
+just make idiotic jokes and use other people's nicks and then claim they're the respective guy. This is not a very
+mature thing and others should judge a guy by his personality, not nick. However I usually use those two nicks.</p>
+
+<p class="article">What else to say? I apologize if I forgot something, it's so hard to keep it tight and yet explain the details.</p>
+
+<p class="article">Please understand that you are not allowed to modify this document without my permission. The reason is to keep
+things under control (i.e not to have 500 versions of this doc around the net). I hope you understand. If you need to
+modify or do other things with it, please contact me first.</p>
+
+<p class="article">Best wishes and happy coding :)</p></td></tr></tbody></table>
+<div style="line-height:20px; margin-top:0px; margin-bottom:0px;">&nbsp;</div>
+</div>
+</td></tr>
+</tbody></table>
+</td></tr></tbody></table>
+
+</body></html>
