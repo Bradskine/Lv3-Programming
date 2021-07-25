@@ -13,7 +13,8 @@ class circle { //this will creawte circles which go around track
     height = 0,
     rbe = 0,
     health= 0,
-    distanceTraveled=0
+    distanceTraveled=0,
+    coll
   ) {
 
     this.x = Number(x);
@@ -29,6 +30,7 @@ class circle { //this will creawte circles which go around track
     this.rbe = rbe;
     this.health = health;
     this.distanceTraveled=0;
+    this.coll =0;
   }
 
 
@@ -81,7 +83,7 @@ class circle { //this will creawte circles which go around track
         circleMissing = true;
         //  console.log (this);
      for (var i=0; i<Circles.length;i++) {
-       if(Circles[i].x == this.x &&Circles[i].y == this.y) {
+       if(Circles[i].x == this.x &&Circles[i].y == this.y&& Circles[i].c == this.c) {
          delete Circles[i];
          Circles = Circles.filter(item => item !== undefined);
        }

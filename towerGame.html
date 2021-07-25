@@ -12,13 +12,13 @@
 
 
 <body>
-  <canvas id="gameCanvas" width="940" height="940"></canvas>
+  <canvas id="gameCanvas" width="800" height="800"></canvas>
 
   <script type="text/javascript">
     //grid variables
-    var gridCount = 60;
+    var gridCount = 30;
     // cavas.height and width are 600
-    var TotalGridSize = 940;
+    var TotalGridSize = 800;
     var gridSize = TotalGridSize / gridCount;
     var canvas, ctx;
     var onTrack = false;
@@ -143,6 +143,10 @@
 
     var track2 = ['right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
       'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
+      'down', 'down', 'down','right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+      'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
+      'down', 'down', 'down','right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+      'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
       'down', 'down', 'down'
     ];
 
@@ -183,7 +187,7 @@
     ];
     var iceMaker = [60, 2, 4, gridSize * 3, 4, 'lightGrey', gridSize / 50, gridSize * 0.2, 'white', '1st', gridSize *
     6];
-    var sniperOrginal = [0.4, 5, 10, TotalGridSize * 10, 10, 'black', gridSize / 20, gridSize * 0.2, 'black', '1st',
+    var sniperOrginal = [0.1, 5, 10, TotalGridSize * 10, 10, 'black', gridSize / 150, gridSize * 2, 'black', '1st',
       TotalGridSize * 10
     ];
     var fireboy = [20, 2, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st', gridSize * 4];
@@ -217,9 +221,9 @@
     var size = 3; ///rbe is red ballon equivelent / damdge
     //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
     var redSpeed = gridSize / 50;
-    var redSize = gridSize / 5;
+    var redSize = gridSize; // /5
     var redBorderS = gridSize / 15;
-    var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 20, 0, 0, 1, 1];
+    var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1, 0, 0, 1, 1];
     var blueCircle = [xa2, ya2, redSize, 'rgb(11, 196, 255)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2, 1];
     var greenCircle = [xa2, ya2, redSize, 'rgb(0,155,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 3, 1];
     var yellowCircle = [xa2, ya2, redSize, 'rgb(255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.2, 0, 0, 4, 1];
@@ -255,7 +259,8 @@
       0, 381, 200
     ];
     // https://bloons.fandom.com/wiki/Bloons_TD_6_Bloons_Stats
-
+  var nextCircle = [['red',0],['blue','red'],['green','blue'], ['yellow','green'], ['pink',0], ['black',0], ['purple',0], ['white',0], ['lead',0],
+   ['zebra',0],['rainbow',0], ['cermaic',0], ['moab',0], ['bfb',0],['zomg',0], ['dtd',0], ['bad',0]];
     //red blue grteen yellow pink balck purple white lead zebra rainbow ceramic   moab  bfb     zomg, ,      dtd        bad
     //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
 
@@ -263,8 +268,8 @@
       colorRect(0, 0, canvas.width, canvas.height, 'blue');
       drawGrid(canvas.width, canvas.height, 'grid');
       if (gameActive == false) {
-        currentTrack = JSON.parse(JSON.stringify(track));
-        currentTrackXY = JSON.parse(JSON.stringify(track));
+        currentTrack = JSON.parse(JSON.stringify(track2));
+        currentTrackXY = JSON.parse(JSON.stringify(track2));
         gameActive = true;
       }
 
@@ -335,7 +340,7 @@
     function addCircle(x) {
       var type = eval(x + 'Circle');
       Circles.push(new circle(type[0], type[1], type[2], type[3], type[4], type[5], type[6], type[7], type[8], type[9],
-        [type[10]], type[11], type[12])); //[pushs]each thing from circle arrary
+        [type[10]], type[11], type[12],0)); //[pushs]each thing from circle arrary
     }
 
 
@@ -420,7 +425,7 @@
                 var testProjectile = new projectile(tower.x, tower.y, tower.pierce,
                   tower
                   .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
-                  gradient);
+                  gradient,0);
 
                 var testCircle = new circle(dTraveledCircles[i].x, dTraveledCircles[i].y, dTraveledCircles[i].r, '',
                   dTraveledCircles[i].borderW, '', dTraveledCircles[i].speed,
