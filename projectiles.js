@@ -12,6 +12,7 @@ class projectile { //for projectiles created by towers
     directionX = 0,
     directionY = 0,
     gradient = 0,
+    colls = []
   ) {
     this.x = x;
     this.y = y;
@@ -23,6 +24,7 @@ class projectile { //for projectiles created by towers
     this.directionX = directionX;
     this.directionY = directionY;
     this.gradient = gradient;
+    this.colls = [];
 
   }
 
@@ -96,7 +98,7 @@ class projectile { //for projectiles created by towers
                 //   var d =  Math.sqrt(Math.pow(xa-circle.x,2)+Math.pow(ya-circle.y,2));
                 //   // console.log(d);
                 //   if(d<=circle.r) {
-                //     circle.coll += 1;
+                //     circleHitting = true;
                 //     console.log(i);
                 //   }
                 //  } basic before reading article
@@ -116,7 +118,7 @@ class projectile { //for projectiles created by towers
         var radiusSqr = circle.r * circle.r;
         var c1sqr = c1x * c1x + c1y * c1y - radiusSqr;
         if (c1sqr <= 0) {
-          circle.coll += 1;
+          circleHitting = true;
           cornerHit = true;
         } else 
 
@@ -125,7 +127,7 @@ class projectile { //for projectiles created by towers
         var c2y = circle.y - v2y;
         var c2sqr = c2x * c2x + c2y * c2y - radiusSqr;
         if (c2sqr <= 0) {
-          circle.coll += 1;
+          circleHitting = true;
           cornerHit = true;
         }  else
 
@@ -134,7 +136,7 @@ class projectile { //for projectiles created by towers
         var c3y = circle.y - v3y;
         var c3sqr = c3x * c3x + c3y * c3y - radiusSqr;
         if (c3sqr <= 0) {
-          circle.coll += 1;
+          circleHitting = true;
           cornerHit = true;
         }  else
 
@@ -157,7 +159,7 @@ class projectile { //for projectiles created by towers
 
         if (Math.sign(e2y * c2x - e2x * c2y) > 0 && Math.sign(e3y * c3x - e3x * c3y) > 0  && Math.sign(e1y * c1x - e1x * c1y) > 0) {
 
-          circle.coll += 1;
+          circleHitting = true;
           centerHit = true;
         }  else 
 
@@ -166,63 +168,105 @@ class projectile { //for projectiles created by towers
 
         //  TEST 3: Circle intersects edge
 
-        // var k = c1x * e1x + c1y * e1y;
+        var k = c1x * e1x + c1y * e1y;
 
-        // if (k > 0) {
-        //   var len = e1x * e1x + e1y * e1y;
+        if (k > 0) {
+          var len = e1x * e1x + e1y * e1y;
 
-        //   if (k < len) {
-        //     if (c1sqr * len <= k * k) {
-        //       circle.coll += 1;
-        //       sideHit = true;
-        //     }
-        //   }
-        // }  
+          if (k < len) {
+            if (c1sqr * len <= k * k) {
+              circleHitting = true;
+              sideHit = true;
+            }
+          }
+        }  
 
-        // //  Second edge
-        // k = c2x * e2x + c2y * e2y;
+        //  Second edge
+        k = c2x * e2x + c2y * e2y;
 
-        // if (k > 0) {
-        //   len = e2x * e2x + e2y * e2y;
+        if (k > 0) {
+          len = e2x * e2x + e2y * e2y;
 
-        //   if (k < len) {
-        //     if (c2sqr * len <= k * k) {
-        //       circle.coll += 1;
-        //       sideHit = true;
-        //     }
-        //   }
-        // }
-        // //  Third edge
-        // k = c3x * e3x + c3y * e3y;
+          if (k < len) {
+            if (c2sqr * len <= k * k) {
+              circleHitting = true;
+              sideHit = true;
+            }
+          }
+        }
+        //  Third edge
+        k = c3x * e3x + c3y * e3y;
 
-        // if (k > 0) {
-        //   var len = e3x * e3x + e3y * e3y;
+        if (k > 0) {
+          var len = e3x * e3x + e3y * e3y;
 
-        //   if (k < len) {
-        //     if (c3sqr * len <= k * k) {
-        //       circle.coll += 1;
-        //       sideHit = true;
-        //     }
-        //   }
-        // }
+          if (k < len) {
+            if (c3sqr * len <= k * k) {
+              circleHitting = true;
+              sideHit = true;
+            }
+          }
+        }
             
-
+      
 
         if (circleHitting == true) {
           console.log('circle hit');
+          this.colls.push(circle.c);
+          // need to find a way to id each circle so it remembers it and cannont hit same one twice
+          
           // console.log(cornerHit,centerHit,sideHit);
           // for (var i=0; i<Projectiles.length;i++) {
-
+         
           for (var i = 0; i < Circles.length; i++) {
+            
+           
             if (Circles[i].x == circle.x && Circles[i].y == circle.y && Circles[i].c == circle.c) {
+          
+          //  var newRbe = Circles[i].rbe-this.damage; 
+           
+            
+              
+
+
+              // x = 0,
+              // y = 0,
+              // r = 0,
+              // c = '',
+              // borderW = '',
+              // borderC = '',
+              // speed = 0,
+              // numberCo = 0,
+              // nextCo = 0,
+              // height = 0,
+              // rbe = 0,
+              // health= 0,
+              // distanceTraveled=0,
+              // coll
+
+
+// console.log(this.x);
               delete Circles[i];
-              Circles = Circles.filter(item => item !== undefined);
+              Circles = Circles.filter(item => item !== undefined); 
+
+
+
+              // x = 0,
+              // y = 0,
+              // pierce = 0,
+              // damage = 0,
+              // bulletSize = 0,
+              // bulletSpeed = 0,
+              // bulletColor = '',
+              // directionX = 0,
+              // directionY = 0,
+              // gradient = 0
             }
           }
         }
 
 
-      });
+      },this);
 
     }
 
@@ -272,4 +316,3 @@ class projectile { //for projectiles created by towers
 
 
 } //end of projectile class
-
