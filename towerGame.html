@@ -218,13 +218,14 @@
 
     //track variables
     var Circles = [];
+    var circleId = 0;
     var size = 3; ///rbe is red ballon equivelent / damdge
     //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
     var redSpeed = gridSize / 50;
     var redSize = gridSize; // /5
     var redBorderS = gridSize / 15;
     var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1, 0, 0, 1, 1];
-    var blueCircle = [xa2, ya2, redSize, 'rgb(11, 196, 255)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2, 1];
+    var blueCircle = [xa2, ya2, redSize, 'rgb(11,196,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2, 1];
     var greenCircle = [xa2, ya2, redSize, 'rgb(0,155,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 3, 1];
     var yellowCircle = [xa2, ya2, redSize, 'rgb(255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.2, 0, 0, 4, 1];
     var pinkCircle = [xa2, ya2, redSize, 'rgb(255,182,194,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.5, 0, 0, 5, 1];
@@ -234,10 +235,10 @@
       11, 1
     ];
     var leadCircle = [xa2, ya2, redSize, 'rgb(105,105,105,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed, 0, 0, 23, 1];
-    var zebraCircle = [xa2, ya2, redSize / 2, 'rgb(0,0,0,1)', redBorderS * 2, 'rgb(255,255,255,1)', redSpeed * 1.8, 0,
+    var zebraCircle = [xa2, ya2, redSize / 2.2, 'rgb(0,1,0,1)', redBorderS * 14, 'rgb(255,255,255,1)', redSpeed * 1.8, 0,
       0, 23, 1
     ];
-    var rainbowCircle = [xa2, ya2, redSize / 2, 'rgb(255,255,0,1)', redBorderS * 2, 'rgb(28,0,128,1)', redSpeed * 2.2,
+    var rainbowCircle = [xa2, ya2, redSize / 2.2, 'rgb(255,255,0,1)', redBorderS * 14, 'rgb(28,0,128,1)', redSpeed * 2.2,
       0, 0, 47, 1
     ];
     var ceramicCircle = [xa2, ya2, redSize, 'rgb(100,65,54,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 2.5, 0, 0,
@@ -246,21 +247,25 @@
     var moabCircle = [xa2, ya2, redSize * 8, 'rgb(1, 196, 255)', redBorderS, 'rgb(255,255,255,1)', redSpeed, 0, 0, 381,
       200
     ];
-    var bfbCircle = [xa2, ya2, redSize * 15, 'rgb(255,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.25, 0, 0,
+    var bfbCircle = [xa2, ya2, redSize * 15, 'rgb(255,1,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.25, 0, 0,
       381, 200
     ];
-    var zomgCircle = [xa2, ya2, redSize * 18, 'rgb(0,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.18, 0, 0,
+    var zomgCircle = [xa2, ya2, redSize * 18, 'rgb(0,0,1,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.18, 0, 0,
       381, 200
     ];
     var ddtCircle = [xa2, ya2, redSize * 5, 'rgb(6,6,7,1)', redBorderS, 'rgb(105,105,105,1)', redSpeed * 2.75, 0, 0,
       381, 200
     ];
-    var badCircle = [xa2, ya2, redSize * 25, 'rgb(255,182,194,1)', redBorderS, 'rgb(255,182,194,1)', redSpeed * 0.18, 0,
+    var badCircle = [xa2, ya2, redSize * 25, 'rgb(254,182,194,1)', redBorderS, 'rgb(255,182,194,1)', redSpeed * 0.18, 0,
       0, 381, 200
     ];
     // https://bloons.fandom.com/wiki/Bloons_TD_6_Bloons_Stats
-  var nextCircle = [['red',[0,0]],['blue',[1,'red']],['green',[1,'blue']], ['yellow',[1,'green']], ['pink',[1,'yellow']], ['black',[2,'pink']], ['purple',[2,'pink']], ['white',[2,'pink']],
-   ['lead',[2,'black']], ['zebra',[2,'black']],['rainbow',[2,'zebra']], ['cermaic',[2,'rainbow']], ['moab',[4,'ceramic']], ['bfb',[4,'moab']],['zomg',[4,'bfb']], ['dtd',[4,'ceramic']], ['bad',[2,'zomg']]];
+        var nextCircle = [['rgb(255,0,0,1)',[1,0]],['rgb(11,196,255,1)',[1,'red']],['rgb(0,155,0,1)',[1,'blue']],
+         ['rgb(255,255,1)',[1,'green']], ['rgb(255,182,194,1)',[1,'yellow']], ['rgb(0,0,0,1)',[2,'pink']], ['rgb(28,0,128,1)',[2,'pink']], ['rgb(255,255,255,1)',[2,'pink']],
+   ['rgb(105,105,105,1)',[2,'black']], ['rgb(0,1,0,1)',[2,'black']],['rgb(255,255,0,1)',[2,'zebra']], ['rgb(100,65,54,1)',[2,'rainbow']], ['rgb(1, 196, 255)',[4,'ceramic']],
+    ['rgb(255,1,0,1)',[4,'moab']],['rgb(0,0,1,1)',[4,'bfb']], ['rgb(6,6,7,1)',[4,'ceramic']], ['rgb(254,182,194,1)',[2,'zomg']]];
+
+
     //red blue grteen yellow pink balck purple white lead zebra rainbow ceramic   moab  bfb     zomg, ,      dtd        bad
     //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
 
@@ -337,12 +342,22 @@
       ctx.fillRect(tMenuSquareX * gridSize, tMenuSquareY * gridSize, gridSize, gridSize);
     }
 
-    function addCircle(x) {
-      var type = eval(x + 'Circle');
+    function addCircle(c) {
+      var type = eval(c + 'Circle');
       Circles.push(new circle(type[0], type[1], type[2], type[3], type[4], type[5], type[6], type[7], type[8], type[9],
-        [type[10]], type[11], type[12])); //[pushs]each thing from circle arrary
-    }
+        [type[10]], type[11], type[12],circleId)); //[pushs]each thing from circle arrary
+        circleId += 1;
 
+    }
+    // [xa2, ya2, redSize, 'rgb(11, 196, 255)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2, 1];
+
+ function addCircle2(x,y,id,c) {
+  var type = eval(c + 'Circle');
+      Circles.push(new circle(x, y, type[2], type[3], type[4], type[5], type[6], type[7], type[8], type[9],
+        [type[10]], type[11], type[12],id)); //[pushs]each thing from circle arrary
+  
+
+ }
 
     function drawCircles() {
       Circles.forEach(function (circle) {

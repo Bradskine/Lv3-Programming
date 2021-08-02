@@ -13,7 +13,9 @@ class circle { //this will creawte circles which go around track
     height = 0,
     rbe = 0,
     health= 0,
-    distanceTraveled=0
+    distanceTraveled=0,
+    id = 0
+  
   ) {
 
     this.x = Number(x);
@@ -29,6 +31,10 @@ class circle { //this will creawte circles which go around track
     this.rbe = rbe;
     this.health = health;
     this.distanceTraveled=0;
+    this.id = id; 
+    
+    // this.id[0] = this.c;
+  
   }
 
 

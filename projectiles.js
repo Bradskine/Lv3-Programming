@@ -25,7 +25,6 @@ class projectile { //for projectiles created by towers
     this.directionY = directionY;
     this.gradient = gradient;
     this.colls = [];
-
   }
 
   move(n) { //makes the projectiles move in straing line based of direction and gradient of line created
@@ -84,32 +83,13 @@ class projectile { //for projectiles created by towers
       var cornerHit = false;
       var sideHit = false;
       var centerHit = false;
+      var run = true;
       Circles.forEach(function (circle) {
+ 
+       
         circleHitting = false;
-                // if(circle.x-circle.r<= x+bulletSize&&circle.x+circle.r>=x-bulletSize &&circle.y+circle.r>= y -bulletSize&&circle.y-circle.r<=y+bulletSize) {
-                
-              
-                  // Math.sqrt((v1x−circle.x)+(v1y−circle.y));
-
-                //  for(var i=1;i<=3;i++) {
-                //    var xa = eval('v'+i+'x');
-                //    var ya = eval('v'+i+'y');
-                //   //  console.log(x);
-                //   var d =  Math.sqrt(Math.pow(xa-circle.x,2)+Math.pow(ya-circle.y,2));
-                //   // console.log(d);
-                //   if(d<=circle.r) {
-                //     circleHitting = true;
-                //     console.log(i);
-                //   }
-                //  } basic before reading article
-
-
-
-                // }
-
-                
- // toDo amke it so it happens when it is nolonger touching circle so doessnt do muiltple hits
-
+       run = true;
+          
 
         // TEST 1: Vertex within circle
 
@@ -209,17 +189,30 @@ class projectile { //for projectiles created by towers
         }
             
       
-
-        if (circleHitting == true) {
-          console.log('circle hit');
-          this.colls.push(circle.c);
+        if (circleHitting == true) { 
+          for(var i = 0; i <this.colls.length;i++) {
+            // console.log(circle.id);
+            if(circle.id == this.colls[i]) {
+              // console.log('hello');
+              //   return;  //test test test  n   test=============================================================================test
+                 run = false;
+                //  console.log('hello');
+                 break;
+            }  
+            if(i==this.colls.length-1) {
+              // console.log('falil');
+            }
+  
+           }
+       if(run==true) {
+          // console.log('circle hit');
+          
           // need to find a way to id each circle so it remembers it and cannont hit same one twice
           
           // console.log(cornerHit,centerHit,sideHit);
           // for (var i=0; i<Projectiles.length;i++) {
          
           for (var i = 0; i < Circles.length; i++) {
-            
            
             if (Circles[i].x == circle.x && Circles[i].y == circle.y && Circles[i].c == circle.c) {
           
@@ -246,12 +239,67 @@ class projectile { //for projectiles created by towers
 
 
 // console.log(this.x);
-              delete Circles[i];
-              Circles = Circles.filter(item => item !== undefined); 
+              var newCircle = [];
+            
+              for(var i=0;i<nextCircle.length;i++) {  //this is wrong
+                 if(circle.c == nextCircle[i][0]) {
+                    newCircle = nextCircle[i][1];
+                    // console.log(newCircle);
+                   break;
+                 }
+              }
+
+              for(var i =0; i <newCircle[0];i++) {
+
+    
+                if(newCircle[1] != 0) {
+              //  console.log('test');
 
 
 
-              // x = 0,
+
+               this.colls.push(Circles[i].id);
+                var cirX = Circles[i].x;
+                var cirY = Circles[i].y;
+                var cirId = Circles[i].id;
+   
+
+               delete Circles[i]; 
+               Circles = Circles.filter(item => item !== undefined);
+
+
+                addCircle2(cirX,cirY,cirId,newCircle[1]);
+             
+                // x,y,id,c
+
+                
+                
+                }  else {
+                  // console.log('fldksjfsdojfsdlfjsdofjsdlfjsdal;fjsdlfkjsdl;fj');
+                  delete Circles[i];
+                Circles = Circles.filter(item => item !== undefined); 
+                
+                }
+
+
+
+            
+              }
+  
+
+            
+              // this.colls.push(circle.id);
+
+  //       var nextCircle = [['rgb(255,0,0,1)',[0,0]],['rgb(11, 196, 255)',[1,'red']],['rgb(0,155,0,1)',[1,'blue']],
+  //        ['rgb(255,255,1)',[1,'green']], ['rgb(255,182,194,1)',[1,'yellow']], ['rgb(0,0,0,1)',[2,'pink']], ['rgb(0,0,0,1)',[2,'pink']], ['rgb(255,255,255,1)',[2,'pink']],
+  //  ['rgb(105,105,105,1)',[2,'black']], ['rgb(0,1,0,1)',[2,'black']],['rgb(255,255,0,1)',[2,'zebra']], ['rgb(100,65,54,1)',[2,'rainbow']], ['rgb(1, 196, 255)',[4,'ceramic']],
+  //   ['rgb(255,1,0,1)',[4,'moab']],['rgb(0,0,0,1)',[4,'bfb']], ['rgb(6,6,7,1)',[4,'ceramic']], ['rgb(255,182,194,1)',[2,'zomg']]];
+
+
+
+
+
+              // x = 0,      
               // y = 0,
               // pierce = 0,
               // damage = 0,
@@ -264,7 +312,7 @@ class projectile { //for projectiles created by towers
             }
           }
         }
-
+      }
 
       },this);
 
