@@ -6,17 +6,16 @@ class circle { //this will creawte circles which go around track
     r = 0,
     c = '',
     borderW = '',
-    borderC = '',
+    borderC   ='',   
     speed = 0,
     numberCo = 0,
-    nextCo = 0,
-    height = 0,
+    height = 0, 
     rbe = 0,
-    health= 0,
+    health = 0,
+    id = 0,
     distanceTraveled=0,
-    id = 0
-  
-  ) {
+    nextCo = 0
+ ) {
 
     this.x = Number(x);
     this.y = Number(y);
@@ -26,13 +25,12 @@ class circle { //this will creawte circles which go around track
     this.borderC = borderC;
     this.speed = speed;
     this.numberCo = numberCo;
-    this.nextCo = [currentTrack[numberCo][0], currentTrack[numberCo][1]];
     this.height = Number(height);
     this.rbe = rbe;
-    this.health = health;
-    this.distanceTraveled=0;
+    this.health = health;  //order might be wrong causing health to be defautlt value
     this.id = id; 
-    
+    this.distanceTraveled=0;
+    this.nextCo = [currentTrack[numberCo][0], currentTrack[numberCo][1]];
     // this.id[0] = this.c;
   
   }
@@ -46,17 +44,10 @@ class circle { //this will creawte circles which go around track
 
 
 
-
+  
   draw() {
 
-    var {
-      x,
-      y,
-      r,
-      c,
-      borderW,
-      borderC,
-    } = this
+    var {x,y,r,c,borderW,borderC,} = this
 
     ctx.save() //so doesnt save over other ones
 
@@ -64,7 +55,7 @@ class circle { //this will creawte circles which go around track
     ctx.restore()
   }
 
-  followTrack() {
+  followTrack() { // might add followTrack(i) if i have time
     
     if (this.x > this.nextCo[0] + this.speed || this.x < this.nextCo[0] - this.speed || this.y < this.nextCo[1] - this.speed || this.y > this.nextCo[1] + this.speed) {
  //above checks that circle is not at next point
