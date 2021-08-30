@@ -1,675 +1,1308 @@
 <!DOCTYPE html>
 
 <head>
-  <title>Game</title>
-  <script src="circles.js"></script>
-  <script src="towers.js"></script>
-  <script src="projectiles.js"></script>
-  <meta charset="utf-8">
+    <title>Game</title>
+    <script src="circles.js"></script>
+    <script src="towers.js"></script>
+    <script src="projectiles.js"></script>
+    <meta charset="utf-8">
 
 </head>
 
 
-
 <body>
-  <canvas id="gameCanvas" width="800" height="800"></canvas>
+    <canvas id="gameCanvas" width="800" height="800"></canvas>
 
-  <script type="text/javascript">
-    //grid variables
-    var gridCount = 30;
-    // cavas.height and width are 600
-    var TotalGridSize = 800;
-    var gridSize = TotalGridSize / gridCount;
-    var canvas, ctx;
-    var onTrack = false;
-    var onTower = false;
-    var frameRate = 60;
+    <script type="text/javascript">
+        //grid variables
+        var gridCount = 30;
+        // cavas.height and width are 600
+        var TotalGridSize = 800;
+        var gridSize = TotalGridSize / gridCount;
+        var canvas, ctx;
+        var onTrack = false;
+        var onTower = false;
+        var frameRate = 60;
 
-    window.onload = function () {
-      canvas = document.getElementById('gameCanvas');
-      ctx = canvas.getContext('2d');
-      // resizeCanvas();
-      canvas.addEventListener("mousedown", function (evt) {
-        getMousePosition(canvas, evt);
+        window.onload = function () {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+            // resizeCanvas();
+            canvas.addEventListener("mousedown", function (evt) {
+                getMousePosition(canvas, evt);
 
-        let columnClicked = Math.floor(mouseX / gridSize);
-        let rowClicked = Math.floor(mouseY / gridSize);
+                let columnClicked = Math.floor(mouseX / gridSize);
+                let rowClicked = Math.floor(mouseY / gridSize);
 
 
-        for (i = 0; i <
-          trackL; i++
-        ) { //checks each track cooradanets to see if mouse clikc on track then passes through ontrack is true or false
-          onTrack = false;
-          let trackColumn = Math.floor(currentTrackXY[i][0] / gridSize);
-          let trackRow = Math.floor(currentTrackXY[i][1] / gridSize);
+                for (i = 0; i <
+                    trackL; i++
+                ) { //checks each track cooradanets to see if mouse clikc on track then passes through ontrack is true or false
+                    onTrack = false;
+                    let trackColumn = Math.floor(currentTrackXY[i][0] / gridSize);
+                    let trackRow = Math.floor(currentTrackXY[i][1] / gridSize);
 
-          // console.log(trackColumn,trackRow);
-          //will have to chagne current tracdk above to change 1st and last variable
-          if (columnClicked == trackColumn && rowClicked == trackRow) {
-            onTrack = true;
+                    // console.log(trackColumn,trackRow);
+                    //will have to chagne current tracdk above to change 1st and last variable
+                    if (columnClicked == trackColumn && rowClicked == trackRow) {
+                        onTrack = true;
 
-            //will make traps menu come up when clikd on track
-            break;
-          }
-        }
+                        //will make traps menu come up when clikd on track
+                        break;
+                    }
+                }
 
-        if (onTrack == false && Towers.length > 0) { //echects if they clikc on a toer
-          for (i = 0; i < Towers.length; i++) {
-            onTower = false;
-            let towerColumn = Math.floor(Towers[i].x / gridSize);
-            let towerRow = Math.floor(Towers[i].y / gridSize);
-            if (columnClicked == towerColumn && rowClicked == towerRow) {
-              onTower = true;
-              break; ///if this happnes it stops for loop as they have clikced on a tower and doesnt need to check anything more
+                if (onTrack == false && Towers.length > 0) { //echects if they clikc on a toer
+                    for (i = 0; i < Towers.length; i++) {
+                        onTower = false;
+                        let towerColumn = Math.floor(Towers[i].x / gridSize);
+                        let towerRow = Math.floor(Towers[i].y / gridSize);
+                        if (columnClicked == towerColumn && rowClicked == towerRow) {
+                            onTower = true;
+                            upgrading = Towers[i];
+                            break; ///if this happnes it stops for loop as they have clikced on a tower and doesnt need to check anything more
+                        }
+                    }
+                }
+
+                if (towerMenuActive == false && upgradeMenuActive == false) {
+                    if (onTrack == false) {
+
+                        if (onTower) {
+                            var upgrades = [0, 0];
+                            for (i = 0; i < Towers.length; i++) {
+                                if ((Math.floor(Towers[i].x / gridSize)) == columnClicked && (Math.floor(
+                                        Towers[i].y /
+                                        gridSize)) ==
+                                    rowClicked) {
+                                    upGsActive = Towers[i].upgrades;
+                                    // upgradeLength = soldierUpgradeNames.length;
+                                    targetingActive = Towers[i].targeting;
+                                    rangeCircleRadius = Towers[i].range;
+                                    rangeCircleX = Towers[i].x;
+                                    rangeCircleY = Towers[i].y;
+                                    soldierAct = false;
+                                    iceMakerAct = false;
+                                    sniperOrginalAct = false;
+                                    fireBWaterGAct = false;
+                                    randomDiceAct = false;
+
+                                    if (Towers[i].color == 'brown') {
+                                        soldierAct = true;
+                                    } else if (Towers[i].color == 'lightGrey') {
+                                        iceMakerAct = true;
+                                    } else if (Towers[i].color == 'black') {
+                                        sniperOrginalAct = true;
+                                    } else if (Towers[i].color == 'red') {
+                                        fireBWaterGAct = true;
+                                    } else if (Towers[i].color == 'purple') {
+                                        randomDiceAct = true;;
+                                    }
+                                }
+                            }
+
+
+                            upgradeMenuActive = true;
+                            towerMenu('upGradeMenu', [columnClicked * gridSize, rowClicked * gridSize]);
+
+
+                        } else {
+                            towerMenuActive = true;
+                            towerMenu('towerMenu', [columnClicked * gridSize, rowClicked * gridSize]);
+
+                        }
+
+                    } // else { will be to add traps
+                } else {
+                    if (towerMenuActive == true && columnClicked - tMenuGridX >= 0 && columnClicked -
+                        tMenuGridX < towerWidth - 2) {
+                        //todotodotodoTODo to do tooodooo 2du 2dough  twoduuuugooodoootoututudooo
+                        for (i = 0; i < towerCount; i++) {
+                            if (rowClicked == tMenuGridY + i) {
+                                addTower(i)
+
+                            }
+                        }
+
+                    } else if (upgradeMenuActive) {
+                        if (columnClicked - tMenuGridX >= 0 && columnClicked - tMenuGridX <
+                            upgradeWidth) {
+
+                            for (i = 0; i < 2; i++) {
+                                if (rowClicked == tMenuGridY + i) {
+                                    upgradeTower(upgrading,
+                                        i
+                                    ); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on
+                                }
+                            }
+
+                            if (rowClicked == tMenuGridY + 3) {
+                                if (columnClicked - tMenuGridX >= targetingWidth / 2 && columnClicked -
+                                    tMenuGridX < targetingWidth / 2 + 1) {
+
+                                    if (upgrading.targeting == '1st') {
+                                        upgrading.targeting = 'last';
+                                    } else if (upgrading.targeting == 'strong') {
+                                        upgrading.targeting = '1st';
+                                    } else {
+                                        upgrading.targeting = 'strong';
+                                    }
+                                    var targetingList = ['1st', 'strong', 'last'];
+
+
+
+                                } else if (columnClicked - tMenuGridX >= targetingWidth / 2 + 1 &&
+                                    columnClicked -
+                                    tMenuGridX <= targetingWidth / 2 + 2) {
+                                    if (upgrading.targeting == '1st') {
+                                        upgrading.targeting = 'strong';
+                                    } else if (upgrading.targeting == 'strong') {
+                                        upgrading.targeting = 'last';
+                                    } else {
+                                        upgrading.targeting = '1st';
+                                    }
+                                }
+                            }
+
+                        }
+
+
+
+                        // else if (rowClicked == (tMenuGridY +3)) {
+                        //         console.log('test');
+
+                        //     //     columnClicked - tMenuGridX >= targetingWidth && columnClicked - tMenuGridX <
+                        //     // upgradeWidth && 
+
+                        // }
+
+
+                    }
+                    upgradeMenuActive = false;
+                    towerMenuActive = false;
+                }
+
+
+            });
+
+            setInterval(mainloop, 1000 / frameRate);
+
+
+
+        } // end of onloead function()
+
+
+        var mouseX, mouseY;
+
+        function getMousePosition(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            mouseX = event.clientX - rect.left;
+            mouseY = event.clientY - rect.top;
+        } //end of getMOusdePos funtion ()
+
+
+        var track = ['right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+            'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up',
+            'up',
+            'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
+            'right',
+            'right', 'down', 'down', 'down', 'right', 'right', 'right', 'right',
+            'right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+            'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up',
+            'up',
+            'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
+            'right',
+            'right', 'right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+            'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up',
+            'up',
+            'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
+            'right',
+            'down', 'down', 'down', 'down', 'down', 'down', 'left', 'down', 'down', 'down', 'down', 'down', 'down',
+            'down',
+            'down', 'down', 'down', 'down', 'down',
+            'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'left',
+            'left',
+            'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
+            'left',
+            'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
+            'left',
+            'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
+            'left',
+            'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+            'up',
+            'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+            'up',
+            'up', 'up', 'up', 'up', 'up', 'up', 'up',
+            'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right',
+            'right',
+            'right',
+            'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right',
+            'right',
+            'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
+            'down',
+            'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
+            'down',
+            'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
+            'down',
+            'down', 'down', 'down', 'down', 'down', 'down', 'down'
+
+
+        ];
+
+        var track2 = ['right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
+            'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
+            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
+            'right',
+            'right',
+            'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
+            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
+            'right',
+            'right',
+            'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
+            'down', 'down', 'down'
+        ];
+
+
+        var currentTrack = '';
+        var currentTrackXY = '';
+        var gameActive = false;
+
+
+        // info variables
+        var lifes = 150;
+        var time = 0;
+
+        //towerMenu variables and upgrade variablse
+        var towerMenuActive = false;
+        var upgradeMenuActive = false;
+        var targetingActive = '';
+        var targetingList = ['1st', 'strong', 'last'];
+        var upgradeLength = 6;
+        var targetingWidth = 0;
+        var upgrading = '';
+        var rangeCircleRadius = 0; //range of dicrle to be drawn over upgrade menu so players can see range
+        var rangeCircleX = 0;
+        var rangeCircleY = 0;
+        var rCircleTime = 3000; // when adding a tower this is how long it shows range circle for
+        var soldierAct = false;
+        var iceMakerAct = false;
+        var sniperOrginalAct = false;
+        var fireBWaterGAct = false;
+        var randomDiceAct = false;
+        var upGsActive = [0, 0];
+
+
+        var tMenuX = 0; //actual menu xps
+        var tMenuY = 0; //actual menu ypos
+        var tMenuSquareX = 0;
+        var tMenuSquareY = 0;
+        var tMenuGridX = 0; //grid point of Menu xpos
+        var tMenuGridY = 0; //grid poing of Menu Yposs
+
+        var towerNames = ['soldierCost10$', 'iceMakerCost10$', 'sniperOrginalCost10$', 'fireBWaterGCost10$',
+            'randomDiceCost10$'
+        ];
+
+        var twrNames = ['soldier', 'iceMaker', 'sniperOrginal', 'fireBWaterG',
+            'randomDice'
+        ];
+
+
+
+        var soldierUpgradeNames = [
+            'attackSpeedx2',
+            'smallMachineGun',
+            'assaultRifle',
+            'MInigun',
+            'range',
+            'ShotGun',
+            'grenade',
+            'nuke'
+        ];
+        var iceMakerUpgradeNames = [
+            'attackSpeed',
+            'betterSlow',
+            'iceNowPops',
+            'longerSlow',
+            'towerPierce',
+            'giantSnowBall'
+        ];
+        var sniperOrginalUpgradeNames = [ // need to make all of them the same length
+            'pierce',
+            'dblMoabDamage',
+            'Mega Pierce',
+            'attackspeed',
+            'more Attackspeed',
+            'semiAutoSniper'
+        ];
+        var fireBWaterGUpgradeNames = [
+            'peirce',
+            'attackSpeed'
+        ];
+        var randomDiceUpgradeNames = [
+            'peirce',
+            'attackSpeed'
+        ];
+
+
+        // .replace(/[^0-9]/g, '');.replace(/[^0-9]/g, '');.replace(/[^0-9]/g, '');.replace(/[^0-9]/g, '');.replace(/[^0-9]/g, ''); //todo cost money
+        //tower vareiabels
+        var Towers = [];
+        var towerCount = towerNames.length;
+        var towerWidth = 9.7;
+        var upgradeWidth = 7;
+        var tFontS = gridSize * 2.5 / 3;
+        var tColor = 'grey';
+        var tFont = 'px Ariel';
+        //projectile variables
+        var Projectiles = [];
+        var projectileId = 0;
+
+        //tower common variables
+        //var tower = [attackSpeedvariable/attackspeedconstant/perice/range/damdge/borderColor/bulletSpeed/bulletSize/bulletCOlor/targeting,popPower,/timerofeffect/effect]
+        var soldier = [0.5, 2, 1, gridSize * 2.5, 1, 'brown', gridSize / 18, gridSize * 0.14, 'brown',
+            '1st', 1, [0, 'none']
+        ];
+        var iceMaker = [0.6, 2, 0, gridSize * 3, 1, 'lightGrey', gridSize / 5, gridSize * 0.2, 'white', 'strong', 0, [
+            frameRate, 'slow'
+        ]];
+        var sniperOrginal = [0.7, 2, 1, TotalGridSize * 10, 1, 'black', gridSize / 9, gridSize * 0.1, 'black', '1st', 1,
+            [0, 'none']
+        ];
+        var fireBWaterG = [6, 2, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st', 1, [0,
+            'none'
+        ]];
+
+        var randomDice = [6, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', 1, [0,
+            'none'
+        ]];
+
+        //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
+        // var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards                             3,6,total*10,4,3
+        //teirr 3 more shards  teir 4 bigger ball to little ball to lots of shardes teir 5abality ice ball
+        //rolls down track killing every baloon and half of moab; work();
+        // sniper shot with perice
+        //presedtion gaurds
+        //
+        // var
+
+        // track variables
+        var trackWidth = gridSize;
+        var trackL = '';
+        var gridAmount = '';
+        var gridDirection = '';
+        var xa = 0; //xa and ya used for track cooradanets
+        var ya = TotalGridSize / 2 + 2 * gridSize - gridSize / 2;
+        var xa2 = 0; //the 2nd one is for starting x,y
+        var ya2 = TotalGridSize / 2 + 2 * gridSize - gridSize / 2;
+
+
+        //track variables
+        var Circles = [];
+        var circleId = [0];
+        var size = 3; ///rbe is red ballon equivelent / damdge
+        //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
+        var redSpeed = gridSize / 50;
+        var redSize = gridSize / 5; // /5
+        var redBorderS = gridSize / 15;
+        var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1, 0, 0, 1, 1];
+        var blueCircle = [xa2, ya2, redSize, 'rgb(11,196,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2,
+            1
+        ];
+        var greenCircle = [xa2, ya2, redSize, 'rgb(0,155,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 3, 1];
+        var yellowCircle = [xa2, ya2, redSize, 'rgb(255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.2, 0, 0, 4,
+            1
+        ];
+        var pinkCircle = [xa2, ya2, redSize, 'rgb(255,182,194,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.5, 0, 0, 5,
+            1
+        ];
+        var blackCircle = [xa2, ya2, redSize / 2, 'rgb(0,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 11,
+            1
+        ];
+        var purpleCircle = [xa2, ya2, redSize, 'rgb(28,0,128,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3, 0, 0, 11,
+            1
+        ];
+        var whiteCircle = [xa2, ya2, redSize / 3 * 2, 'rgb(255,255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 2, 0,
+            0,
+            11, 1
+        ];
+        var leadCircle = [xa2, ya2, redSize, 'rgb(105,105,105,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed, 0, 0, 23, 1];
+        var zebraCircle = [xa2, ya2, redSize / 2.2, 'rgb(0,1,0,1)', redBorderS * 14, 'rgb(255,255,255,1)', redSpeed *
+            1.8,
+            0,
+            0, 23, 1
+        ];
+        var rainbowCircle = [xa2, ya2, redSize / 2.2, 'rgb(255,255,0,1)', redBorderS * 14, 'rgb(28,0,128,1)', redSpeed *
+            2.2,
+            0, 0, 47, 1
+        ];
+        var ceramicCircle = [xa2, ya2, redSize, 'rgb(100,65,54,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 2.5, 0,
+            0,
+            104, 10
+        ];
+        var moabCircle = [xa2, ya2, redSize * 8, 'rgb(1, 196, 255)', redBorderS, 'rgb(255,255,255,1)', redSpeed, 0, 0,
+            381,
+            200
+        ];
+        var bfbCircle = [xa2, ya2, redSize * 15, 'rgb(255,1,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.25, 0,
+            0,
+            381, 200
+        ];
+        var zomgCircle = [xa2, ya2, redSize * 18, 'rgb(0,0,1,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.18, 0,
+            0,
+            381, 200
+        ];
+        var ddtCircle = [xa2, ya2, redSize * 5, 'rgb(6,6,7,1)', redBorderS, 'rgb(105,105,105,1)', redSpeed * 2.75, 0, 0,
+            381, 200
+        ];
+        var badCircle = [xa2, ya2, redSize * 25, 'rgb(254,182,195,1)', redBorderS, 'rgb(255,182,195,1)', redSpeed *
+            0.18, 0,
+            0, 381, 200
+        ];
+        // https://bloons.fandom.com/wiki/Bloons_TD_6_Bloons_Stats
+        var nextCircle = [
+            ['rgb(255,0,0,1)', [1, 0]],
+            ['rgb(11,196,255,1)', [1, 'red']],
+            ['rgb(0,155,0,1)', [1, 'blue']],
+            ['rgb(255,255,1)', [1, 'green']],
+            ['rgb(255,182,194,1)', [1, 'yellow']],
+            ['rgb(0,0,0,1)', [2, 'pink']],
+            ['rgb(28,0,128,1)', [2, 'pink']],
+            ['rgb(255,255,255,1)', [2, 'pink']],
+            ['rgb(105,105,105,1)', [2, 'black']],
+            ['rgb(0,1,0,1)', [2, 'black']],
+            ['rgb(255,255,0,1)', [2, 'zebra']],
+            ['rgb(100,65,54,1)', [2, 'rainbow']],
+            ['rgb(1, 196, 255)', [4, 'ceramic']],
+            ['rgb(255,1,0,1)', [4, 'moab']],
+            ['rgb(0,0,1,1)', [4, 'bfb']],
+            ['rgb(6,6,7,1)', [4, 'ceramic']],
+            ['rgb(254,182,195,1)', [2, 'zomg']]
+        ];
+
+        var nextCircleNames = [
+            ['red', [1, 0]],
+            ['blue', [1, 'red']],
+            ['green', [1, 'blue']],
+            ['yellow', [1, 'green']],
+            ['pink', [1, 'yellow']],
+            ['black', [2, 'pink']],
+            ['purple', [2, 'pink']],
+            ['white', [2, 'pink']],
+            ['lead', [2, 'black']],
+            ['zebra', [2, 'black']],
+            ['rainbow', [2, 'zebra']],
+            ['ceramic', [2, 'rainbow']],
+            ['moab', [4, 'ceramic']],
+            ['bfb', [4, 'moab']],
+            ['zomg', [4, 'bfb']],
+            ['dtd', [4, 'ceramic']],
+            ['bad', [2, 'zomg']]
+        ];
+
+
+        //red blue grteen yellow pink balck purple white lead zebra rainbow ceramic   moab  bfb     zomg, ,      dtd        bad
+        //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
+
+        function mainloop() {
+            colorRect(0, 0, canvas.width, canvas.height, 'blue');
+            drawGrid(canvas.width, canvas.height, 'grid');
+            if (gameActive == false) {
+                currentTrack = JSON.parse(JSON.stringify(track2));
+                currentTrackXY = JSON.parse(JSON.stringify(track2));
+                gameActive = true;
             }
-          }
-        }
 
-        if (towerMenuActive == false) {
-          if (onTrack == false) {
-            ////will need to add an if statement //
-            if (onTower) {
-              console.log('upgradTower');
+            drawTrack();
+            drawCircles();
+            drawScore();
+            if (Towers.length > 0) {
+                drawTowers();
+                runTowers();
+            }
+
+            if (towerMenuActive) {
+                drawTowerMenu(towerNames, 'grey');
+            } else if (upgradeMenuActive) {
+                var x = '';
+
+                for (var i = 0; i < towerNames.length; i++) {
+                    if (eval(twrNames[i] + 'Act') == true) {
+                        x = twrNames[i] + 'UpgradeNames';
+                        upgradeLength = (eval(x)).length;
+                    }
+                }
+
+
+
+                // console.log(x +'thisis x');
+                drawTowerMenu(x, 'green');
+            }
+        } //end of mainloop function()
+
+        var c = 0;
+        setInterval(function () {
+
+            //will be used to send circles on a timer
+            if (c <= 1) {
+                addCircle('yellow');
+            } else if (c < 6) {
+                addCircle('ceramic');
+                c = 0;
+            } else if (c < 3) {
+                addCircle('green');
+            } else if (c < 4) {
+                addCircle('yellow');
+            } else if (c < 5) {
+                addCircle('black');
+            } else if (c < 6) {
+                addCircle('purple');
+            } else if (c < 7) {
+                addCircle('white');
+            } else if (c < 8) {
+                addCircle('lead');
+            } else if (c < 9) {
+                addCircle('ceramic');
+            } else if (c < 10) {
+                addCircle('moab');
+            } else if (c < 11) {
+                addCircle('bfb');
+            } else if (c < 12) {
+                addCircle('zomg');
+            } else if (c < 13) {
+                addCircle('ddt');
+            } else if (c < 14) {
+                addCircle('bad');
+                c = 0;
+            }
+
+            c++;
+        }, 1400); //speed
+
+
+        function drawTowerMenu(items, c) {
+
+
+            ctx.font = tFontS + tFont;
+            ctx.fillStyle = tColor; //might make change color based of level of upgrade
+
+            if (items == towerNames) {
+                for (var i = 0; i < towerCount; i++) { //todo upgrades
+                    ctx.fillText(items[i], tMenuX, gridSize / 1.5 + tMenuY + gridSize * i);
+                }
             } else {
-              towerMenu([columnClicked * gridSize, rowClicked * gridSize]);
+
+
+                // console.log(items);
+                // console.log(items);
+                for (var i = 0; i < 5; i++) { //todo upgrades
+                    //need to push tower 
+                    if (i == 0) {
+                        var b = (eval(items))[upGsActive[0]];
+                    } else if (i == 1) {
+                        var b = (eval(items))[upgradeLength / 2 + upGsActive[1]];
+                    } else {
+                        var b = targetingActive;
+                    }
+                    //else targeting option
+
+                    if (i < 3) {
+                        if (i == 2) {
+                            var a = i + 1
+                        } else {
+                            var a = i;
+                        }
+                        ctx.fillText(b, tMenuX, gridSize / 1.5 + tMenuY + gridSize * a);
+                    } else {
+                        if (targetingActive == '1st') {
+                            targetingWidth = 2;
+                        } else if (targetingActive == 'strong') {
+                            targetingWidth = 3;
+                        } else if (targetingActive == 'last') {
+                            targetingWidth = 2;
+                        }
+
+                        ctx.fillText('a', tMenuX + targetingWidth * gridSize + gridSize * (i - 4) + gridSize * 0.3,
+                            gridSize / 1.5 + tMenuY + gridSize * 3);
+                    }
+                }
+
+                drawCircle(rangeCircleX, rangeCircleY, rangeCircleRadius, 'rgb(123,123,123,0.321)', 3,
+                    'rgb(244,244,244,0.321)');
+            }
+            ctx.fillStyle = "c";
+            ctx.fillRect(tMenuSquareX * gridSize, tMenuSquareY * gridSize, gridSize, gridSize);
+        }
+
+        function addCircle(c) {
+            var type = eval(c + 'Circle');
+            let a = circleId[0];
+            Circles.push(new circle(type[0], type[1], type[2], type[3], type[4], type[5], type[6], type[7], type[8],
+                type[9],
+                [type[10]], [a])); //[pushs]each thing from circle arrary
+            circleId[0] += 1; ///frist thing from circle id eg from 1,2,2,2 gets 0
+
+        }
+        // [xa2, ya2, redSize, 'rgb(11, 196, 255)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2, 1];
+        // x = 0,
+        //             y = 0,
+        //             r = 0,
+        //             c = '',
+        //             borderW = '',
+        //             borderC = '',
+        //             speed = 0,
+        //             numberCo = 0,
+        //             nextCo = 0,
+        //             height = 0,
+        //             rbe = 0,
+        //             health= 0,
+        //             distanceTraveled=0,
+        //             id = 0
+        // x,y,id,c
+        function addCircle2(x, y, numberCo, nextCo, id, c, count, speed, effect) {
+            var type = eval(c + 'Circle');
+            let b = circleId[0];
+
+            // console.log(count,id);
+
+            for (var a = 0; a < count; a++) {
+                if (a == 0) {
+                    id.push(a); // is pushing when i dnt need
+                } else if (a > 0) {
+                    id[id.length - 1] = a;
+                }
+                var testCircle = new circle(x, y, '', '', '', '', speed, numberCo, nextCo, '', '', '', effect);
+                for (i = 0; i < a * 25 - speed; i++) {
+                    testCircle.followTrack();
+                }
+                x = testCircle.x;
+                y = testCircle.y;
+                numberCo = testCircle.numberCo;
+                nextCo = testCircle.nextCo;
+                // id = [id];
+                // console.log(id);
+
+
+                // console.log(id + ' test two');
+                Circles.push(new circle(x, y, type[2], type[3], type[4], type[5], type[6], numberCo, nextCo, type[9],
+                    [type[10]], JSON.parse(JSON.stringify(id)), [effect[0], effect[1]]
+                )); //[pushs]each thing from circle arrary
             }
 
-          } // else { will be to add traps
-        } else {
-          // else if ((rowClicked == tMenuGridY || rowClicked == tMenuGridY + 1 || rowClicked == tMenuGridY + 2) && ) {
-          if (columnClicked == tMenuGridX || columnClicked == tMenuGridX + 1 || columnClicked == tMenuGridX + 2) {
 
-            for (i = 0; i < towerCount; i++) {
-              if (rowClicked == tMenuGridY + i) {
-                addTower(i)
-              }
-            }
-          }
 
-          towerMenuActive = false;
+
+
+
+        } //end of addcircle
+
+        function drawCircles() {
+            Circles.forEach(function (circle) {
+                circle.followTrack(1);
+            });
+
+            Circles.forEach(circle => circle.draw()); //drawas circles
+
         }
 
 
-      });
-
-      setInterval(mainloop, 1000 / frameRate);
 
 
 
-    } // end of onloead function()
+
+        function addTower(x) {
+            var towerType = eval(twrNames[x]);
+            Towers.push(new tower(tMenuSquareX * gridSize + gridSize / 2, tMenuSquareY * gridSize + gridSize / 2,
+                towerType[
+                    0], towerType[1], towerType[2],
+                towerType[3], towerType[4], towerType[5], towerType[6], towerType[7], towerType[8], towerType[
+                    9], towerType[
+                    10], towerType[11]));
+
+        }
 
 
-    var mouseX, mouseY;
+        function upgradeTower(tower, path) { //tower to be upgraded and what path 
 
-    function getMousePosition(canvas, evt) {
-      var rect = canvas.getBoundingClientRect();
-      mouseX = event.clientX - rect.left;
-      mouseY = event.clientY - rect.top;
-    } //end of getMOusdePos funtion ()
+            soldierAct
 
 
-    var track = ['right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up', 'up',
-      'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right',
-      'right', 'down', 'down', 'down', 'right', 'right', 'right', 'right',
-      'right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up', 'up',
-      'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right',
-      'right', 'right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up', 'up',
-      'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down', 'down', 'down', 'down', 'left', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
-      'down', 'down', 'down', 'down', 'down',
-      'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left',
-      'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
-      'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
-      'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
-      'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
-      'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
-      'up', 'up', 'up', 'up', 'up', 'up', 'up',
-      'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right',
-      'right',
-      'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
-      'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
-      'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
-      'down', 'down', 'down', 'down', 'down', 'down', 'down'
+            if (soldierAct) { //soldier upgrade
+                if (path == 0) { //left path
+                    if (tower.upgrades[0] == 0) { //tier 1    attack Speed
+                        tower.attackSpeed *= 2;
+                    } else if (tower.upgrades[1] <
+                        2) { //still changes upgrade menu when clicking on them // posiilby will make clones of upgrade 
+                        //name menu whcih will have a current upgrade menu which will change to include finishided path otherwise will just make op towers availible
+
+                        if (tower.upgrades[0] == 1) { //teir 2   // smg
+                            tower.bulletSize *= 0.8;
+                            tower.attackSpeed *= 2;
+                            tower.bulletSpeed *= 1.8;
+                        } else if (tower.upgrades[0] == 2) { //teir 3  // asault rifle
+                            tower.bulletSize *= 2;
+                            tower.pierce += 1;
+                            tower.attackSpeed *= 0.8;
+                            tower.poppingPower += 1;
+                        } else if (tower.upgrades[0] == 3) { // tier 4 //minigun
+                            tower.poppingPower -= 1;
+                            tower.attackSpeed *= 15;
+                            tower.bulletSize *= 1.3;
 
 
-    ];
-
-    var track2 = ['right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
-      'down', 'down', 'down','right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
-      'down', 'down', 'down','right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-      'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
-      'down', 'down', 'down'
-    ];
-
-
-    var currentTrack = '';
-    var currentTrackXY = '';
-    var gameActive = false;
-
-
-    // info variables
-    var lifes = 150;
-    var time = 0;
-
-    //towerMenu variables
-    var towerMenuActive = false;
-    var tMenuX = 0; //actual menu xps
-    var tMenuY = 0; //actual menu ypos
-    var tMenuSquareX = 0;
-    var tMenuSquareY = 0;
-    var tMenuGridX = 0; //grid point of Menu xpos
-    var tMenuGridY = 0; //grid poing of Menu Yposs
-    var towerNames = ['soldier', 'iceMaker', 'sniperOrginal', 'fireboy', 'watergirl', 'randomDice'];
-
-    //tower vareiabels
-    var Towers = [];
-    var towerCount = towerNames.length;
-    var towerWidth = 5;
-    var tFontS = gridSize * 2.5 / 3;
-    var tColor = 'grey';
-    var tFont = 'px Ariel';
-    //projectile variables
-    var Projectiles = [];
-
-    //tower common variables
-    //var tower = [attackSpeedvariable/attackspeedconstant/perice/range/damdge/borderColor/bulletSpeed/bulletSize/bulletCOlor/targeting/maxRange]
-    var soldier = [frameRate / 60, 2, 1, gridSize * 1.8, 1, 'brown', gridSize / 50, gridSize * 0.2, 'brown', '1st',
-      gridSize * 3.6
-    ];
-    var iceMaker = [60, 2, 4, gridSize * 3, 4, 'lightGrey', gridSize / 50, gridSize * 0.2, 'white', '1st', gridSize *
-    6];
-    var sniperOrginal = [0.1, 5, 10, TotalGridSize * 10, 10, 'black', gridSize / 150, gridSize * 2, 'black', '1st',
-      TotalGridSize * 10
-    ];
-    var fireboy = [20, 2, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st', gridSize * 4];
-    var watergirl = [20, 2, 1, gridSize * 2, 1, 'blue', gridSize / 35, gridSize * 0.2, 'lightBlue', '1st', gridSize *
-    4];
-    var randomDice = [50, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', gridSize *
-      3.6
-    ]
-    //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
-    // var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards                             3,6,total*10,4,3
-    //teirr 3 more shards  teir 4 bigger ball to little ball to lots of shardes teir 5abality ice ball
-    //rolls down track killing every baloon and half of moab; work();
-    // sniper shot with perice
-    //presedtion gaurds
-    //
-    // var
-
-    // track variables
-    var trackWidth = gridSize;
-    var trackL = '';
-    var gridAmount = '';
-    var gridDirection = '';
-    var xa = 0; //xa and ya used for track cooradanets
-    var ya = TotalGridSize / 2 + 2 * gridSize - gridSize / 2;
-    var xa2 = 0; //the 2nd one is for starting x,y
-    var ya2 = TotalGridSize / 2 + 2 * gridSize - gridSize / 2;
-
-
-    //track variables
-    var Circles = [];
-    var size = 3; ///rbe is red ballon equivelent / damdge
-    //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
-    var redSpeed = gridSize / 50;
-    var redSize = gridSize; // /5
-    var redBorderS = gridSize / 15;
-    var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1, 0, 0, 1, 1];
-    var blueCircle = [xa2, ya2, redSize, 'rgb(11, 196, 255)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2, 1];
-    var greenCircle = [xa2, ya2, redSize, 'rgb(0,155,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 3, 1];
-    var yellowCircle = [xa2, ya2, redSize, 'rgb(255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.2, 0, 0, 4, 1];
-    var pinkCircle = [xa2, ya2, redSize, 'rgb(255,182,194,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.5, 0, 0, 5, 1];
-    var blackCircle = [xa2, ya2, redSize / 2, 'rgb(0,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 11, 1];
-    var purpleCircle = [xa2, ya2, redSize, 'rgb(28,0,128,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3, 0, 0, 11, 1];
-    var whiteCircle = [xa2, ya2, redSize / 3 * 2, 'rgb(255,255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 2, 0, 0,
-      11, 1
-    ];
-    var leadCircle = [xa2, ya2, redSize, 'rgb(105,105,105,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed, 0, 0, 23, 1];
-    var zebraCircle = [xa2, ya2, redSize / 2, 'rgb(0,0,0,1)', redBorderS * 2, 'rgb(255,255,255,1)', redSpeed * 1.8, 0,
-      0, 23, 1
-    ];
-    var rainbowCircle = [xa2, ya2, redSize / 2, 'rgb(255,255,0,1)', redBorderS * 2, 'rgb(28,0,128,1)', redSpeed * 2.2,
-      0, 0, 47, 1
-    ];
-    var ceramicCircle = [xa2, ya2, redSize, 'rgb(100,65,54,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 2.5, 0, 0,
-      104, 10
-    ];
-    var moabCircle = [xa2, ya2, redSize * 8, 'rgb(1, 196, 255)', redBorderS, 'rgb(255,255,255,1)', redSpeed, 0, 0, 381,
-      200
-    ];
-    var bfbCircle = [xa2, ya2, redSize * 15, 'rgb(255,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.25, 0, 0,
-      381, 200
-    ];
-    var zomgCircle = [xa2, ya2, redSize * 18, 'rgb(0,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.18, 0, 0,
-      381, 200
-    ];
-    var ddtCircle = [xa2, ya2, redSize * 5, 'rgb(6,6,7,1)', redBorderS, 'rgb(105,105,105,1)', redSpeed * 2.75, 0, 0,
-      381, 200
-    ];
-    var badCircle = [xa2, ya2, redSize * 25, 'rgb(255,182,194,1)', redBorderS, 'rgb(255,182,194,1)', redSpeed * 0.18, 0,
-      0, 381, 200
-    ];
-    // https://bloons.fandom.com/wiki/Bloons_TD_6_Bloons_Stats
-  var nextCircle = [['red',[0,0]],['blue',[1,'red']],['green',[1,'blue']], ['yellow',[1,'green']], ['pink',[1,'yellow']], ['black',[2,'pink']], ['purple',[2,'pink']], ['white',[2,'pink']],
-   ['lead',[2,'black']], ['zebra',[2,'black']],['rainbow',[2,'zebra']], ['cermaic',[2,'rainbow']], ['moab',[4,'ceramic']], ['bfb',[4,'moab']],['zomg',[4,'bfb']], ['dtd',[4,'ceramic']], ['bad',[2,'zomg']]];
-    //red blue grteen yellow pink balck purple white lead zebra rainbow ceramic   moab  bfb     zomg, ,      dtd        bad
-    //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
-
-    function mainloop() {
-      colorRect(0, 0, canvas.width, canvas.height, 'blue');
-      drawGrid(canvas.width, canvas.height, 'grid');
-      if (gameActive == false) {
-        currentTrack = JSON.parse(JSON.stringify(track2));
-        currentTrackXY = JSON.parse(JSON.stringify(track2));
-        gameActive = true;
-      }
-
-      drawTrack();
-      drawCircles();
-      drawScore();
-      if (Towers.length > 0) {
-        drawTowers();
-        runTowers();
-      }
-
-      if (towerMenuActive) {
-        drawTowerMenu();
-      }
-    } //end of mainloop function()
-
-    var c = 0;
-    setInterval(function () {
-
-      //will be used to send circles on a timer
-      if (c < 1) {
-        addCircle('red');
-      } else if (c < 2) {
-        addCircle('blue');
-      } else if (c < 3) {
-        addCircle('green');
-      } else if (c < 4) {
-        addCircle('yellow');
-      } else if (c < 5) {
-        addCircle('black');
-      } else if (c < 6) {
-        addCircle('purple');
-      } else if (c < 7) {
-        addCircle('white');
-      } else if (c < 8) {
-        addCircle('lead');
-      } else if (c < 9) {
-        addCircle('ceramic');
-      } else if (c < 10) {
-        addCircle('moab');
-      } else if (c < 11) {
-        addCircle('bfb');
-      } else if (c < 12) {
-        addCircle('zomg');
-      } else if (c < 13) {
-        addCircle('ddt');
-      } else if (c < 14) {
-        addCircle('bad');
-        c = 0;
-      }
-
-      c++;
-    }, 2500); //speed
-
-
-    function drawTowerMenu() {
-      ctx.font = tFontS + tFont;
-      ctx.fillStyle = tColor;
-
-      for (i = 0; i < towerCount; i++) {
-        ctx.fillText(towerNames[i], tMenuX, gridSize / 1.5 + tMenuY + gridSize * i);
-      }
-
-      ctx.fillStyle = "darkGreen";
-      ctx.fillRect(tMenuSquareX * gridSize, tMenuSquareY * gridSize, gridSize, gridSize);
-    }
-
-    function addCircle(x) {
-      var type = eval(x + 'Circle');
-      Circles.push(new circle(type[0], type[1], type[2], type[3], type[4], type[5], type[6], type[7], type[8], type[9],
-        [type[10]], type[11], type[12])); //[pushs]each thing from circle arrary
-    }
-
-
-    function drawCircles() {
-      Circles.forEach(function (circle) {
-        circle.followTrack(1);
-      });
-
-      Circles.forEach(circle => circle.draw()); //drawas circles
-
-    }
-
-    function addTower(x) {
-      var towerType = eval(towerNames[x]);
-      Towers.push(new tower(tMenuSquareX * gridSize + gridSize / 2, tMenuSquareY * gridSize + gridSize / 2, towerType[
-        0], towerType[1], towerType[2],
-        towerType[3], towerType[4], towerType[5], towerType[6], towerType[7], towerType[8], towerType[9], towerType[
-          10]));
-    }
-
-    var what = true;
-
-    function drawTowers() {
-      Towers.forEach(tower => tower.draw());
-    }
-
-    var circleMissing = false;
-
-    function runTowers() { //this draws the towers and creates projectiles
-      Towers.forEach(function (tower) {
-          if (tower.coolDown <= 0) {
-            // todo
-            //will check tower targeting array here and sort array based of targeting to chekc circles in correct order
-            let dTraveledCircles = JSON.parse(JSON.stringify(Circles));
-            // Circles[2].distanceTraveled
-            dTraveledCircles.sort(function (a, b) {
-              let A = a.distanceTraveled + a.height;
-              let B = b.distanceTraveled + a.height;
-              if (A < B) {
-                return +1;
-              }
-              if (A > B) {
-                return -1;
-              }
-              if (A == B) {
-                return 0;
-              }
-            })
-
-            for (i = 0; i < dTraveledCircles.length; i++) {
-              circleMissing = false;
-              if ((dTraveledCircles[i].x > tower.x + tower.width / 2 - tower.range && dTraveledCircles[i].x < tower
-                  .x +
-                  tower.width / 2 + tower.range) //x range
-                &&
-                (dTraveledCircles[i].y > tower.y + tower.height / 2 - tower.range && dTraveledCircles[i].y < tower.y +
-                  tower.height + tower.range)) { //y range
-                // Projectiles.push(new projectile(tower.x,tower.y,tower.pierce,tower.damage,tower.bulletSize,tower.bulletSpeed,tower.bulletColor));
-
-                //need to change if stament above to fit
-                var rad = 180 / Math.PI;
-                //preditoin for circle   <+<+<=<=,+,=<==,,=
-                var gradient = (Math.atan((dTraveledCircles[i].y - tower.y) / (dTraveledCircles[i].x - tower.x)));
-                if (dTraveledCircles[i].x - dTraveledCircles[i].speed > tower
-                  .x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
-                  var directionX = 'right';
-                } else if (dTraveledCircles[i].x + dTraveledCircles[i].speed < tower.x) {
-                  var directionX = 'left';
-                } else {
-
-                  var directionX = 'horizontal';
-                }
-
-                if (dTraveledCircles[i].y - dTraveledCircles[i].speed > tower.y) {
-                  var directionY = 'down';
-                } else if (dTraveledCircles[i].y + dTraveledCircles[i].speed < tower.y) {
-                  var directionY = 'up'; //somehting wrong with direciotns
-                } else {
-
-                  var directionY = 'verticle';
-                }
-                var testProjectile = new projectile(tower.x, tower.y, tower.pierce,
-                  tower
-                  .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
-                  gradient,0);
-
-                var testCircle = new circle(dTraveledCircles[i].x, dTraveledCircles[i].y, dTraveledCircles[i].r, '',
-                  dTraveledCircles[i].borderW, '', dTraveledCircles[i].speed,
-                  dTraveledCircles[i].numberCo, dTraveledCircles[i].nextCo, dTraveledCircles[i].height,
-                  dTraveledCircles[i].rbe, dTraveledCircles.health, 0); // am making a clone
-                //need to test if this owrks
-
-
-                for (var a = 2000, b = i; a > 0; a--) {
-                  // console.log('count');
-
-                  gradient = (Math.atan((testCircle.y - tower.y) / (testCircle.x - tower
-                    .x)));
-
-                  if (testCircle.x - testCircle.speed > tower
-                    .x) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
-                    directionX = 'right';
-                  } else if (testCircle.x + testCircle.speed < tower.x) {
-                    directionX = 'left';
-                  } else {
-                    directionX = 'horizontal';
-                  }
-
-                  if (testCircle.y - testCircle.speed > tower.y) {
-                    directionY = 'down';
-                  } else if (testCircle.y + testCircle.speed < tower.y) {
-                    directionY = 'up'; //somehting wrong with direciotns
-                  } else {
-
-                    directionY = 'verticle';
-                  }
-                  testProjectile = new projectile(tower.x, tower.y, tower.pierce, tower
-                    .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
-                    gradient);
-
-                  var count = 2001 - a;
-                  testProjectile.move(count);
-                  testCircle.followTrack();
-
-                  if ((testCircle.x > tower.x + tower.width / 2 - tower.maxRange && testCircle.x <
-                      tower.x +
-                      tower.width / 2 + tower.maxRange) //x range
-                    &&
-                    (testCircle.y > tower.y + tower.height / 2 - tower.maxRange &&testCircle.y < tower
-                      .y +
-                      tower.height + tower.maxRange)) {
-                      
-            // cant be bo0ther re weriritiengdfgjdff
-                      } else {
-                        circleMissing = true;
-                      }
-
-
-                    if ((testProjectile.x <= testCircle.x + 4.5 && testProjectile.x >= testCircle
-                        .x - 4.5) &&
-                      (testProjectile.y <= testCircle.y + 4.5 && testProjectile.y >= testCircle.y -
-                        4.5)) {
-                      a = 0;
-                    } else if (circleMissing) {
-                      a = 0;
+                        }
                     }
 
+                    tower.upgrades[0] += 1;
 
-                  }
-                  if (circleMissing == false) {
-                    Projectiles.push(new projectile(tower.x, tower.y, tower.pierce, tower
-                      .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor, directionX, directionY,
-                      gradient));
-                    what = false;
-                    tower.coolDown = frameRate;
-                    // Projectiles.push('hello');
-                    // x=0, y=0,pierce= 0damage = 0,  bulletSize=0,bulletSpeed = 0, bulletColor = ''
-                    break;
-                  } else {
-                    //will reset loop and target the next circle .. may cause lag not sure
-                  }
+                } else { //right path
+                    if (tower.upgrades[1] == 0) { //tier 1         //range // could make a bomb... new class;
+                        tower.range *= 1.3;
+                    } else if (tower.upgrades[0] < 2) {
 
+                        if (tower.upgrades[1] == 1) {
+                            tower.bulletSpeed *= 1.8;
+                            tower.twerEffect = [7, 'shotGun'];
+                        } else if (tower.upgrades[1] == 2) {
+                            tower.twerEffect.push(frameRate * 7, 'grenade');
 
+                            //will make a grenage get made hree // teri4
+                        } //teir wil be a tactile nuke abiltiy if i decide to do abiltiys otherwise just being explosion.
+
+                    }
+                    tower.upgrades[1] += 1;
                 }
-              }
-            } else { //end of cool down check
-              tower.coolDown -= tower.attackSpeed;
+            } //jkjkjk
+
+            if (iceMakerAct) { //icemaker upgrades
+                if (path == 0) { //left path
+                    if (tower.upgrades[0] == 0) { //tier 1 
+                        tower.attackSpeed *= 1.4; //atttackspeed ;                                            
+                    } else if (tower.upgrades[0] == 1) { //teir 2  // 
+                        tower.twerEffect[1] = 'slow2'; // more effective slow;
+                    } else if (tower.upgrades[0] == 2) { //teir 3
+                        tower.poppingPower += 1; //pops circles
+                    } //ice shards teir 4
+                    tower.upgrades[0] += 1;
+
+                } else { //right path
+                    if (tower.upgrades[1] == 0) { //tier 1  attack speed
+                        tower.twerEffect[0] += frameRate * 1; //extra second
+                    } else if (tower.upgrades[1] == 1) { //tweri 2  
+                        tower.pierce += 1; //pierce
+                        tower.bulletSize *= 1.3;
+                        tower.range *= 1.3;
+                    } else if (tower.upgrades[1] == 2) { // tier 3
+                        tower.bulletSize *= 5; //giant snow ball launcher
+                        tower.pierce += 12;
+                        tower.range *= 2;
+                        tower.bulletSpeed *= 0.4;
+                    } //tier 4 will make snowball go down track dealing 10 damage or so to every circle on track with cd
+                    tower.upgrades[1] += 1;
+                }
+            } //
+
+
+
+
+            if (sniperOrginalAct) { //sniiper upgrade
+                if (path == 0) { //left path
+                    if (tower.upgrades[0] == 0) { //tier 1
+                        tower.pierce += 1;
+                    } else if (tower.upgrades[0] == 1) { //teir 2
+                        tower.damage = 2;
+                    } else if (tower.upgrades[0] == 2) { //teir 3
+                        tower.bulletSize *= 2;
+                        tower.pierce = 30;
+                    }
+                    tower.upgrades[0] += 1;
+
+                } else { //right path
+                    if (tower.upgrades[1] == 0) { //tier 1
+                        tower.attackSpeed *= 1.1;
+                    } else if (tower.upgrades[1] == 1) {
+                        tower.attackSpeed *= 1.2;
+                    } else if (tower.upgrades[1] == 2) {
+                        tower.attackSpeed *= 30;
+                    }
+                    tower.upgrades[1] += 1;
+                }
+            } //
+
+        }
+
+        var what = true;
+
+        function drawTowers() {
+            Towers.forEach(tower => tower.draw());
+        }
+
+        var circleMissing = false;
+
+        function runTowers() { //this draws the towers and creates projectiles
+            Towers.forEach(function (tower) {
+
+                // if (tower.twerEffect.length > 2 && Circles.length > 0) {
+                    (tower.twerEffect.length > 2 && tower.twerEffect[2]>0)
+                //     if (tower.twerEffect[2] > 0) {
+                //         tower.twerEffect[2] -= 1;
+                //     } else {
+
+                //         var dTraveledCircles = JSON.parse(JSON.stringify(Circles));
+                //         sortCircles(dTraveledCircles,1);
+
+                //         for (i = 0; i < dTraveledCircles.length; i++) {
+                //             if ((dTraveledCircles[i].x > tower.x + tower.width / 2 - tower.range &&
+                //                     dTraveledCircles[i].x < tower
+                //                     .x +
+                //                     tower.width / 2 + tower.range) //x range
+                //                 &&
+                //                 (dTraveledCircles[i].y > tower.y + tower.height / 2 - tower.range &&
+                //                     dTraveledCircles[i].y < tower.y +
+                //                     tower.height + tower.range)) {
+
+
+
+
+
+                //             }
+                //         }
+                //         console.log('newGrenadesldjf'); //new exposlison(dTravedCircles)
+                //         tower.twerEffect[2] = frameRate * 7;
+                //     }
+                // }
+
+                    if(tower.twerEffect.length>2) {
+                        tower.twerEffect[2] -=1;
+                    }
+                    
+
+                if (tower.coolDown <= 0 ||tower.twerEffect[2]<=0 && Circles.length > 0) {
+
+                    //ghghgh    //will check tower targeting array here and sort array based of targeting to chekc circles in correct order
+                    var dTraveledCircles = JSON.parse(JSON.stringify(Circles));
+
+                    sortCircles(dTraveledCircles,0);
+
+
+
+                    // if(dTraveledCircles.length>50) {
+                    //   // dTraveledCircles.splice(0,dTraveledCircles.length-4)
+                    //   dTraveledCircles.splice(0,dTraveledCircles.length-1);
+
+                    // }
+                    for (i = 0; i < dTraveledCircles.length; i++) {
+                        circleMissing = false;
+                        if ((dTraveledCircles[i].x > tower.x + tower.width / 2 - tower.range &&
+                                dTraveledCircles[i].x < tower
+                                .x +
+                                tower.width / 2 + tower.range) //x range
+                            &&
+                            (dTraveledCircles[i].y > tower.y + tower.height / 2 - tower.range &&
+                                dTraveledCircles[i].y < tower.y +
+                                tower.height + tower.range)) { //y range
+                            // Projectiles.push(new projectile(tower.x,tower.y,tower.pierce,tower.damage,tower.bulletSize,tower.bulletSpeed,tower.bulletColor));
+
+                            //need to change if stament above to fit
+                            var rad = 180 / Math.PI;
+                            //preditoin for circle   <+<+<=<=,+,=<==,,=
+                            var gradient = (Math.atan((dTraveledCircles[i].y - tower.y) / (
+                                dTraveledCircles[i]
+                                .x - tower.x)));
+                            if (dTraveledCircles[i].x - dTraveledCircles[i].speed > tower
+                                .x
+                            ) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
+                                var directionX = 'right';
+                            } else if (dTraveledCircles[i].x + dTraveledCircles[i].speed < tower.x) {
+                                var directionX = 'left';
+                            } else {
+
+                                var directionX = 'horizontal';
+                            }
+
+                            if (dTraveledCircles[i].y - dTraveledCircles[i].speed > tower.y) {
+                                var directionY = 'down';
+                            } else if (dTraveledCircles[i].y + dTraveledCircles[i].speed < tower.y) {
+                                var directionY = 'up'; //somehting wrong with direciotns
+                            } else {
+
+                                var directionY = 'verticle';
+                            }
+                            var testProjectile = new projectile(tower.x, tower.y, tower.pierce,
+                                tower
+                                .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor,
+                                directionX,
+                                directionY,
+                                gradient, tower.range, tower.poppingPower, 'nothing');
+
+                            var testCircle = new circle(dTraveledCircles[i].x, dTraveledCircles[i].y,
+                                dTraveledCircles[i].r, '',
+                                dTraveledCircles[i].borderW, '', dTraveledCircles[i].speed,
+                                dTraveledCircles[i].numberCo, dTraveledCircles[i].nextCo,
+                                dTraveledCircles[
+                                    i].height,
+                                dTraveledCircles[i].rbe, dTraveledCircles.health, dTraveledCircles[i]
+                                .effects
+                            ); // am making a clone
+                            //need to test if this owrks
+
+                            for (var a = 2000, b = i; a > 0; a--) {
+                                // console.log('count');
+
+                                gradient = (Math.atan((testCircle.y - tower.y) / (testCircle.x - tower
+                                    .x)));
+
+                                if (testCircle.x - testCircle.speed > tower
+                                    .x
+                                ) { ///this is to find which direction it is traveling in will repeat later / add to the for loop below
+                                    directionX = 'right';
+                                } else if (testCircle.x + testCircle.speed < tower.x) {
+                                    directionX = 'left';
+                                } else {
+                                    directionX = 'horizontal';
+                                }
+
+                                if (testCircle.y - testCircle.speed > tower.y) {
+                                    directionY = 'down';
+                                } else if (testCircle.y + testCircle.speed < tower.y) {
+                                    directionY = 'up'; //somehting wrong with direciotns
+                                } else {
+
+                                    directionY = 'verticle';
+                                }
+                                testProjectile = new projectile(tower.x, tower.y, tower.pierce, tower
+                                    .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor,
+                                    directionX, directionY,
+                                    gradient, tower.range, tower.poppingPower, 'nothing');
+
+                                var count = 2001 - a;
+                                testProjectile.move(count);
+                                testCircle.followTrack();
+
+                                if ((testCircle.x > tower.x + tower.width / 2 - tower.range &&
+                                        testCircle.x <
+                                        tower.x +
+                                        tower.width / 2 + tower.range) //x range
+                                    &&
+                                    (testCircle.y > tower.y + tower.height / 2 - tower.range &&
+                                        testCircle
+                                        .y < tower
+                                        .y +
+                                        tower.height + tower.range)) {
+                                    // cant be bo0ther re weriritiengdfgjdff
+                                } else {
+                                    circleMissing = true;
+                                }
+
+
+                                if ((testProjectile.x <= testCircle.x + 4 && testProjectile.x >=
+                                        testCircle
+                                        .x - 4) &&
+                                    (testProjectile.y <= testCircle.y + 4 && testProjectile.y >=
+                                        testCircle
+                                        .y -
+                                        4)) {
+                                    a = 0;
+
+                                } else if (circleMissing) {
+                                    a = 0;
+                                }
+
+
+                            }
+                            if (circleMissing == false) {
+                                if(tower.coolDown <= 0) {
+                                Projectiles.push(new projectile(tower.x, tower.y, tower.pierce, tower
+                                    .damage, tower.bulletSize, tower.bulletSpeed, tower
+                                    .bulletColor,
+                                    directionX, directionY,
+                                    gradient, tower.range, tower.poppingPower, [tower.twerEffect[0],tower.twerEffect[1]]));
+                                projectileId += 1;
+                                if (tower.twerEffect[1] == 'shotGun') {
+                                    if (tower.twerEffect[0] > 0) {
+                                        tower.coolDown = 1;
+                                        tower.twerEffect[0] -= 1;
+                                    } else {
+                                        tower.twerEffect[0] = 7; //amount of shotgun shells
+                                        tower.coolDown = frameRate;
+                                    }
+                                } else {
+                                    tower.coolDown = frameRate;
+                                }
+                            }   else {
+
+                                //neew projectile pushing tower effect 2/3  [tower.twerEffect[2],tower.twerEffect[3]] [tower.twerEffect[2],tower.twerEffect[3]] [tower.twerEffect[2],tower.twerEffect[3]] will make it do exposion in projecitles
+                               console.log('newGrenadesldjf'); //new exposlison(dTravedCircles)
+                               // just relized bomb could just be a projecitle effect that makes it circle and alsoe makes it explode instead 
+                                tower.twerEffect[2] = frameRate*7;
+
+
+                            }
+                                // var hitId = dTraveledCircles[i].id;
+
+                                for (x = 0, i = i; x < Circles
+                                    .length; x++
+                                ) { //finds actual existing circle to say that its getting hit so muitople projectiles dont target it
+                                    var a = dTraveledCircles[i].id;
+                                    var b = Circles[x].id;
+                                    if (JSON.stringify(Circles[x].id) == JSON.stringify(dTraveledCircles[i]
+                                            .id)) {
+                                        Circles[x].hit += 1;
+                                        Circles[x].hitPs.push(Projectiles[Projectiles.length - 1].id);
+                                    }
+                                }
+
+                                // Projectiles.push('hello');
+                                // x=0, y=0,pierce= 0damage = 0,  bulletSize=0,bulletSpeed = 0, bulletColor = ''
+                                break;
+                            } else {
+                                //will reset loop and target the next circle .. may cause lag not sure
+                            }
+
+
+                        }
+                    }
+                } else { //end of cool down check
+                    tower.coolDown -= tower.attackSpeed;
+                }
+            });
+
+            if (Projectiles.length > 0) {
+                Projectiles.forEach(projectile => projectile.draw(1));
+                Projectiles.forEach(projectile => projectile.move(1));
             }
-          });
 
-        if (Projectiles.length > 0) {
-          Projectiles.forEach(projectile => projectile.draw(1));
-          Projectiles.forEach(projectile => projectile.move(1));
+        } //end of run towers
+
+
+
+
+        function sortCircles(x,y) {
+            x.sort(function (a, b) {
+                if (tower.targeting == '1st') {
+                    var A = a.distanceTraveled;
+                    var B = b.distanceTraveled;
+                    targetN = 1;
+                } else if (tower.targeting == 'last') {
+                    var A = a.distanceTraveled;
+                    var B = b.distanceTraveled;
+                    targetN = -1;
+                } else {
+                    var A = a.rbe;
+                    var B = b.rbe;
+                    targetN = 1;
+                }
+                
+              
+                 let AB = a.hit;      
+                let BB = b.hit;
+    
+              
+                // if(y==0) {        //this is so that projecitles will prioritise targeitng based of how many projectiles currently targeting each circle
+                //  let AB = a.hit;        //while when greneade being created goes dircetly for what is being targeted as is explison.
+                // let BB = b.hit;
+                // }    else {
+                //     let AB = A;
+                //     let BB = B;
+                //     let A = a.hit;
+                //     let B = b.hit;
+                // }
+
+
+                // console.log(A);
+                //this  sorts them by how many projectiles are targeting them and if have equat sorts by destanceTraveled to reduce amounts of shots mist and make more satsfiytng
+                //this also allows towers to to not target the same circle making progression smother.
+                //todo later might make a megga 1st targetin weher always targets first circle no matter what
+                if (AB < BB) {
+                    return -1;
+                } else if (AB > BB) {
+                    return +1;
+                } else if (AB == BB) {
+                    if (A < B) {
+                        return +1 * targetN;
+                    } else if (A > B) {
+                        return -1 * targetN;
+                    } else if (A == B) {
+                        if (tower.targeting == 'strong') {
+                            if (a.distanceTraveled < b.distanceTraveled) {
+                                return +1;
+                            } else if (a.distanceTraveled > b.distanceTraveled) {
+                                return -1;
+                            } else if (A == B) {
+                                return 0;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    }
+                }
+            })
+
         }
 
-      } //end of run towers
+        function drawTrack() { // to draw the track
+
+            trackL = currentTrack.length;
+            gridAmount = currentTrack.length;
+            ctx.strokeStyle = 'rgb(71,67,77)';
+            ctx.lineWidth = trackWidth;
 
 
-      function drawTrack() { // to draw the track
+            ctx.beginPath();
+            ctx.moveTo(xa2, ya2);
 
-        trackL = currentTrack.length;
-        gridAmount = currentTrack.length;
-        ctx.strokeStyle = 'rgb(71,67,77)';
-        ctx.lineWidth = trackWidth;
+            for (a = 0; a < gridAmount * 2; a++) {
+                var i = a - gridAmount;
+                // console.log(i);
+                let change = 1;
+                if (i == gridAmount - 1 || i == 0) {
+                    change = 1.5;
+                } //this makes it that the 1st and last line a 1.5 tiem longer to
+                //problem wherer track stops and stars half way inbetween grid points
+
+                gridDirection = currentTrack[i];
+                if (gridDirection == 'up') {
+                    currentTrack[i] = [xa, ya - gridSize * change];
+                    currentTrackXY[i] = [xa, ya - gridSize];
+                    ya -= gridSize * change;
+                } else if (gridDirection == 'down') {
+                    currentTrack[i] = [xa, ya + gridSize * change];
+                    currentTrackXY[i] = [xa, ya + gridSize];
+                    ya += gridSize;
+                } else if (gridDirection == 'left') {
+                    currentTrack[i] = [xa - gridSize * change, ya];
+                    currentTrackXY[i] = [xa - gridSize, ya];
+                    xa -= gridSize * change;
+                } else if (gridDirection == 'right') {
+                    currentTrack[i] = [xa + gridSize * change, ya];
+                    currentTrackXY[i] = [xa + gridSize, ya];
+                    xa += gridSize * change;
+                }
+
+            }
+            gridAmount = 0;
 
 
-        ctx.beginPath();
-        ctx.moveTo(xa2, ya2);
+            for (var i = 0; i < trackL; i++) {
 
-        for (a = 0; a < gridAmount * 2; a++) {
-          var i = a - gridAmount;
-          // console.log(i);
-          let change = 1;
-          if (i == gridAmount - 1 || i == 0) {
-            change = 1.5;
-          } //this makes it that the 1st and last line a 1.5 tiem longer to
-          //problem wherer track stops and stars half way inbetween grid points
+                ctx.lineTo(currentTrack[i][0], currentTrack[i][1]);
+            }
 
-          gridDirection = currentTrack[i];
-          if (gridDirection == 'up') {
-            currentTrack[i] = [xa, ya - gridSize * change];
-            currentTrackXY[i] = [xa, ya - gridSize];
-            ya -= gridSize * change;
-          } else if (gridDirection == 'down') {
-            currentTrack[i] = [xa, ya + gridSize * change];
-            currentTrackXY[i] = [xa, ya + gridSize];
-            ya += gridSize;
-          } else if (gridDirection == 'left') {
-            currentTrack[i] = [xa - gridSize * change, ya];
-            currentTrackXY[i] = [xa - gridSize, ya];
-            xa -= gridSize * change;
-          } else if (gridDirection == 'right') {
-            currentTrack[i] = [xa + gridSize * change, ya];
-            currentTrackXY[i] = [xa + gridSize, ya];
-            xa += gridSize * change;
-          }
+
+            ctx.stroke();
+
+
+        } //end of draw Track
+
+        ///to do create tower of the godskine
+
+        function towerMenu(a, x) { //menu type,posiostin and y is upgrades
+            let width = '';
+            if (a == 'towerMenu') { // will change it draw upgrade Menu based of array which i am yet to creates
+                // console.log(x);
+
+                width = towerWidth;
+                height = towerCount;
+            } else if (a == 'upGradeMenu') { //todotodotodo will have to redo this whole thing
+                width = upgradeWidth;
+                height = 3;
+            }
+            //else { trap menu for when on track//todo later}
+
+            if (Math.floor(x[0] / gridSize) < gridCount - width) { //for when menu on left of screen draws to right
+                tMenuX = x[0] + gridSize * 2;
+            } else {
+                tMenuX = x[0] - gridSize * 6.4;
+            }
+
+            if (Math.floor(x[1] / gridSize) < gridCount - towerCount + 1) {
+                if (Math.floor(x[1] / gridSize) < 1) {
+                    tMenuY = x[1] + gridSize;
+                } else {
+                    tMenuY = x[1];
+                }
+            } else {
+                tMenuY = x[1] - gridSize * height;
+            }
+            tMenuSquareX = Math.floor(x[0] / gridSize);
+            tMenuSquareY = Math.floor(x[1] / gridSize);
+            tMenuGridX = Math.floor(tMenuX / gridSize);
+            tMenuGridY = Math.floor(tMenuY / gridSize);
+
+        } //end of twoerMenu(x) function
+
+        var drawGrid = function (w, h, id) {
+
+            var vStep = canvas.height / gridCount;
+            var hStep = canvas.width / gridCount;
+
+            ctx.canvas.width = w;
+            ctx.canvas.height = h;
+
+
+            for (x = 0; x <= w; x += hStep) { //drawas a line for entrei height width gaps of hstep
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, h);
+
+                for (y = 0; y <= h; y += vStep) { //draws horizalt lines with vStep gaps
+                    var d = x % 150;
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(w, y);
+                }
+            }
+
+            ctx.strokeStyle = "rgb(150,150,150, 0.5)";
+
+            ctx.stroke();
+
+
+        }; //end of drawGrid Funtion()
+
+
+        function colorRect(x, y, w, h, c) { //to draw things
+            ctx.fillStyle = c;
+            ctx.fillRect(x, y, w, h);
+        } //end of colorRect
+
+        function drawCircle(x, y, radius, c, borderWidth, borderColor) {
+            ctx.strokeStyle = borderColor;
+            ctx.lineWidth = borderWidth;
+            ctx.fillStyle = c;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.fill();
 
         }
-        gridAmount = 0;
+
+        function drawScore() {
+            ctx.font = "30px Times New Roman";
+            ctx.fillStyle = "red";
+
+            ctx.fillText("lives: " + lifes, canvas.width / 4, 30);
+            ctx.fillText("time: " + Math.floor(time / frameRate), canvas.width / 1.8, 30);
+
+            // if (gameActive ) {
+            time += 1;
+            // }
 
 
-        for (var i = 0; i < trackL; i++) {
-
-          ctx.lineTo(currentTrack[i][0], currentTrack[i][1]);
         }
-
-
-        ctx.stroke();
-
-
-      } //end of draw Track
-
-      ///to do create tower of the godskine
-
-      function towerMenu(x) {
-
-        // console.log(x);
-        towerMenuActive = true;
-        if (Math.floor(x[0] / gridSize) < gridCount - towerWidth) { //for when menu on left of screen draws to right
-          tMenuX = x[0] + gridSize * 2;
-        } else {
-          tMenuX = x[0] - gridSize * 4;
-        }
-
-        if (Math.floor(x[1] / gridSize) < gridCount - towerCount + 1) {
-          if (Math.floor(x[1] / gridSize) < 1) {
-            tMenuY = x[1] + gridSize;
-          } else {
-            tMenuY = x[1];
-          }
-        } else {
-          tMenuY = x[1] - gridSize * towerCount;
-        }
-        tMenuSquareX = Math.floor(x[0] / gridSize);
-        tMenuSquareY = Math.floor(x[1] / gridSize);
-        tMenuGridX = Math.floor(tMenuX / gridSize);
-        tMenuGridY = Math.floor(tMenuY / gridSize);
-
-      } //end of twoerMenu(x) function
-
-      var drawGrid = function (w, h, id) {
-
-        var vStep = canvas.height / gridCount;
-        var hStep = canvas.width / gridCount;
-
-        ctx.canvas.width = w;
-        ctx.canvas.height = h;
-
-
-        for (x = 0; x <= w; x += hStep) { //drawas a line for entrei height width gaps of hstep
-          ctx.moveTo(x, 0);
-          ctx.lineTo(x, h);
-
-          for (y = 0; y <= h; y += vStep) { //draws horizalt lines with vStep gaps
-            var d = x % 150;
-            ctx.moveTo(0, y);
-            ctx.lineTo(w, y);
-          }
-        }
-
-        ctx.strokeStyle = "rgb(150,150,150, 0.5)";
-
-        ctx.stroke();
-
-
-      }; //end of drawGrid Funtion()
-
-
-      function colorRect(x, y, w, h, c) { //to draw things
-        ctx.fillStyle = c;
-        ctx.fillRect(x, y, w, h);
-      } //end of colorRect
-
-      function drawCircle(x, y, radius, c, borderWidth, borderColor) {
-        ctx.strokeStyle = borderColor;
-        ctx.lineWidth = borderWidth;
-        ctx.fillStyle = c;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-
-      }
-
-      function drawScore() {
-        ctx.font = "30px Times New Roman";
-        ctx.fillStyle = "red";
-
-        ctx.fillText("lifes: " + lifes, canvas.width / 4, 30);
-        ctx.fillText("time: " + Math.floor(time / frameRate), canvas.width / 1.8, 30);
-
-        // if (gameActive ) {
-        time += 1;
-        // }
-
-
-      }
-  </script>
+    </script>
 
 </body>
 
 
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-  }
+    * {
+        margin: 0;
+        padding: 0;
+    }
 
-  /* canvas {
+    /* canvas {
     width: 650px;
     height: 650px;
   } */

@@ -1,6 +1,4 @@
 class tower { //this will creawte circles which go around track
-
-
   constructor(
   x=0,
   y=0,
@@ -14,9 +12,11 @@ class tower { //this will creawte circles which go around track
   bulletSize = 0,
   bulletColor = '',
   targeting = '',
-  maxRange = '',
+  poppingPower = 0,
+  twerEffect = [0,'none'],
   width = 0,
   height = 0,
+  upgrades = [0,0]
   ) {
     this.x=x;
     this.y=y;
@@ -30,9 +30,11 @@ class tower { //this will creawte circles which go around track
     this.bulletSize = bulletSize;
     this.bulletColor = bulletColor;
     this.targeting = targeting;
-    this.maxRange = maxRange;
+    this.poppingPower = poppingPower;
+    this.twerEffect = twerEffect;
     this.width = gridSize;
     this.height = gridSize;
+    this.upgrades = [0,0];
   }
 
 
