@@ -6,19 +6,19 @@ class circle { //this will creawte circles which go around track
     r = 0,
     c = '',
     borderW = '',
-    borderC   ='',   
+    borderC = '',
     speed = 0,
     numberCo = 0,
-    height = 0, 
+    height = 0,
     rbe = 0,
     health = 0,
     id = 0,
-    effects =[0,'none'],
-    distanceTraveled=0,
-    nextCo = 0,
+    effects = [0, 'none'],
     hit = 0,
+    distanceTraveled = 0,
+    nextCo = 0,
     hitPs = [],
- ) {
+  ) {
 
     this.x = Number(x);
     this.y = Number(y);
@@ -30,12 +30,12 @@ class circle { //this will creawte circles which go around track
     this.numberCo = numberCo;
     this.height = Number(height);
     this.rbe = rbe;
-    this.health = health;  //order might be wrong causing health to be defautlt value
-    this.id = id; 
+    this.health = health; //order might be wrong causing health to be defautlt value
+    this.id = id;
     this.effects = effects;
-    this.distanceTraveled=0;
-    this.nextCo = [currentTrack[numberCo][0], currentTrack[numberCo][1]];
     this.hit = hit;
+    this.distanceTraveled = distanceTraveled;
+    this.nextCo = [currentTrack[numberCo][0], currentTrack[numberCo][1]];
     this.hitPs = hitPs;
   }
 
@@ -48,51 +48,55 @@ class circle { //this will creawte circles which go around track
 
 
 
-  
+
   draw() {
 
-    var {x,y,r,c,borderW,borderC,} = this
+    var {
+      x,
+      y,
+      r,
+      c,
+      borderW,
+      borderC,
+    } = this
 
-    ctx.save() //so doesnt save over other ones
+    ctx.save() //so doesnt save over other ones/ safer
 
     drawCircle(x, y, r, c, borderW, borderC)
     ctx.restore()
   }
 
+
   followTrack() { // might add followTrack(i) if i have time
 
 
-   
-       if((this.effects[1] =='slow'|| this.effects[1] == 'slow2')&& this.rbe<=104) {
-         if(this.effects[1] == 'slow') {
-          var speed = this.speed *0.5;
-         }  else if (this.effects[1] == 'slow2') {
-           var speed = this.speed*0.3;
-         }
-        
-        // this.effects[0] = this.effects[0] -  1;
-        for (var i=0; i<Circles.length;i++) {
-          if(Circles[i].x == this.x &&Circles[i].y == this.y&& Circles[i].c == this.c) {
-            
-              Circles[i].effects[0] -= 1;
-              if (Circles[i].effects[0] <=0) {
-                Circles[i].effects = [0,'none'];
-              }
-          }
-        }
 
-      }    else {
-        var speed = this.speed;
+    if (((this.effects[1] == 'slow' || this.effects[1] == 'slow2') && this.rbe <= 104) || this.effects[1] == 'snowBall' && this.rbe < 381) {  
+      if (this.effects[1] == 'slow') {
+        var speed = this.speed * 0.5;
+      } else if (this.effects[1] == 'slow2' || this.effects[1] == 'snowBall') {
+        var speed = this.speed * 0.1;
+      }  
+      
+      this.effects[0] -= 1; /// this is changing tower effects for some reason
+      if (this.effects[0] <= 0) {
+        this.effects = [0,'none'];
       }
+    } else {
+      var speed = this.speed;
+    }
 
     // }
+    // if(this.effects[1] != 'none') {
+    //   this.effects[0] -= 1; // this lowers cooldown of all effects
+    // }
 
-    
-    
+
+
 
 
     if (this.x > this.nextCo[0] + speed || this.x < this.nextCo[0] - speed || this.y < this.nextCo[1] - speed || this.y > this.nextCo[1] + speed) {
- //above checks that circle is not at next point
+      //above checks that circle is not at next point
       this.distanceTraveled += speed;
 
       if (this.x - this.nextCo[0] < -speed) {
@@ -108,35 +112,96 @@ class circle { //this will creawte circles which go around track
       }
 
     } else {
-      if(this.numberCo ==currentTrack.length-1) {
+      if (this.numberCo == currentTrack.length - 1) {
         circleMissing = true;
         //  console.log (this);
-     for (var i=0; i<Circles.length;i++) {
-       if(Circles[i].x == this.x &&Circles[i].y == this.y&& Circles[i].c == this.c) {
-         
-         lifes -= this.rbe;
-         //check for lvies to be 0 and end game
-         delete Circles[i];
-         Circles = Circles.filter(item => item !== undefined);
-       }
-     }
+        for (var i = 0; i < Circles.length; i++) {
+          if (Circles[i].x == this.x && Circles[i].y == this.y && Circles[i].c == this.c) {
+
+            lifes -= this.rbe;
+            //check for lvies to be 0 and end game
+            delete Circles[i];
+            Circles = Circles.filter(item => item !== undefined);
+          }
+        }
 
       } else {
 
-      this.numberCo += 1;
-      this.nextCo = [currentTrack[this.numberCo][0], currentTrack[this.numberCo][1]];
+        this.numberCo += 1;
+        this.nextCo = [currentTrack[this.numberCo][0], currentTrack[this.numberCo][1]];
       }
     }
 
 
 
+    if (this.effects[1] == 'fire') {
+        this.effects[0] -=1;
+
+      if (this.effects[0] <= 0) {
+        this.effects[3] -= 1; // check
+        //burn basec of this.effects[2]
+
+        var newCircle = [];
+        for (var a = 0; a < nextCircle.length; a++) { //this is right//will have to change al this to base it of popping poiewr tododododod todo
+          if (this.c == nextCircle[a][0]) {
+            if (a > 10) {
+              newCircle = nextCircle[a][1];
+            } else {
+              newCircle = nextCircle[a][1];
+              if (this.popPower > 1) {
+                for (var j = 0; j < this.popPower - 1; j++) {
+
+                  for (var g = 0; g < nextCircle.length; g++) {
+
+                    if (JSON.stringify(newCircle[1]) == JSON.stringify(nextCircleNames[g][0])) {
+                      newCircle = nextCircle[g][1];
+                    }
+                  }
+                }
+              }
+              // console.log(newCircle);
+              break;
+            }
+          }
+        }
+
+
+
+        if (newCircle[1] != 0) {
+
+          this.health -= this.health * this.effects[2]; //thsi.effezxtp[2] is popPower of burneffect
+          //  hitCheck();
+
+          if (this.health <= 0) {
+            // console.log(this.id);
+            // // console.log(this);
+            // console.log(this.colls);
+            var cirX = this.x;
+            var cirY = this.y;
+            var cirId = this.id;
+            var numCo = this.numberCo;
+            var nextCo = this.nextCo;
+            var speed = this.speed;
+            // will need to reset the effect timer; effexts [1]
+            this.x = 'hi';
+            Circles = Circles.filter(item => item.x !== 'hi');
+            // for loop into this
+            if (this.effects[3] <=0) {
+              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed,[0,'none']);
+            } else {
+            addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, [fireEffect[0],this.effects[1],this.effects[2],this.effects[3]]);
+            }
+          }
+        }  else {
     
-  }
+          this.x = 'hi';
+          Circles = Circles.filter(item => item.x !== 'hi');
+        }
+        // to damage of this.effects [3] //todo
+      }
+    } // end of fireEffect
 
-
-   
-  
-
+  } // end of followTrack()
 
 
 } // end of circle classs

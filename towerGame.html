@@ -15,7 +15,7 @@
 
     <script type="text/javascript">
         //grid variables
-        var gridCount = 30;
+        var gridCount = 40;
         // cavas.height and width are 600
         var TotalGridSize = 800;
         var gridSize = TotalGridSize / gridCount;
@@ -199,70 +199,69 @@
             mouseX = event.clientX - rect.left;
             mouseY = event.clientY - rect.top;
         } //end of getMOusdePos funtion ()
+// 0 == up
+// 1 == right
+// 2 = down
+// 3 = up
 
-
-        var track = ['right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-            'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up',
-            'up',
-            'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
-            'right',
-            'right', 'down', 'down', 'down', 'right', 'right', 'right', 'right',
-            'right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-            'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up',
-            'up',
-            'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
-            'right',
-            'right', 'right', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-            'right', 'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'left', 'left', 'down', 'up',
-            'up',
-            'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
-            'right',
-            'down', 'down', 'down', 'down', 'down', 'down', 'left', 'down', 'down', 'down', 'down', 'down', 'down',
-            'down',
-            'down', 'down', 'down', 'down', 'down',
-            'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'left',
-            'left',
-            'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
-            'left',
-            'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
-            'left',
-            'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left',
-            'left',
-            'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
-            'up',
-            'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
-            'up',
-            'up', 'up', 'up', 'up', 'up', 'up', 'up',
-            'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right',
-            'right',
-            'right',
-            'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right',
-            'right',
-            'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
-            'down',
-            'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
-            'down',
-            'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down', 'down',
-            'down',
-            'down', 'down', 'down', 'down', 'down', 'down', 'down'
-
-
+        var track = [1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+            1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 0,
+            0,
+            0, 0, 0, 1, 1, 1, 1, 1, 1,
+            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+            1,
+            1, 2, 2, 2, 1, 1, 1, 1,
+            1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+            1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 0,
+            0,
+            0, 0, 0, 1, 1, 1, 1, 1, 1,
+            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+            1,
+            1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+            1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 0,
+            0,
+            0, 0, 0, 1, 1, 1, 1, 1, 1,
+            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+            1,
+            2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2,
+            2,
+            2, 2, 2, 2, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+            3,
+            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+            3,
+            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+            3,
+            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+            3,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0,
+            0, 0, 0, 0, 0, 0, 0,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1,
+            1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            2,
+            2, 2, 2, 2, 2, 2, 2
         ];
 
-        var track2 = ['right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right', 'right', 'right',
-            'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
-            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
-            'right',
-            'right',
-            'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
-            'down', 'down', 'down', 'right', 'up', 'up', 'up', 'up', 'up', 'right', 'right', 'right', 'right',
-            'right',
-            'right',
-            'down', 'down', 'down', 'down', 'down', 'down', 'left', 'left', 'up', 'up', 'up', 'left', 'left',
-            'down', 'down', 'down'
+        var track2 = [1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+            2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 3, 3,
+            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+            1,
+            1,
+            2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 3, 3,
+            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+            1,
+           1,2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 3, 3,2, 2, 2
         ];
 
 
@@ -288,13 +287,19 @@
         var rangeCircleY = 0;
         var rCircleTime = 3000; // when adding a tower this is how long it shows range circle for
         var soldierAct = false;
+        var grenadeTimer = 7;
+        var grenadeMaxRange = 0;
+        var grenadeMaxHit = 10000;
+        var grenadePopPower = 14;
+        var explosionRadius = gridSize * 4;
         var iceMakerAct = false;
         var sniperOrginalAct = false;
         var fireBWaterGAct = false;
+        var fireWaterShotAct = 'crimson';
+        var fireEffect = [frameRate * 2, 'fire', 1, 3]; //burn timer,effect name, popPower, burnsLeft/count;
+        var waterEffect = [1001, 'water', gridSize * 4]; // bounce count, effect name, range
         var randomDiceAct = false;
         var upGsActive = [0, 0];
-
-
         var tMenuX = 0; //actual menu xps
         var tMenuY = 0; //actual menu ypos
         var tMenuSquareX = 0;
@@ -320,7 +325,7 @@
             'range',
             'ShotGun',
             'grenade',
-            'nuke'
+            'greandeShells'
         ];
         var iceMakerUpgradeNames = [
             'attackSpeed',
@@ -367,12 +372,12 @@
             '1st', 1, [0, 'none']
         ];
         var iceMaker = [0.6, 2, 0, gridSize * 3, 1, 'lightGrey', gridSize / 5, gridSize * 0.2, 'white', 'strong', 0, [
-            frameRate, 'slow'
+            frameRate * 5, 'slow'
         ]];
         var sniperOrginal = [0.7, 2, 1, TotalGridSize * 10, 1, 'black', gridSize / 9, gridSize * 0.1, 'black', '1st', 1,
             [0, 'none']
         ];
-        var fireBWaterG = [6, 2, 2, gridSize * 2, 2, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st', 1, [0,
+        var fireBWaterG = [0.01, 2, 1, gridSize * 4, 1, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st', 1, [0,
             'none'
         ]];
 
@@ -508,11 +513,15 @@
         //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
 
         function mainloop() {
+
+
+
+            
             colorRect(0, 0, canvas.width, canvas.height, 'blue');
             drawGrid(canvas.width, canvas.height, 'grid');
             if (gameActive == false) {
-                currentTrack = JSON.parse(JSON.stringify(track2));
-                currentTrackXY = JSON.parse(JSON.stringify(track2));
+                currentTrack = JSON.parse(JSON.stringify(track));
+                currentTrackXY = JSON.parse(JSON.stringify(track));
                 gameActive = true;
             }
 
@@ -547,13 +556,14 @@
         setInterval(function () {
 
             //will be used to send circles on a timer
-            if (c <= 1) {
-                addCircle('yellow');
-            } else if (c < 6) {
-                addCircle('ceramic');
+            if (c <= 10000) {
+                addCircle('blue');
+                // addCircle('ceramic');;     
+            } else if (c <= 2) {
+                addCircle('rainbow');
                 c = 0;
             } else if (c < 3) {
-                addCircle('green');
+                addCircle('green')
             } else if (c < 4) {
                 addCircle('yellow');
             } else if (c < 5) {
@@ -580,7 +590,7 @@
             }
 
             c++;
-        }, 1400); //speed
+        }, 400); //speed
 
 
         function drawTowerMenu(items, c) {
@@ -642,40 +652,24 @@
             let a = circleId[0];
             Circles.push(new circle(type[0], type[1], type[2], type[3], type[4], type[5], type[6], type[7], type[8],
                 type[9],
-                [type[10]], [a])); //[pushs]each thing from circle arrary
+                [type[10]], [a], [0, 'none'], 0, 0)); //[pushs]each thing from circle arrary
             circleId[0] += 1; ///frist thing from circle id eg from 1,2,2,2 gets 0
-
         }
-        // [xa2, ya2, redSize, 'rgb(11, 196, 255)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2, 1];
-        // x = 0,
-        //             y = 0,
-        //             r = 0,
-        //             c = '',
-        //             borderW = '',
-        //             borderC = '',
-        //             speed = 0,
-        //             numberCo = 0,
-        //             nextCo = 0,
-        //             height = 0,
-        //             rbe = 0,
-        //             health= 0,
-        //             distanceTraveled=0,
-        //             id = 0
-        // x,y,id,c
-        function addCircle2(x, y, numberCo, nextCo, id, c, count, speed, effect) {
+
+        function addCircle2(x, y, numberCo, nextCo, id, c, count, speed, distanceTraveled, effect) {
             var type = eval(c + 'Circle');
             let b = circleId[0];
 
             // console.log(count,id);
-
             for (var a = 0; a < count; a++) {
                 if (a == 0) {
                     id.push(a); // is pushing when i dnt need
                 } else if (a > 0) {
                     id[id.length - 1] = a;
                 }
-                var testCircle = new circle(x, y, '', '', '', '', speed, numberCo, nextCo, '', '', '', effect);
-                for (i = 0; i < a * 25 - speed; i++) {
+                var testCircle = new circle(x, y, '', '', '', '', speed, numberCo, nextCo, '', '', '', effect, 0,
+                    distanceTraveled);
+                for (i = 0; i < a * (Math.random() * 500) - speed; i++) {
                     testCircle.followTrack();
                 }
                 x = testCircle.x;
@@ -685,26 +679,21 @@
                 // id = [id];
                 // console.log(id);
 
-
                 // console.log(id + ' test two');
                 Circles.push(new circle(x, y, type[2], type[3], type[4], type[5], type[6], numberCo, nextCo, type[9],
-                    [type[10]], JSON.parse(JSON.stringify(id)), [effect[0], effect[1]]
-                )); //[pushs]each thing from circle arrary
+                    [type[10]], JSON.parse(JSON.stringify(id)), effect, 0, testCircle.distanceTraveled
+                )); //[pushs]each thing from circle arrary[effect[0], effect[1]]
             }
-
-
-
-
-
 
         } //end of addcircle
 
         function drawCircles() {
             Circles.forEach(function (circle) {
-                circle.followTrack(1);
+                circle.followTrack();
             });
 
-            Circles.forEach(circle => circle.draw()); //drawas circles
+            Circles.forEach(circle => circle.draw()); //drawas circle
+
 
         }
 
@@ -764,13 +753,27 @@
                     } else if (tower.upgrades[0] < 2) {
 
                         if (tower.upgrades[1] == 1) {
-                            tower.bulletSpeed *= 1.8;
+                            tower.bulletSpeed *= 1;
                             tower.twerEffect = [7, 'shotGun'];
                         } else if (tower.upgrades[1] == 2) {
-                            tower.twerEffect.push(frameRate * 7, 'grenade');
 
+                            tower.twerEffect.push(0, 'grenade');
+                            grenadeTimer = 3;
+                            // grenadePopPower = 2;
                             //will make a grenage get made hree // teri4
-                        } //teir wil be a tactile nuke abiltiy if i decide to do abiltiys otherwise just being explosion.
+                        } else if (tower.upgrades[1] == 3) {
+                            tower.twerEffect = [7, 'shotNade'];
+                            tower.poppingPower = grenadePopPower;
+                            tower.pierce = 1;
+                            //   /will make grenade shot gun shot gun spray of grenades.
+
+                        }
+
+
+
+
+
+                        //teir wil be a tactile nuke abiltiy if i decide to do abiltiys otherwise just being explosion. 
 
                     }
                     tower.upgrades[1] += 1;
@@ -790,16 +793,17 @@
 
                 } else { //right path
                     if (tower.upgrades[1] == 0) { //tier 1  attack speed
-                        tower.twerEffect[0] += frameRate * 1; //extra second
+                        tower.twerEffect[0] *= 2; //extra seconds
                     } else if (tower.upgrades[1] == 1) { //tweri 2  
                         tower.pierce += 1; //pierce
                         tower.bulletSize *= 1.3;
                         tower.range *= 1.3;
                     } else if (tower.upgrades[1] == 2) { // tier 3
                         tower.bulletSize *= 5; //giant snow ball launcher
-                        tower.pierce += 12;
+                        tower.pierce = 200;
                         tower.range *= 2;
                         tower.bulletSpeed *= 0.4;
+                        tower.twerEffect[1] = 'snowBall';
                     } //tier 4 will make snowball go down track dealing 10 damage or so to every circle on track with cd
                     tower.upgrades[1] += 1;
                 }
@@ -832,6 +836,37 @@
                 }
             } //
 
+
+            if (fireBWaterGAct) { //fire boy and water girl upgrade  //will make one side buff water and fire attacdks that are altinating//fire burn and water bounce
+                if (path == 0) { //left path
+                    if (tower.upgrades[0] == 0) { //tier 1
+                        tower.pierce += 1;
+                    } else if (tower.upgrades[0] == 1) { //teir 2
+                        tower.damage = 2;
+                    } else if (tower.upgrades[0] == 2) { //teir 3
+                        tower.bulletSize *= 2;
+                        tower.pierce = 30;
+                    }
+                    tower.upgrades[0] += 1;
+
+                } else { //right path
+                    if (tower.upgrades[1] == 0) { //tier 1
+                        tower.attackSpeed *= 1.1;
+                    } else if (tower.upgrades[1] == 1) {
+                        tower.attackSpeed *= 1.2;
+                    } else if (tower.upgrades[1] == 2) {
+                        tower.attackSpeed *= 30;
+                    }
+                    tower.upgrades[1] += 1;
+                }
+            } //
+
+            // fireByoy and water girl //dodododdod
+
+            // 1 side will creawte a portal that gets rid of baloons that enter upt ot moab andt dtd
+            //    light beams // ray of doom/ box from gave will be picture that will piont at circles it it targeting.
+            //    cover track in fir and water
+
         }
 
         var what = true;
@@ -846,7 +881,7 @@
             Towers.forEach(function (tower) {
 
                 // if (tower.twerEffect.length > 2 && Circles.length > 0) {
-                    (tower.twerEffect.length > 2 && tower.twerEffect[2]>0)
+                (tower.twerEffect.length > 2 && tower.twerEffect[2] > 0)
                 //     if (tower.twerEffect[2] > 0) {
                 //         tower.twerEffect[2] -= 1;
                 //     } else {
@@ -875,18 +910,77 @@
                 //     }
                 // }
 
-                    if(tower.twerEffect.length>2) {
-                        tower.twerEffect[2] -=1;
-                    }
-                    
+                if (tower.twerEffect[3] == 'grenade') {
+                    tower.twerEffect[2] -= 1;
+                }
 
-                if (tower.coolDown <= 0 ||tower.twerEffect[2]<=0 && Circles.length > 0) {
+
+                if (tower.coolDown <= 0 || tower.twerEffect[2] <= 0 && Circles.length > 0) {
 
                     //ghghgh    //will check tower targeting array here and sort array based of targeting to chekc circles in correct order
                     var dTraveledCircles = JSON.parse(JSON.stringify(Circles));
 
-                    sortCircles(dTraveledCircles,0);
+                    // sortCircles(dTraveledCircles, 0);
 
+                    dTraveledCircles.sort(function (a, b) {
+                        if (tower.targeting == '1st') {
+                            var A = a.distanceTraveled;
+                            var B = b.distanceTraveled;
+                            targetN = 1;
+                        } else if (tower.targeting == 'last') {
+                            var A = a.distanceTraveled;
+                            var B = b.distanceTraveled;
+                            targetN = -1;
+                        } else {
+                            var A = a.rbe;
+                            var B = b.rbe;
+                            targetN = 1;
+                        }
+
+
+                        let AB = a.hit;
+                        let BB = b.hit;
+
+
+                        // if(y==0) {        //this is so that projecitles will prioritise targeitng based of how many projectiles currently targeting each circle
+                        //  let AB = a.hit;        //while when greneade being created goes dircetly for what is being targeted as is explison.
+                        // let BB = b.hit;
+                        // }    else {
+                        //     let AB = A;
+                        //     let BB = B;
+                        //     let A = a.hit;
+                        //     let B = b.hit;
+                        // }
+
+
+                        // console.log(A);
+                        //this  sorts them by how many projectiles are targeting them and if have equat sorts by destanceTraveled to reduce amounts of shots mist and make more satsfiytng
+                        //this also allows towers to to not target the same circle making progression smother.
+                        //todo later might make a megga 1st targetin weher always targets first circle no matter what
+                        if (AB < BB) {
+                            return -1;
+                        } else if (AB > BB) {
+                            return +1;
+                        } else if (AB == BB) {
+                            if (A < B) {
+                                return +1 * targetN;
+                            } else if (A > B) {
+                                return -1 * targetN;
+                            } else if (A == B) {
+                                if (tower.targeting == 'strong') {
+                                    if (a.distanceTraveled < b.distanceTraveled) {
+                                        return +1;
+                                    } else if (a.distanceTraveled > b.distanceTraveled) {
+                                        return -1;
+                                    } else if (A == B) {
+                                        return 0;
+                                    }
+                                } else {
+                                    return 0;
+                                }
+                            }
+                        }
+                    });
 
 
                     // if(dTraveledCircles.length>50) {
@@ -931,9 +1025,14 @@
 
                                 var directionY = 'verticle';
                             }
+                            if (tower.twerEffect[3] == 'grenade') {
+                                var towerBulletSpeed = tower.bulletSpeed / 2;
+                            } else {
+                                var towerBulletSpeed = tower.bulletSpeed;
+                            }
                             var testProjectile = new projectile(tower.x, tower.y, tower.pierce,
                                 tower
-                                .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor,
+                                .damage, tower.bulletSize, towerBulletSpeed, tower.bulletColor,
                                 directionX,
                                 directionY,
                                 gradient, tower.range, tower.poppingPower, 'nothing');
@@ -970,11 +1069,15 @@
                                 } else if (testCircle.y + testCircle.speed < tower.y) {
                                     directionY = 'up'; //somehting wrong with direciotns
                                 } else {
-
                                     directionY = 'verticle';
                                 }
+                                if (tower.twerEffect[3] == 'grenade') {
+                                    var towerBulletSpeed = tower.bulletSpeed / 2;
+                                } else {
+                                    var towerBulletSpeed = tower.bulletSpeed;
+                                }
                                 testProjectile = new projectile(tower.x, tower.y, tower.pierce, tower
-                                    .damage, tower.bulletSize, tower.bulletSpeed, tower.bulletColor,
+                                    .damage, tower.bulletSize, towerBulletSpeed, tower.bulletColor,
                                     directionX, directionY,
                                     gradient, tower.range, tower.poppingPower, 'nothing');
 
@@ -1014,33 +1117,56 @@
 
                             }
                             if (circleMissing == false) {
-                                if(tower.coolDown <= 0) {
-                                Projectiles.push(new projectile(tower.x, tower.y, tower.pierce, tower
-                                    .damage, tower.bulletSize, tower.bulletSpeed, tower
-                                    .bulletColor,
-                                    directionX, directionY,
-                                    gradient, tower.range, tower.poppingPower, [tower.twerEffect[0],tower.twerEffect[1]]));
-                                projectileId += 1;
-                                if (tower.twerEffect[1] == 'shotGun') {
-                                    if (tower.twerEffect[0] > 0) {
-                                        tower.coolDown = 1;
-                                        tower.twerEffect[0] -= 1;
+                                if (tower.coolDown <= 0) {
+                                    if (tower.bulletColor == 'crimson') {
+                                        tower.twerEffect = JSON.parse(JSON.stringify(waterEffect));
+                                        tower.bulletColor = 'skyBlue'
+                                    } else if (tower.bulletColor == 'skyBlue') {
+                                        tower.twerEffect = JSON.parse(JSON.stringify(fireEffect));
+                                        tower.bulletColor = 'crimson';
+                                    }
+                                    //     if(tower.bulletColor == 'crimson') {
+                                    //      tower.bulletColor = 'skyBlue';
+                                    //      tower.twerEffect = waterEffect;
+                                    //  }  else                               if( tower.bulletColor == 'skyBlue'){
+                                    //     tower.bulletColor = 'crimson';
+                                    //     tower.twerEffect = fireEffect;
+                                    //  } 
+
+
+
+                                    Projectiles.push(new projectile(tower.x, tower.y, tower.pierce, tower
+                                        .damage, tower.bulletSize, tower.bulletSpeed, tower
+                                        .bulletColor,
+                                        directionX, directionY,
+                                        gradient, tower.range, tower.poppingPower, JSON.parse(JSON
+                                            .stringify(tower.twerEffect)),projectileId));
+                                    //[tower.twerEffect[0],tower.twerEffect[1]    ]
+                                    projectileId += 1;
+                                    if (tower.twerEffect[1] == 'shotGun' || tower.twerEffect[1] == 'shotNade') {
+                                        if (tower.twerEffect[0] > 0) {
+                                            tower.coolDown = 1;
+                                            tower.twerEffect[0] -= 1;
+                                        } else {
+                                            tower.twerEffect[0] = 7; //amount of shotgun shells
+                                            tower.coolDown = frameRate;
+                                        }
                                     } else {
-                                        tower.twerEffect[0] = 7; //amount of shotgun shells
                                         tower.coolDown = frameRate;
                                     }
                                 } else {
-                                    tower.coolDown = frameRate;
+
+                                    //neew projectile pushing tower effect 2/3  [tower.twerEffect[2],tower.twerEffect[3]] 
+                                    grenadeMaxRange = tower.range;
+                                    Projectiles.push(new projectile(tower.x, tower.y, 0, tower
+                                        .damage, tower.bulletSize, tower.bulletSpeed / 2, tower
+                                        .bulletColor,
+                                        directionX, directionY, gradient, tower.range, grenadePopPower,
+                                        [tower.twerEffect[2], tower.twerEffect[3]],projectileId));
+                                    // tower.twerEffect
+                                    projectileId += 1;
+                                    tower.twerEffect[2] = frameRate * grenadeTimer;
                                 }
-                            }   else {
-
-                                //neew projectile pushing tower effect 2/3  [tower.twerEffect[2],tower.twerEffect[3]] [tower.twerEffect[2],tower.twerEffect[3]] [tower.twerEffect[2],tower.twerEffect[3]] will make it do exposion in projecitles
-                               console.log('newGrenadesldjf'); //new exposlison(dTravedCircles)
-                               // just relized bomb could just be a projecitle effect that makes it circle and alsoe makes it explode instead 
-                                tower.twerEffect[2] = frameRate*7;
-
-
-                            }
                                 // var hitId = dTraveledCircles[i].id;
 
                                 for (x = 0, i = i; x < Circles
@@ -1078,70 +1204,24 @@
         } //end of run towers
 
 
+        function hitCheck() {
+            for (var a = 0; a < Circles
+                .length; a++) { //todo make work when projectiles go of screeen shouldn't be hard just need to check each proje id with Circlehitps[id 1 and 2 and 3]
 
+                for (var b = 0; b < Circles[a].hitPs.length; b++) {
 
-        function sortCircles(x,y) {
-            x.sort(function (a, b) {
-                if (tower.targeting == '1st') {
-                    var A = a.distanceTraveled;
-                    var B = b.distanceTraveled;
-                    targetN = 1;
-                } else if (tower.targeting == 'last') {
-                    var A = a.distanceTraveled;
-                    var B = b.distanceTraveled;
-                    targetN = -1;
-                } else {
-                    var A = a.rbe;
-                    var B = b.rbe;
-                    targetN = 1;
-                }
-                
-              
-                 let AB = a.hit;      
-                let BB = b.hit;
-    
-              
-                // if(y==0) {        //this is so that projecitles will prioritise targeitng based of how many projectiles currently targeting each circle
-                //  let AB = a.hit;        //while when greneade being created goes dircetly for what is being targeted as is explison.
-                // let BB = b.hit;
-                // }    else {
-                //     let AB = A;
-                //     let BB = B;
-                //     let A = a.hit;
-                //     let B = b.hit;
-                // }
+                    if (JSON.stringify(Circles[a].hitPs[b]) == JSON.stringify(this.id)) {
+                        delete Circles[a].hitPs[b];
 
-
-                // console.log(A);
-                //this  sorts them by how many projectiles are targeting them and if have equat sorts by destanceTraveled to reduce amounts of shots mist and make more satsfiytng
-                //this also allows towers to to not target the same circle making progression smother.
-                //todo later might make a megga 1st targetin weher always targets first circle no matter what
-                if (AB < BB) {
-                    return -1;
-                } else if (AB > BB) {
-                    return +1;
-                } else if (AB == BB) {
-                    if (A < B) {
-                        return +1 * targetN;
-                    } else if (A > B) {
-                        return -1 * targetN;
-                    } else if (A == B) {
-                        if (tower.targeting == 'strong') {
-                            if (a.distanceTraveled < b.distanceTraveled) {
-                                return +1;
-                            } else if (a.distanceTraveled > b.distanceTraveled) {
-                                return -1;
-                            } else if (A == B) {
-                                return 0;
-                            }
-                        } else {
-                            return 0;
-                        }
+                        Circles[a].hitPs = Circles[a].hitPs.filter(function (item) {
+                            return item != null;
+                        });
+                        Circles[a].hit -= 1;
                     }
                 }
-            })
-
+            }
         }
+
 
         function drawTrack() { // to draw the track
 
@@ -1164,19 +1244,19 @@
                 //problem wherer track stops and stars half way inbetween grid points
 
                 gridDirection = currentTrack[i];
-                if (gridDirection == 'up') {
+                if (gridDirection == 0) {
                     currentTrack[i] = [xa, ya - gridSize * change];
                     currentTrackXY[i] = [xa, ya - gridSize];
                     ya -= gridSize * change;
-                } else if (gridDirection == 'down') {
+                } else if (gridDirection == 2) {
                     currentTrack[i] = [xa, ya + gridSize * change];
                     currentTrackXY[i] = [xa, ya + gridSize];
                     ya += gridSize;
-                } else if (gridDirection == 'left') {
+                } else if (gridDirection == 3) {
                     currentTrack[i] = [xa - gridSize * change, ya];
                     currentTrackXY[i] = [xa - gridSize, ya];
                     xa -= gridSize * change;
-                } else if (gridDirection == 'right') {
+                } else if (gridDirection ==1) {
                     currentTrack[i] = [xa + gridSize * change, ya];
                     currentTrackXY[i] = [xa + gridSize, ya];
                     xa += gridSize * change;
@@ -1198,6 +1278,7 @@
         } //end of draw Track
 
         ///to do create tower of the godskine
+
 
         function towerMenu(a, x) { //menu type,posiostin and y is upgrades
             let width = '';
