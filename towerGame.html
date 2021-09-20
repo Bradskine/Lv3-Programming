@@ -288,16 +288,17 @@
         var rCircleTime = 3000; // when adding a tower this is how long it shows range circle for
         var soldierAct = false;
         var grenadeTimer = 7;
-        var grenadeMaxRange = 0;
         var grenadeMaxHit = 10000;
-        var grenadePopPower = 14;
+        var grenadePopPower = 0;
         var explosionRadius = gridSize * 4;
         var iceMakerAct = false;
         var sniperOrginalAct = false;
         var fireBWaterGAct = false;
         var fireWaterShotAct = 'crimson';
-        var fireEffect = [frameRate * 2, 'fire', 1, 3]; //burn timer,effect name, popPower, burnsLeft/count;
-        var waterEffect = [1001, 'water', gridSize * 4]; // bounce count, effect name, range
+        var fireEffect = [frameRate * 2, 'fire', 1, 1]; //burn timer,effect name, popPower, burnsLeft/count;
+        var waterEffect = [2,'water',100]; // bounce count, effect name, range
+        var fireEffect2 = [frameRate * 0.3, 'fire', 2, 10]; //burn timer,effect name, popPower, burnsLeft/count;
+        var waterEffect2 = [5, 'water',100]; // bounce count, effect name, range
         var randomDiceAct = false;
         var upGsActive = [0, 0];
         var tMenuX = 0; //actual menu xps
@@ -344,8 +345,12 @@
             'semiAutoSniper'
         ];
         var fireBWaterGUpgradeNames = [
-            'peirce',
-            'attackSpeed'
+           'betterWater',
+           'WaterFireReacition',
+            'reactioncreatsstuff',
+            'betterfire',
+           'greenAcid',
+           'portal'
         ];
         var randomDiceUpgradeNames = [
             'peirce',
@@ -377,12 +382,12 @@
         var sniperOrginal = [0.7, 2, 1, TotalGridSize * 10, 1, 'black', gridSize / 9, gridSize * 0.1, 'black', '1st', 1,
             [0, 'none']
         ];
-        var fireBWaterG = [0.01, 2, 1, gridSize * 4, 1, 'red', gridSize / 35, gridSize * 0.2, 'crimson', '1st', 1, [0,
+        var fireBWaterG = [0.4, 2, 1, gridSize * 10, 1, 'red', gridSize / 18, gridSize * 0.2, 'crimson', '1st', 1, [0,
             'none'
         ]];
 
-        var randomDice = [6, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', 1, [0,
-            'none'
+        var randomDice = [6, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', 1, [111111,
+            'random'
         ]];
 
         //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
@@ -515,13 +520,11 @@
         function mainloop() {
 
 
-
-            
             colorRect(0, 0, canvas.width, canvas.height, 'blue');
             drawGrid(canvas.width, canvas.height, 'grid');
             if (gameActive == false) {
-                currentTrack = JSON.parse(JSON.stringify(track));
-                currentTrackXY = JSON.parse(JSON.stringify(track));
+                currentTrack = JSON.parse(JSON.stringify(track2));
+                currentTrackXY = JSON.parse(JSON.stringify(track2));
                 gameActive = true;
             }
 
@@ -556,12 +559,10 @@
         setInterval(function () {
 
             //will be used to send circles on a timer
-            if (c <= 10000) {
-                addCircle('blue');
-                // addCircle('ceramic');;     
-            } else if (c <= 2) {
+            if (c <= 100) {
+                addCircle('zomg'); 
+            } else if (c <= 2) {       
                 addCircle('rainbow');
-                c = 0;
             } else if (c < 3) {
                 addCircle('green')
             } else if (c < 4) {
@@ -586,11 +587,12 @@
                 addCircle('ddt');
             } else if (c < 14) {
                 addCircle('bad');
-                c = 0;
+            }  else if(c > 14 && c<15) {
+                c = 31232131;
             }
 
             c++;
-        }, 400); //speed
+        }, 4000); //speed
 
 
         function drawTowerMenu(items, c) {
@@ -683,7 +685,13 @@
                 Circles.push(new circle(x, y, type[2], type[3], type[4], type[5], type[6], numberCo, nextCo, type[9],
                     [type[10]], JSON.parse(JSON.stringify(id)), effect, 0, testCircle.distanceTraveled
                 )); //[pushs]each thing from circle arrary[effect[0], effect[1]]
+
+
             }
+
+
+
+
 
         } //end of addcircle
 
@@ -726,7 +734,6 @@
                     } else if (tower.upgrades[1] <
                         2) { //still changes upgrade menu when clicking on them // posiilby will make clones of upgrade 
                         //name menu whcih will have a current upgrade menu which will change to include finishided path otherwise will just make op towers availible
-
                         if (tower.upgrades[0] == 1) { //teir 2   // smg
                             tower.bulletSize *= 0.8;
                             tower.attackSpeed *= 2;
@@ -740,8 +747,6 @@
                             tower.poppingPower -= 1;
                             tower.attackSpeed *= 15;
                             tower.bulletSize *= 1.3;
-
-
                         }
                     }
 
@@ -749,32 +754,27 @@
 
                 } else { //right path
                     if (tower.upgrades[1] == 0) { //tier 1         //range // could make a bomb... new class;
-                        tower.range *= 1.3;
+                        tower.range *= 2.1;
                     } else if (tower.upgrades[0] < 2) {
 
                         if (tower.upgrades[1] == 1) {
                             tower.bulletSpeed *= 1;
                             tower.twerEffect = [7, 'shotGun'];
                         } else if (tower.upgrades[1] == 2) {
-
                             tower.twerEffect.push(0, 'grenade');
                             grenadeTimer = 3;
                             // grenadePopPower = 2;
                             //will make a grenage get made hree // teri4
                         } else if (tower.upgrades[1] == 3) {
                             tower.twerEffect = [7, 'shotNade'];
-                            tower.poppingPower = grenadePopPower;
+                            tower.poppingPower = 0;
+                            tower.damage = 0;
+                            // tower.poppingPower = grenadePopPower;
                             tower.pierce = 1;
                             //   /will make grenade shot gun shot gun spray of grenades.
 
                         }
-
-
-
-
-
                         //teir wil be a tactile nuke abiltiy if i decide to do abiltiys otherwise just being explosion. 
-
                     }
                     tower.upgrades[1] += 1;
                 }
@@ -840,7 +840,7 @@
             if (fireBWaterGAct) { //fire boy and water girl upgrade  //will make one side buff water and fire attacdks that are altinating//fire burn and water bounce
                 if (path == 0) { //left path
                     if (tower.upgrades[0] == 0) { //tier 1
-                        tower.pierce += 1;
+                        // fire projecetiles now use waterEffect
                     } else if (tower.upgrades[0] == 1) { //teir 2
                         tower.damage = 2;
                     } else if (tower.upgrades[0] == 2) { //teir 3
@@ -851,7 +851,7 @@
 
                 } else { //right path
                     if (tower.upgrades[1] == 0) { //tier 1
-                        tower.attackSpeed *= 1.1;
+                        //waterProjectiles now use wate fireeffect;
                     } else if (tower.upgrades[1] == 1) {
                         tower.attackSpeed *= 1.2;
                     } else if (tower.upgrades[1] == 2) {
@@ -880,35 +880,6 @@
         function runTowers() { //this draws the towers and creates projectiles
             Towers.forEach(function (tower) {
 
-                // if (tower.twerEffect.length > 2 && Circles.length > 0) {
-                (tower.twerEffect.length > 2 && tower.twerEffect[2] > 0)
-                //     if (tower.twerEffect[2] > 0) {
-                //         tower.twerEffect[2] -= 1;
-                //     } else {
-
-                //         var dTraveledCircles = JSON.parse(JSON.stringify(Circles));
-                //         sortCircles(dTraveledCircles,1);
-
-                //         for (i = 0; i < dTraveledCircles.length; i++) {
-                //             if ((dTraveledCircles[i].x > tower.x + tower.width / 2 - tower.range &&
-                //                     dTraveledCircles[i].x < tower
-                //                     .x +
-                //                     tower.width / 2 + tower.range) //x range
-                //                 &&
-                //                 (dTraveledCircles[i].y > tower.y + tower.height / 2 - tower.range &&
-                //                     dTraveledCircles[i].y < tower.y +
-                //                     tower.height + tower.range)) {
-
-
-
-
-
-                //             }
-                //         }
-                //         console.log('newGrenadesldjf'); //new exposlison(dTravedCircles)
-                //         tower.twerEffect[2] = frameRate * 7;
-                //     }
-                // }
 
                 if (tower.twerEffect[3] == 'grenade') {
                     tower.twerEffect[2] -= 1;
@@ -938,7 +909,7 @@
                         }
 
 
-                        let AB = a.hit;
+                        let AB = a.hit;   
                         let BB = b.hit;
 
 
@@ -1109,7 +1080,6 @@
                                         .y -
                                         4)) {
                                     a = 0;
-
                                 } else if (circleMissing) {
                                     a = 0;
                                 }
@@ -1119,11 +1089,20 @@
                             if (circleMissing == false) {
                                 if (tower.coolDown <= 0) {
                                     if (tower.bulletColor == 'crimson') {
-                                        tower.twerEffect = JSON.parse(JSON.stringify(waterEffect));
                                         tower.bulletColor = 'skyBlue'
-                                    } else if (tower.bulletColor == 'skyBlue') {
-                                        tower.twerEffect = JSON.parse(JSON.stringify(fireEffect));
+                                        if(tower.upgrades[0] ==  0) {
+                                            tower.twerEffect = JSON.parse(JSON.stringify(waterEffect));
+                                        }  else {
+                                            tower.twerEffect = JSON.parse(JSON.stringify(waterEffect2));
+                                        }
+                                    } else if (tower.bulletColor == 'skyBlue') {            
                                         tower.bulletColor = 'crimson';
+                                        if(tower.upgrades[1] ==  0) {
+                                            tower.twerEffect = JSON.parse(JSON.stringify(fireEffect));
+                                        }  else {
+                                            tower.twerEffect = JSON.parse(JSON.stringify(fireEffect2));
+                                        }
+                                       
                                     }
                                     //     if(tower.bulletColor == 'crimson') {
                                     //      tower.bulletColor = 'skyBlue';
@@ -1157,7 +1136,7 @@
                                 } else {
 
                                     //neew projectile pushing tower effect 2/3  [tower.twerEffect[2],tower.twerEffect[3]] 
-                                    grenadeMaxRange = tower.range;
+                            
                                     Projectiles.push(new projectile(tower.x, tower.y, 0, tower
                                         .damage, tower.bulletSize, tower.bulletSpeed / 2, tower
                                         .bulletColor,
@@ -1172,10 +1151,9 @@
                                 for (x = 0, i = i; x < Circles
                                     .length; x++
                                 ) { //finds actual existing circle to say that its getting hit so muitople projectiles dont target it
-                                    var a = dTraveledCircles[i].id;
-                                    var b = Circles[x].id;
-                                    if (JSON.stringify(Circles[x].id) == JSON.stringify(dTraveledCircles[i]
-                                            .id)) {
+                                    // var a = dTraveledCircles[i].id;
+                                    // var b = Circles[x].id;
+                                    if (JSON.stringify(Circles[x].id) == JSON.stringify(dTraveledCircles[i].id)) {
                                         Circles[x].hit += 1;
                                         Circles[x].hitPs.push(Projectiles[Projectiles.length - 1].id);
                                     }

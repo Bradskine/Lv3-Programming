@@ -39,15 +39,11 @@ class circle { //this will creawte circles which go around track
     this.hitPs = hitPs;
   }
 
-
   get area() { //this is incase i want to compare circles and know whcih one
     // is bigger to put smaller one on top for visual clarity
     return this.radius ^ 2 * Math.PI;
   }
   //might a make a shorcut fucniotn thing for each circle type
-
-
-
 
   draw() {
 
@@ -66,12 +62,9 @@ class circle { //this will creawte circles which go around track
     ctx.restore()
   }
 
-
   followTrack() { // might add followTrack(i) if i have time
 
-
-
-    if (((this.effects[1] == 'slow' || this.effects[1] == 'slow2') && this.rbe <= 104) || this.effects[1] == 'snowBall' && this.rbe < 381) {  
+    if (((this.effects[1] == 'slow' || this.effects[1] == 'slow2' || this.effects[1] == 'snowBall') && this.rbe <= 104)) {  
       if (this.effects[1] == 'slow') {
         var speed = this.speed * 0.5;
       } else if (this.effects[1] == 'slow2' || this.effects[1] == 'snowBall') {
@@ -79,8 +72,10 @@ class circle { //this will creawte circles which go around track
       }  
       
       this.effects[0] -= 1; /// this is changing tower effects for some reason
-      if (this.effects[0] <= 0) {
+      if (this.effects[0] <= 0 ) {
+        console.log('erijwef;ojdf;j');
         this.effects = [0,'none'];
+
       }
     } else {
       var speed = this.speed;
@@ -90,10 +85,6 @@ class circle { //this will creawte circles which go around track
     // if(this.effects[1] != 'none') {
     //   this.effects[0] -= 1; // this lowers cooldown of all effects
     // }
-
-
-
-
 
     if (this.x > this.nextCo[0] + speed || this.x < this.nextCo[0] - speed || this.y < this.nextCo[1] - speed || this.y > this.nextCo[1] + speed) {
       //above checks that circle is not at next point
@@ -132,13 +123,12 @@ class circle { //this will creawte circles which go around track
       }
     }
 
-
-
     if (this.effects[1] == 'fire') {
-        this.effects[0] -=1;
-
+      this.effects[0] -=1;
+      //  if(this.effects[3] <= 0) {
+      //    this.effects = [0,'none'];
+      //  }  else {
       if (this.effects[0] <= 0) {
-        this.effects[3] -= 1; // check
         //burn basec of this.effects[2]
 
         var newCircle = [];
@@ -150,9 +140,7 @@ class circle { //this will creawte circles which go around track
               newCircle = nextCircle[a][1];
               if (this.popPower > 1) {
                 for (var j = 0; j < this.popPower - 1; j++) {
-
                   for (var g = 0; g < nextCircle.length; g++) {
-
                     if (JSON.stringify(newCircle[1]) == JSON.stringify(nextCircleNames[g][0])) {
                       newCircle = nextCircle[g][1];
                     }
@@ -164,8 +152,6 @@ class circle { //this will creawte circles which go around track
             }
           }
         }
-
-
 
         if (newCircle[1] != 0) {
 
@@ -182,14 +168,17 @@ class circle { //this will creawte circles which go around track
             var numCo = this.numberCo;
             var nextCo = this.nextCo;
             var speed = this.speed;
+            var iForgotTHisGrr = this.distanceTraveled;
             // will need to reset the effect timer; effexts [1]
             this.x = 'hi';
             Circles = Circles.filter(item => item.x !== 'hi');
             // for loop into this
+            // this.effects[3] -= 1; // check
+            // console.log(this.effects[3]);
             if (this.effects[3] <=0) {
-              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed,[0,'none']);
-            } else {
-            addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, [fireEffect[0],this.effects[1],this.effects[2],this.effects[3]]);
+              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed,iForgotTHisGrr,[0,'none']);
+            } else { // buged something around here
+            addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed,iForgotTHisGrr, [fireEffect[0],this.effects[1],this.effects[2],this.effects[3]-1]);
             }
           }
         }  else {
@@ -198,7 +187,8 @@ class circle { //this will creawte circles which go around track
           Circles = Circles.filter(item => item.x !== 'hi');
         }
         // to damage of this.effects [3] //todo
-      }
+      // }
+    }
     } // end of fireEffect
 
   } // end of followTrack()
