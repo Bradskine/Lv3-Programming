@@ -199,10 +199,10 @@
             mouseX = event.clientX - rect.left;
             mouseY = event.clientY - rect.top;
         } //end of getMOusdePos funtion ()
-// 0 == up
-// 1 == right
-// 2 = down
-// 3 = up
+        // 0 == up
+        // 1 == right
+        // 2 = down
+        // 3 = up
 
         var track = [1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
             1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 0,
@@ -261,7 +261,7 @@
             2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 3, 3,
             2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
             1,
-           1,2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 3, 3,2, 2, 2
+            1, 2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 3, 3, 2, 2, 2
         ];
 
 
@@ -273,6 +273,8 @@
         // info variables
         var lifes = 150;
         var time = 0;
+        var round = 1;
+        var aCS = false; //all Circles Spawned (for level) so I can chceck when all circle killed to start next round
 
         //towerMenu variables and upgrade variablse
         var towerMenuActive = false;
@@ -289,16 +291,20 @@
         var soldierAct = false;
         var grenadeTimer = 7;
         var grenadeMaxHit = 10000;
-        var grenadePopPower = 0;
+        var grenadePopPower = 20;
         var explosionRadius = gridSize * 4;
         var iceMakerAct = false;
         var sniperOrginalAct = false;
         var fireBWaterGAct = false;
         var fireWaterShotAct = 'crimson';
-        var fireEffect = [frameRate * 2, 'fire', 1, 1]; //burn timer,effect name, popPower, burnsLeft/count;
-        var waterEffect = [2,'water',100]; // bounce count, effect name, range
-        var fireEffect2 = [frameRate * 0.3, 'fire', 2, 10]; //burn timer,effect name, popPower, burnsLeft/count;
-        var waterEffect2 = [5, 'water',100]; // bounce count, effect name, range
+        var acidPitCd = 1000;
+        var acidPitColor = 'green';
+        var acidCount = 30;
+        var fireEffect = [frameRate * 2, 'fireEffect', 1, 2]; //burn timer,effect name, popPower, burnsLeft/count;
+        var waterEffect = [5, 'water', 10000,0]; // bounce count, effect name, range
+        var fireEffect2 = [frameRate * 0.3, 'fireEffect2', 2, 10]; //burn timer,effect name, popPower, burnsLeft/count;
+        var waterEffect2 = [15, 'water', 10000,0]; // bounce count, effect name, range
+        var acidEffect = [frameRate*0.13,'acidEffect',1,12];
         var randomDiceAct = false;
         var upGsActive = [0, 0];
         var tMenuX = 0; //actual menu xps
@@ -345,16 +351,16 @@
             'semiAutoSniper'
         ];
         var fireBWaterGUpgradeNames = [
-           'betterWater',
-           'WaterFireReacition',
+            'betterWater',
+            'WaterFireReacition',
             'reactioncreatsstuff',
             'betterfire',
-           'greenAcid',
-           'portal'
+            'greenAcid',
+            'portal'
         ];
         var randomDiceUpgradeNames = [
-            'peirce',
-            'attackSpeed'
+            'dntclickbreaksbwlowupgradedoesnothing',
+            'godmode+'
         ];
 
 
@@ -371,6 +377,8 @@
         var Projectiles = [];
         var projectileId = 0;
 
+        //trap variables
+
         //tower common variables
         //var tower = [attackSpeedvariable/attackspeedconstant/perice/range/damdge/borderColor/bulletSpeed/bulletSize/bulletCOlor/targeting,popPower,/timerofeffect/effect]
         var soldier = [0.5, 2, 1, gridSize * 2.5, 1, 'brown', gridSize / 18, gridSize * 0.14, 'brown',
@@ -382,11 +390,13 @@
         var sniperOrginal = [0.7, 2, 1, TotalGridSize * 10, 1, 'black', gridSize / 9, gridSize * 0.1, 'black', '1st', 1,
             [0, 'none']
         ];
-        var fireBWaterG = [0.4, 2, 1, gridSize * 10, 1, 'red', gridSize / 18, gridSize * 0.2, 'crimson', '1st', 1, [0,
-            'none'
-        ]];
+        var fireBWaterG = [0.4, 2, 1, gridSize * 10, 1, 'red', gridSize / 18, gridSize * 0.2, 'crimson', '1st', 1,
+            waterEffect
+        ];
 
-        var randomDice = [6, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', 1, [111111,
+
+        var randomDice = [6, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', 1, [
+            111111,
             'random'
         ]];
 
@@ -519,7 +529,7 @@
 
         function mainloop() {
 
-
+            ;
             colorRect(0, 0, canvas.width, canvas.height, 'blue');
             drawGrid(canvas.width, canvas.height, 'grid');
             if (gameActive == false) {
@@ -534,7 +544,10 @@
             if (Towers.length > 0) {
                 drawTowers();
                 runTowers();
+
             }
+
+
 
             if (towerMenuActive) {
                 drawTowerMenu(towerNames, 'grey');
@@ -559,40 +572,64 @@
         setInterval(function () {
 
             //will be used to send circles on a timer
-            if (c <= 100) {
-                addCircle('zomg'); 
-            } else if (c <= 2) {       
-                addCircle('rainbow');
-            } else if (c < 3) {
-                addCircle('green')
-            } else if (c < 4) {
-                addCircle('yellow');
-            } else if (c < 5) {
-                addCircle('black');
-            } else if (c < 6) {
-                addCircle('purple');
-            } else if (c < 7) {
-                addCircle('white');
-            } else if (c < 8) {
-                addCircle('lead');
-            } else if (c < 9) {
-                addCircle('ceramic');
-            } else if (c < 10) {
-                addCircle('moab');
-            } else if (c < 11) {
-                addCircle('bfb');
-            } else if (c < 12) {
-                addCircle('zomg');
-            } else if (c < 13) {
-                addCircle('ddt');
-            } else if (c < 14) {
-                addCircle('bad');
-            }  else if(c > 14 && c<15) {
-                c = 31232131;
+            // if (c <= 15) {
+            //     addCircle('red');
+            //     round = 1;
+            // } else if (c <= 2) {
+            //     round = 2
+            //     addCircle('rainbow');
+            // } else if (c < 3) {
+            //     addCircle('green')
+            // } else if (c < 4) {
+            //     addCircle('yellow');
+            // } else if (c < 5) {
+            //     addCircle('black');
+            // } else if (c < 6) {
+            //     addCircle('purple');
+            // } else if (c < 7) {
+            //     addCircle('white');
+            // } else if (c < 8) {
+            //     addCircle('lead');
+            // } else if (c < 9) {
+            //     addCircle('ceramic');
+            // } else if (c < 10) {
+            //     addCircle('moab');
+            // } else if (c < 11) {
+            //     addCircle('bfb');
+            // } else if (c < 12) {
+            //     addCircle('zomg');
+            // } else if (c < 13) {
+            //     addCircle('ddt');
+            // } else if (c > 13) {
+            //     addCircle('bad');
+            // } else if (c > 77) {
+            //     c = 31232131;
+            // }
+
+
+            if(round == 1) {
+                if(c<10) {
+                    addCircle('red');
+                }
+                aCS = true;
+            } else if (round==2) {
+
+                //will repeat above
             }
 
+
+
+
+            
+
+
+
+
+
+
+
             c++;
-        }, 4000); //speed
+        }, 2020); //speed
 
 
         function drawTowerMenu(items, c) {
@@ -659,7 +696,12 @@
         }
 
         function addCircle2(x, y, numberCo, nextCo, id, c, count, speed, distanceTraveled, effect) {
-            var type = eval(c + 'Circle');
+            if (c !== undefined) {
+                var type = eval(c + 'Circle');
+            } else {
+                return;
+            }
+
             let b = circleId[0];
 
             // console.log(count,id);
@@ -691,8 +733,6 @@
 
 
 
-
-
         } //end of addcircle
 
         function drawCircles() {
@@ -704,10 +744,6 @@
 
 
         }
-
-
-
-
 
 
         function addTower(x) {
@@ -723,9 +759,6 @@
 
 
         function upgradeTower(tower, path) { //tower to be upgraded and what path 
-
-            soldierAct
-
 
             if (soldierAct) { //soldier upgrade
                 if (path == 0) { //left path
@@ -840,18 +873,19 @@
             if (fireBWaterGAct) { //fire boy and water girl upgrade  //will make one side buff water and fire attacdks that are altinating//fire burn and water bounce
                 if (path == 0) { //left path
                     if (tower.upgrades[0] == 0) { //tier 1
-                        // fire projecetiles now use waterEffect
+                        // water projecetiles now use waterEffect
                     } else if (tower.upgrades[0] == 1) { //teir 2
-                        tower.damage = 2;
+                        // tower.twerEffect.push(0, 'acidPit');  // not working
+                        tower.twerEffect[4] = 'acidPit';
+                        tower.twerEffect[5] = 0; // count/trapsActiveFOrTowers.
                     } else if (tower.upgrades[0] == 2) { //teir 3
                         tower.bulletSize *= 2;
                         tower.pierce = 30;
                     }
                     tower.upgrades[0] += 1;
-
                 } else { //right path
                     if (tower.upgrades[1] == 0) { //tier 1
-                        //waterProjectiles now use wate fireeffect;
+                        //fire Projectiles now use wate fireeffect;
                     } else if (tower.upgrades[1] == 1) {
                         tower.attackSpeed *= 1.2;
                     } else if (tower.upgrades[1] == 2) {
@@ -859,7 +893,7 @@
                     }
                     tower.upgrades[1] += 1;
                 }
-            } //
+            } // 
 
             // fireByoy and water girl //dodododdod
 
@@ -867,6 +901,21 @@
             //    light beams // ray of doom/ box from gave will be picture that will piont at circles it it targeting.
             //    cover track in fir and water
 
+
+            if (randomDiceAct) { //fire boy and water girl upgrade  //will make one side buff water and fire attacdks that are altinating//fire burn and water bounce
+                if (path == 0) { //left path
+                    if (tower.upgrades[0] == 0) { //tier 1
+                        tower.twerEffect = [1, fire, 100, 1000];
+                    }
+                    tower.upgrades[0] += 1;
+
+                } else { //right path
+                    if (tower.upgrades[1] == 0) { //tier 1
+                        tower.twerEffect = [300, 'shotNade'];
+                    }
+                    tower.upgrades[1] += 1;
+                }
+            } //
         }
 
         var what = true;
@@ -874,6 +923,7 @@
         function drawTowers() {
             Towers.forEach(tower => tower.draw());
         }
+
 
         var circleMissing = false;
 
@@ -883,6 +933,43 @@
 
                 if (tower.twerEffect[3] == 'grenade') {
                     tower.twerEffect[2] -= 1;
+                }
+
+
+                if (tower.twerEffect[4] == 'acidPit' && tower.twerEffect[5] <= 0) {
+
+
+                    if (tower.twerEffect[3] <= 0) {
+                        var distance = Math.sqrt(Math.pow((currentTrack[0][0] - tower.x), 2) + Math.pow((
+                            currentTrack[0][1] - tower.y), 2));
+                        // sets 1st distnace so for loop can find path spot htat is clsoer  
+                        var gridX = currentTrack[0][0]; //sets these icnase 1st path is the closet to the tower.
+                        var gridY = currentTrack[0][1];
+                        for (var i = 0; i < currentTrack.length; i++) {
+
+                            var newDistance = Math.sqrt(Math.pow((currentTrack[i][0] - tower.x), 2) + Math.pow((
+                                currentTrack[i][1] - tower.y), 2));
+
+                            if (newDistance < distance) {
+                                distance = newDistance;
+                                gridX = currentTrack[i][0];
+                                gridY = currentTrack[i][1];
+
+                            }
+                        }
+                        // console.log(gridX,gridY);
+                     
+                  
+                        Projectiles.push(new projectile(gridX , gridY,acidCount, 1, gridSize, 0, acidPitColor,
+                            'directionX', 'directionY',
+                            0, 0, 1, acidEffect, projectileId));
+                            //    console.log(Projectiles);
+                        projectileId += 1;
+                        // tower.twerEffect[3] = acidPitCd;
+                        tower.twerEffect[5] = 1;
+                    } else {
+                        tower.twerEffect[3] -= 1;
+                    }
                 }
 
 
@@ -909,7 +996,7 @@
                         }
 
 
-                        let AB = a.hit;   
+                        let AB = a.hit;
                         let BB = b.hit;
 
 
@@ -1090,19 +1177,31 @@
                                 if (tower.coolDown <= 0) {
                                     if (tower.bulletColor == 'crimson') {
                                         tower.bulletColor = 'skyBlue'
-                                        if(tower.upgrades[0] ==  0) {
-                                            tower.twerEffect = JSON.parse(JSON.stringify(waterEffect));
-                                        }  else {
-                                            tower.twerEffect = JSON.parse(JSON.stringify(waterEffect2));
+                                        if (tower.upgrades[0] == 0) {
+                                            tower.twerEffect[0] = waterEffect[0];
+                                            tower.twerEffect[1] = waterEffect[1];
+                                            tower.twerEffect[2] = waterEffect[2];
+                                            tower.twerEffect[3] = waterEffect[3];
+                                        } else {
+                                            tower.twerEffect[0] = waterEffect2[0];
+                                            tower.twerEffect[1] = waterEffect2[1];
+                                            tower.twerEffect[2] = waterEffect2[2];
+                                            tower.twerEffect[3] = waterEffect2[3];
                                         }
-                                    } else if (tower.bulletColor == 'skyBlue') {            
+                                    } else if (tower.bulletColor == 'skyBlue') {
                                         tower.bulletColor = 'crimson';
-                                        if(tower.upgrades[1] ==  0) {
-                                            tower.twerEffect = JSON.parse(JSON.stringify(fireEffect));
-                                        }  else {
-                                            tower.twerEffect = JSON.parse(JSON.stringify(fireEffect2));
+                                        if (tower.upgrades[1] == 0) {
+                                            tower.twerEffect[0] = fireEffect[0];
+                                            tower.twerEffect[1] = fireEffect[1];
+                                            tower.twerEffect[2] = fireEffect[2];
+                                            tower.twerEffect[3] = fireEffect[3];
+                                        } else {
+                                            tower.twerEffect[0] = fireEffect2[0];
+                                            tower.twerEffect[1] = fireEffect2[1];
+                                            tower.twerEffect[2] = fireEffect2[2];
+                                            tower.twerEffect[3] = fireEffect2[3];
                                         }
-                                       
+
                                     }
                                     //     if(tower.bulletColor == 'crimson') {
                                     //      tower.bulletColor = 'skyBlue';
@@ -1113,13 +1212,26 @@
                                     //  } 
 
 
+                                    if (tower.twerEffect[4] == 'acidPit') {
 
+                                        Projectiles.push(new projectile(tower.x, tower.y, tower.pierce, tower
+                                            .damage, tower.bulletSize, tower.bulletSpeed, tower
+                                            .bulletColor,
+                                            directionX, directionY,
+                                            gradient, tower.range, tower.poppingPower, JSON.parse(JSON
+                                                .stringify(tower.twerEffect[0], tower.twerEffect[1],
+                                                    tower.twerEffect[2], tower.twerEffect[3])),
+                                            projectileId));
+                                    }  else {
                                     Projectiles.push(new projectile(tower.x, tower.y, tower.pierce, tower
                                         .damage, tower.bulletSize, tower.bulletSpeed, tower
                                         .bulletColor,
                                         directionX, directionY,
                                         gradient, tower.range, tower.poppingPower, JSON.parse(JSON
-                                            .stringify(tower.twerEffect)),projectileId));
+                                            .stringify(tower.twerEffect)), projectileId));
+                                    }
+
+
                                     //[tower.twerEffect[0],tower.twerEffect[1]    ]
                                     projectileId += 1;
                                     if (tower.twerEffect[1] == 'shotGun' || tower.twerEffect[1] == 'shotNade') {
@@ -1136,12 +1248,12 @@
                                 } else {
 
                                     //neew projectile pushing tower effect 2/3  [tower.twerEffect[2],tower.twerEffect[3]] 
-                            
-                                    Projectiles.push(new projectile(tower.x, tower.y, 0, tower
+
+                                        Projectiles.push(new projectile(tower.x, tower.y, 0, tower
                                         .damage, tower.bulletSize, tower.bulletSpeed / 2, tower
                                         .bulletColor,
                                         directionX, directionY, gradient, tower.range, grenadePopPower,
-                                        [tower.twerEffect[2], tower.twerEffect[3]],projectileId));
+                                        [tower.twerEffect[2], tower.twerEffect[3]], projectileId));
                                     // tower.twerEffect
                                     projectileId += 1;
                                     tower.twerEffect[2] = frameRate * grenadeTimer;
@@ -1153,7 +1265,8 @@
                                 ) { //finds actual existing circle to say that its getting hit so muitople projectiles dont target it
                                     // var a = dTraveledCircles[i].id;
                                     // var b = Circles[x].id;
-                                    if (JSON.stringify(Circles[x].id) == JSON.stringify(dTraveledCircles[i].id)) {
+                                    if (JSON.stringify(Circles[x].id) == JSON.stringify(dTraveledCircles[i]
+                                            .id)) {
                                         Circles[x].hit += 1;
                                         Circles[x].hitPs.push(Projectiles[Projectiles.length - 1].id);
                                     }
@@ -1184,7 +1297,8 @@
 
         function hitCheck() {
             for (var a = 0; a < Circles
-                .length; a++) { //todo make work when projectiles go of screeen shouldn't be hard just need to check each proje id with Circlehitps[id 1 and 2 and 3]
+                .length; a++
+            ) { //todo make work when projectiles go of screeen shouldn't be hard just need to check each proje id with Circlehitps[id 1 and 2 and 3]
 
                 for (var b = 0; b < Circles[a].hitPs.length; b++) {
 
@@ -1234,7 +1348,7 @@
                     currentTrack[i] = [xa - gridSize * change, ya];
                     currentTrackXY[i] = [xa - gridSize, ya];
                     xa -= gridSize * change;
-                } else if (gridDirection ==1) {
+                } else if (gridDirection == 1) {
                     currentTrack[i] = [xa + gridSize * change, ya];
                     currentTrackXY[i] = [xa + gridSize, ya];
                     xa += gridSize * change;
@@ -1343,6 +1457,7 @@
 
             ctx.fillText("lives: " + lifes, canvas.width / 4, 30);
             ctx.fillText("time: " + Math.floor(time / frameRate), canvas.width / 1.8, 30);
+            ctx.fillText("ROund: " + round, canvas.width / 10, 30);
 
             // if (gameActive ) {
             time += 1;

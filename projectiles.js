@@ -19,7 +19,6 @@ class projectile { //for projectiles created by towers
     colls = [],
     peirceR = 0 // peirce remaining
 
-
   ) {
     this.x = x;
     this.y = y;
@@ -49,9 +48,13 @@ class projectile { //for projectiles created by towers
       size = bulletSize * 2 * Math.cos(Math.PI / 6),
       bulletColor
     } = this
-    if (this.effect[1] == 'grenade' || this.effect[1] == 'shotNade' || this.effect[1] == 'snowBall') {
+
+    if (this.effect[1] == 'grenade' || this.effect[1] == 'shotNade' || this.effect[1] == 'snowBall' || this.effect[0] == 'acidPit') {
       ctx.save(); //so doesnt save over other ones/ safer
 
+      if(this.effect[0] == 'acidPit') {
+        bulletSize = gridSize/2;
+      }
       drawCircle(x, y, bulletSize, bulletColor, 0.0000001, bulletColor)
       ctx.restore();
     } else {
@@ -85,10 +88,8 @@ class projectile { //for projectiles created by towers
 
 
   move(n) {
-
-
-    //makes the projectiles move in straing line based of direction and gradient of line created
-    // console.log(n);
+  
+  
 
     let xV = Math.abs((Math.cos(this.gradient)) * this.bulletSpeed * n);
     let yV = Math.abs((Math.sin(this.gradient)) * this.bulletSpeed * n);
@@ -134,9 +135,9 @@ class projectile { //for projectiles created by towers
     if (n == 1) {
       if (this.x + this.bulletSize * 2 < 0 || this.x > canvas.width || this.y - this.bulletSize * 2 * Math.cos(Math.PI / 6) > canvas.height || this.y < 0) {
         // this.hitCheck();
-        if (this.effect[1] == 'water') {
-          // this.waterBounce();
-          this.deleteProjecitle();
+        if (this.effect[1] == 'water' && this.effect[0] != 'acidPit') {
+          this.waterBounce();
+          // this.deleteProjecitle();
         } else {
           this.deleteProjecitle();
           // if this.,effecst [1] == water wil bounce and lower effecds 2
@@ -274,7 +275,6 @@ class projectile { //for projectiles created by towers
         if (circleHitting == true) {
 
           for (var i = 0; i < this.colls.length; i++) {
-
             var projCheck2 = JSON.parse(JSON.stringify(circle.id))
             // might have to redo below to fix projectile bounce bug where array length changes
             var projCheck = projCheck2.splice(0, this.colls[i].length);
@@ -287,20 +287,22 @@ class projectile { //for projectiles created by towers
               run = false;
               circle.effects = JSON.parse(JSON.stringify(this.effect));
               break;
-            } 
-          }  
-          if(run ==true) {
-              if(circle.c == 'rgb(105,105,105,1)') {
-                  run = false;
-                  if (this.effect[1] == 'water') {
-                    this.colls.push(JSON.parse(JSON.stringify(Circles[i].id)));
-                    this.waterBounce(); //todo need to put before addcircle 2
-                  } else {
+            }
+          }
+          if (run == true) {
+            if (circle.c == 'rgb(105,105,105,1)' || (circle.c == 'rgb(255,255,255,1)' && (this.effect[1] == 'slow' || this.effect[1] == 'slow2' || this.effect[1] == 'snowBall'))) { // wll need to hcange to zebra image later
+              run = false;
+              if (this.effect[1] == 'water') {
+                this.colls.push(JSON.parse(JSON.stringify(Circles[i].id)));
+                this.waterBounce(); //todo need to put before addcircle 2
+              } else {
+                if (circle.c != 'rgb(255,255,255,1)') {
                   this.deleteProjecitle();
-                  circle.effects = JSON.parse(JSON.stringify(this.effect));
-                  }
+                }
+                // circle.effects = JSON.parse(JSON.stringify(this.effect));
               }
-            
+            }
+
           }
 
           if (run == true) {
@@ -363,8 +365,8 @@ class projectile { //for projectiles created by towers
                     Circles[i].effects = JSON.parse(JSON.stringify(this.effect));
                   }
 
-                  this.peirceR -= 1;
-               this.hitCheck();
+                  this.peirceR -= 1; // jneed to do stuff to this
+                  this.hitCheck();
                   if (this.effect[1] == 'water') {
                     this.waterBounce(); //todo need to put before addcircle 2
                   } else if (this.peirceR < 1) {
@@ -374,12 +376,12 @@ class projectile { //for projectiles created by towers
 
                 } else {
 
-               
+
                   delete Circles[i];
                   Circles = Circles.filter(item => item !== undefined);
 
                   this.peirceR = this.peirceR - 1;
-                       this.hitCheck();
+                  this.hitCheck();
                   if (this.effect[1] == 'water') {
                     this.waterBounce(); //need to also pu above before deleets circle
                   } else if (this.peirceR < 1) {
@@ -397,8 +399,6 @@ class projectile { //for projectiles created by towers
       }, this);
     }
 
-
-
   } //end of move funtion
 
 
@@ -406,70 +406,76 @@ class projectile { //for projectiles created by towers
 
 
 
- moveTest(n) {
-    
+  moveTest(n) {
 
-  let xV = Math.abs((Math.cos(this.gradient)) * this.bulletSpeed * n);
-  let yV = Math.abs((Math.sin(this.gradient)) * this.bulletSpeed * n);
-
-
-
-  if (this.directionX == 'right') { // have to find the maji number
-    this.x += xV;
-  } else if (this.directionX == 'left') {
-    this.x -= xV;
-  } else {
-    //x stays the same // add corection
-    this.x = this.x;
-  }
-
-
-  if (this.directionY == 'down') {
-    this.y += yV;
-  } else if (this.directionY == 'up') {
-    this.y -= yV;
-  } else {
-    this.y = this.y;
-    //y staksy same will add corection
-  }
+    let xV = Math.abs((Math.cos(this.gradient)) * this.bulletSpeed * n);
+    let yV = Math.abs((Math.sin(this.gradient)) * this.bulletSpeed * n);
 
 
 
-  this.maxRange -= this.bulletSpeed * n; // might neeed change for grenade curve
-  if (this.maxRange < 0) {
-    // this.hitCheck();
+    if (this.directionX == 'right') { // have to find the maji number
+      this.x += xV;
+    } else if (this.directionX == 'left') {
+      this.x -= xV;
+    } else {
+      //x stays the same // add corection
+      this.x = this.x;
+    }
+
+
+    if (this.directionY == 'down') {
+      this.y += yV;
+    } else if (this.directionY == 'up') {
+      this.y -= yV;
+    } else {
+      this.y = this.y;
+      //y staksy same will add corection
+    }
+
+
+
+    this.maxRange -= this.bulletSpeed * n; // might neeed change for grenade curve
+    if (this.maxRange < 0) {
+      // this.hitCheck();
       this.deleteProjecitle();
- 
-  }
+
+    }
 
 
     if (this.x + this.bulletSize * 2 < 0 || this.x > canvas.width || this.y - this.bulletSize * 2 * Math.cos(Math.PI / 6) > canvas.height || this.y < 0) {
       // this.hitCheck();
-        // this.waterBounce();
-        this.deleteProjecitle();
-        // if this.,effecst [1] == water wil bounce and lower effecds 2
+      // this.waterBounce();
+      this.deleteProjecitle();
+      // if this.,effecst [1] == water wil bounce and lower effecds 2
     }
 
-  }
+ }
 
 
   waterBounce() {
-
+//water bounce stops getting callled. // tododododworkinongogngon
 
     if (this.effect[0] > 0) {
 
-   var bounce = this.newAngle();
-   this.directionX = bounce[0];
-   this.directionY = bounce[1];
-   this.gradient =  bounce[2];
-   this.maxRange = this.effect[2];
-
+      
+      var bounce = this.newAngle();
+    if(bounce !== undefined) {
+    
+      this.directionX = bounce[0];
+      this.directionY = bounce[1];
+      this.gradient = bounce[2];
+      this.maxRange = this.effect[2];
+  
       this.effect[0] -= 1;
-    }   else {
-    // this.hitCheck();
+    } else {
+      // this.hitCheck();
+      this.x = 'hi';
+      Projectiles = Projectiles.filter(item => item.x !== 'hi');
+    }
+  } else {
     this.x = 'hi';
     Projectiles = Projectiles.filter(item => item.x !== 'hi');
-    }
+  }
   } //end of waterBounce()
 
 
@@ -497,9 +503,9 @@ class projectile { //for projectiles created by towers
         }
       }
     });
-var pass = true;
+    var pass = true;
     for (var y = 0; y < dTraveledCircles.length; y++) {
-       pass = true;
+      pass = true;
       circleMissing = false;
 
       if ((dTraveledCircles[y].x > this.x - waterEffect[2] &&
@@ -596,37 +602,37 @@ var pass = true;
               4)) {
             a = 0;
           } else if (circleMissing) {
-              a = 0;
+            a = 0;
+          }
+
+          for (var i = 0; i < this.colls.length; i++) {
+            var projCheck2 = JSON.parse(JSON.stringify(dTraveledCircles[y].id));
+            var projCheck = projCheck2.splice(0, this.colls[i].length);
+
+            var collCheck = JSON.parse(JSON.stringify(this.colls[i]));
+
+            if (JSON.stringify(collCheck) == JSON.stringify(projCheck)) { // needed to check them stringifyed
+              // console.log(collCheck,projCheck);
+              pass = false;
+
+              // dTraveledCircles[y].effects = JSON.parse(JSON.stringify(this.effect));
+              break;
             }
-
-            for (var i = 0; i < this.colls.length; i++) {
-              var projCheck2 = JSON.parse(JSON.stringify(dTraveledCircles[y].id));
-              var projCheck = projCheck2.splice(0, this.colls[i].length);
-
-              var collCheck = JSON.parse(JSON.stringify(this.colls[i]));
-
-              if (JSON.stringify(collCheck) == JSON.stringify(projCheck)) { // needed to check them stringifyed
-                // console.log(collCheck,projCheck);
-                pass = false;
-
-                // dTraveledCircles[y].effects = JSON.parse(JSON.stringify(this.effect));
-                break;
-              }
-            }    
+          }
 
 
 
-            if(pass) {
+          if (pass) {
 
-              for (var x = 0; x < Circles.length; x++) { //finds actual existing circle to say that its getting hit so muitople projectiles dont target it
-                // var a = dTraveledCircles[y].id;
-                // var b = Circles[x].id;
-                if (JSON.stringify(Circles[x].id) == JSON.stringify(dTraveledCircles[y].id)) {
-                  Circles[x].hit += 1;
-                  Circles[x].hitPs.push(Projectiles[Projectiles.length - 1].id);
-                }
+            for (var x = 0; x < Circles.length; x++) { //finds actual existing circle to say that its getting hit so muitople projectiles dont target it
+              // var a = dTraveledCircles[y].id;
+              // var b = Circles[x].id;
+              if (JSON.stringify(Circles[x].id) == JSON.stringify(dTraveledCircles[y].id)) {
+                Circles[x].hit += 1;
+                Circles[x].hitPs.push(Projectiles[Projectiles.length - 1].id);
               }
             }
+          }
 
         } // end of dtrav
         if (circleMissing == false) { // todo todo todo ofjdsofjsdf havent made it chekc hit colliosns and so targets same stuff muitlplie times not here but when it hits
@@ -638,7 +644,7 @@ var pass = true;
             this.directionY = directionY;
             this.gradient = gradient;
             this.maxRange = this.effect[2];
-            return [directionX,directionY,gradient];
+            return [directionX, directionY, gradient];
           } //end of if(Pass)
 
         } else { // if circle missing
@@ -647,7 +653,7 @@ var pass = true;
       }
 
     } // end of targeint loop for each projectile targeted
-} // end of get angle
+  } // end of get angle
 
 
 
@@ -769,9 +775,6 @@ var pass = true;
     }
 
 
-
-
-
   }
 
 
@@ -790,15 +793,16 @@ var pass = true;
       Circles.forEach(function (circle) {
         // let explosionRadius = gridSize * 3; //tpdp // draw
 
-        if(pass ==true) {
-          if((circle.c == 'rgb(0,0,0,1)'||circle.c == 'rgb(0,1,0,1)')&&circle.rbe <21) {  // black and zebra
-              pass = false;
-              // this.deleteProjecitle();
-          }
-        
-      }
+        // if (pass == true) {
+          // if ((circle.c == 'rgb(0,0,0,1)' || circle.c == 'rgb(0,1,0,1)') && circle.rbe < 21) { // black and zebra
+          //   pass = false;
+          //   // this.deleteProjecitle();
+          // }
+
+        // }
 
         if (pass == true) {
+
           if (circle.x + circle.r > this.x - explosionRadius && circle.x - circle.r < this.x + explosionRadius &&
             circle.y + circle.r > this.y - explosionRadius && circle.y - circle.r < this.y + explosionRadius) {
 
@@ -861,12 +865,12 @@ var pass = true;
 
                     Circles[i].effects = JSON.parse(JSON.stringify(this.effect));
                   }
-               
+
 
                 } else {
                   // this.hitCheck();
                   delete Circles[i];
-                  Circles = Circles.filter(item => item !== undefined);         
+                  Circles = Circles.filter(item => item !== undefined);
                 }
               }
             }

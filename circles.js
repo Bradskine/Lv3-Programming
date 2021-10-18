@@ -64,21 +64,25 @@ class circle { //this will creawte circles which go around track
 
   followTrack() { // might add followTrack(i) if i have time
 
-    if (((this.effects[1] == 'slow' || this.effects[1] == 'slow2' || this.effects[1] == 'snowBall') && this.rbe <= 104)) {  
+
+    if (((this.effects[1] == 'slow' || this.effects[1] == 'slow2' || this.effects[1] == 'snowBall') && this.rbe <= 104)) {
       if (this.effects[1] == 'slow') {
         var speed = this.speed * 0.5;
       } else if (this.effects[1] == 'slow2' || this.effects[1] == 'snowBall') {
         var speed = this.speed * 0.1;
-      }  
-      
+      }
+
       this.effects[0] -= 1; /// this is changing tower effects for some reason
-      if (this.effects[0] <= 0 ) {
-        console.log('erijwef;ojdf;j');
-        this.effects = [0,'none'];
+      if (this.effects[0] <= 0) {
+        this.effects = [0, 'none'];
 
       }
     } else {
-      var speed = this.speed;
+      if (this.effects[1] == 'acidEffect') {
+        var speed = this.speed * 0.4;
+      } else {
+        var speed = this.speed;
+      }
     }
 
     // }
@@ -117,14 +121,13 @@ class circle { //this will creawte circles which go around track
         }
 
       } else {
-
         this.numberCo += 1;
         this.nextCo = [currentTrack[this.numberCo][0], currentTrack[this.numberCo][1]];
       }
     }
 
-    if (this.effects[1] == 'fire') {
-      this.effects[0] -=1;
+    if (this.effects[1] == 'fireEffect' || this.effects[1] == 'acidEffect'||this.effects[1] == 'fireEffect2') {
+      this.effects[0] -= 1;
       //  if(this.effects[3] <= 0) {
       //    this.effects = [0,'none'];
       //  }  else {
@@ -175,20 +178,23 @@ class circle { //this will creawte circles which go around track
             // for loop into this
             // this.effects[3] -= 1; // check
             // console.log(this.effects[3]);
-            if (this.effects[3] <=0) {
-              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed,iForgotTHisGrr,[0,'none']);
+     
+            if (this.effects[3] <= 0) {             
+              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, iForgotTHisGrr, [0, 'none']);
             } else { // buged something around here
-            addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed,iForgotTHisGrr, [fireEffect[0],this.effects[1],this.effects[2],this.effects[3]-1]);
+              // console.log(eval(this.effects[1])[0]);
+            
+              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, iForgotTHisGrr, [eval(this.effects[1])[0], this.effects[1], this.effects[2], this.effects[3] - 1]);
             }
           }
-        }  else {
-    
+        } else {
+
           this.x = 'hi';
           Circles = Circles.filter(item => item.x !== 'hi');
         }
         // to damage of this.effects [3] //todo
-      // }
-    }
+        // }
+      }
     } // end of fireEffect
 
   } // end of followTrack()
