@@ -291,7 +291,7 @@
         var soldierAct = false;
         var grenadeTimer = 7;
         var grenadeMaxHit = 10000;
-        var grenadePopPower = 20;
+        var grenadePopPower = 15;
         var explosionRadius = gridSize * 4;
         var iceMakerAct = false;
         var sniperOrginalAct = false;
@@ -301,10 +301,10 @@
         var acidPitColor = 'green';
         var acidCount = 30;
         var fireEffect = [frameRate * 2, 'fireEffect', 1, 2]; //burn timer,effect name, popPower, burnsLeft/count;
-        var waterEffect = [5, 'water', 10000,0]; // bounce count, effect name, range
+        var waterEffect = [5, 'water', 10000, 0]; // bounce count, effect name, range
         var fireEffect2 = [frameRate * 0.3, 'fireEffect2', 2, 10]; //burn timer,effect name, popPower, burnsLeft/count;
-        var waterEffect2 = [15, 'water', 10000,0]; // bounce count, effect name, range
-        var acidEffect = [frameRate*0.13,'acidEffect',1,12];
+        var waterEffect2 = [15, 'water', 10000, 0]; // bounce count, effect name, range
+        var acidEffect = [frameRate * 0.13, 'acidEffect', 1, 12];
         var randomDiceAct = false;
         var upGsActive = [0, 0];
         var tMenuX = 0; //actual menu xps
@@ -527,6 +527,7 @@
         //red blue grteen yellow pink balck purple white lead zebra rainbow ceramic   moab  bfb     zomg, ,      dtd        bad
         //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
 
+
         function mainloop() {
 
             ;
@@ -541,6 +542,10 @@
             drawTrack();
             drawCircles();
             drawScore();
+            if(aCS == false) {
+                createCircles();
+            }
+            
             if (Towers.length > 0) {
                 drawTowers();
                 runTowers();
@@ -568,68 +573,57 @@
             }
         } //end of mainloop function()
 
-        var c = 0;
-        setInterval(function () {
-
-            //will be used to send circles on a timer
-            // if (c <= 15) {
-            //     addCircle('red');
-            //     round = 1;
-            // } else if (c <= 2) {
-            //     round = 2
-            //     addCircle('rainbow');
-            // } else if (c < 3) {
-            //     addCircle('green')
-            // } else if (c < 4) {
-            //     addCircle('yellow');
-            // } else if (c < 5) {
-            //     addCircle('black');
-            // } else if (c < 6) {
-            //     addCircle('purple');
-            // } else if (c < 7) {
-            //     addCircle('white');
-            // } else if (c < 8) {
-            //     addCircle('lead');
-            // } else if (c < 9) {
-            //     addCircle('ceramic');
-            // } else if (c < 10) {
-            //     addCircle('moab');
-            // } else if (c < 11) {
-            //     addCircle('bfb');
-            // } else if (c < 12) {
-            //     addCircle('zomg');
-            // } else if (c < 13) {
-            //     addCircle('ddt');
-            // } else if (c > 13) {
-            //     addCircle('bad');
-            // } else if (c > 77) {
-            //     c = 31232131;
-            // }
-
-
-            if(round == 1) {
-                if(c<10) {
-                    addCircle('red');
-                }
-                aCS = true;
-            } else if (round==2) {
-
-                //will repeat above
-            }
 
 
 
+        var timeing = 1;
+        var timeCounter = 0;
+        var nextCircleName = '';
+        // var circleCount = 0;
 
+
+       var  levels = [[[5,'red',0.5],[20,'pink',2]]]; 
+       var levelSection = 1;
+       var currentSection = [5,'red',10]; // when i change level will have to update the currentSection
+    var updateSection = true;
+        //
+
+        function createCircles() {
+
+         
+                if(currentSection[0] <=0 && updateSection == true)  {  
+                    updateSection =false         
+                      if(levels[round-1].length > levelSection) {
+                          levelSection += 1;
+                          currentSection =  JSON.parse(JSON.stringify(levels[round-1][levelSection-1]));
+                      
+                          
+                      }  else {
+                          aCS = true;
+                      }
+                } 
+
+                
             
 
+                timeCounter += 1/frameRate;
+                if (timeCounter >= timeing) {
+                    newCircle =   JSON.parse(JSON.stringify(levels[round-1][levelSection-1])) ;
+                    timeing = newCircle[2];
+                    nextCircleName = newCircle[1];
+                    if(updateSection ==false) {
+                        updateSection = true;
+                    }
+                    addCircle(nextCircleName);
+                    // circleCount += 1;
+                    timeCounter = 0;
+                    currentSection[0] -=1;
+                }
+
+            
+        }
 
 
-
-
-
-
-            c++;
-        }, 2020); //speed
 
 
         function drawTowerMenu(items, c) {
@@ -958,12 +952,12 @@
                             }
                         }
                         // console.log(gridX,gridY);
-                     
-                  
-                        Projectiles.push(new projectile(gridX , gridY,acidCount, 1, gridSize, 0, acidPitColor,
+
+
+                        Projectiles.push(new projectile(gridX, gridY, acidCount, 1, gridSize, 0, acidPitColor,
                             'directionX', 'directionY',
                             0, 0, 1, acidEffect, projectileId));
-                            //    console.log(Projectiles);
+                        //    console.log(Projectiles);
                         projectileId += 1;
                         // tower.twerEffect[3] = acidPitCd;
                         tower.twerEffect[5] = 1;
@@ -1222,13 +1216,13 @@
                                                 .stringify(tower.twerEffect[0], tower.twerEffect[1],
                                                     tower.twerEffect[2], tower.twerEffect[3])),
                                             projectileId));
-                                    }  else {
-                                    Projectiles.push(new projectile(tower.x, tower.y, tower.pierce, tower
-                                        .damage, tower.bulletSize, tower.bulletSpeed, tower
-                                        .bulletColor,
-                                        directionX, directionY,
-                                        gradient, tower.range, tower.poppingPower, JSON.parse(JSON
-                                            .stringify(tower.twerEffect)), projectileId));
+                                    } else {
+                                        Projectiles.push(new projectile(tower.x, tower.y, tower.pierce, tower
+                                            .damage, tower.bulletSize, tower.bulletSpeed, tower
+                                            .bulletColor,
+                                            directionX, directionY,
+                                            gradient, tower.range, tower.poppingPower, JSON.parse(JSON
+                                                .stringify(tower.twerEffect)), projectileId));
                                     }
 
 
@@ -1249,7 +1243,7 @@
 
                                     //neew projectile pushing tower effect 2/3  [tower.twerEffect[2],tower.twerEffect[3]] 
 
-                                        Projectiles.push(new projectile(tower.x, tower.y, 0, tower
+                                    Projectiles.push(new projectile(tower.x, tower.y, 0, tower
                                         .damage, tower.bulletSize, tower.bulletSpeed / 2, tower
                                         .bulletColor,
                                         directionX, directionY, gradient, tower.range, grenadePopPower,
