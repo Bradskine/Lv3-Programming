@@ -81,23 +81,28 @@
                                     rangeCircleRadius = Towers[i].range;
                                     rangeCircleX = Towers[i].x;
                                     rangeCircleY = Towers[i].y;
-                                    soldierAct = false;
-                                    iceMakerAct = false;
-                                    sniperOrginalAct = false;
-                                    fireBWaterGAct = false;
-                                    randomDiceAct = false;
-
+                            
                                     if (Towers[i].color == 'brown') {
                                         soldierAct = true;
+                                        towerActive = ' soldier';
                                     } else if (Towers[i].color == 'lightGrey') {
                                         iceMakerAct = true;
+                                        towerActive = 'iceMaker';
                                     } else if (Towers[i].color == 'black') {
                                         sniperOrginalAct = true;
+                                        towerActive = 'sniperOrginal';
                                     } else if (Towers[i].color == 'red') {
                                         fireBWaterGAct = true;
+                                        towerActive = ' fireBWaterG';
                                     } else if (Towers[i].color == 'purple') {
-                                        randomDiceAct = true;;
+                                        randomDiceAct = true;
+                                        towerActive = 'randomDice';
                                     }
+
+
+
+
+
                                 }
                             }
 
@@ -130,9 +135,21 @@
 
                             for (i = 0; i < 2; i++) {
                                 if (rowClicked == tMenuGridY + i) {
-                                    upgradeTower(upgrading,
-                                        i
-                                    ); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on
+
+
+                           
+                                        if(i == 0) {
+                                            money -= eval(towerActive+'UpgradeNames')[upgrading.upgrades[0]].replace(/[^0-9]/g,'');
+                                        } else {
+                                            var n = eval(towerActive+'UpgradeNames')
+                                            money -= n[upgrading.upgrades[1]+n.length/2].replace(/[^0-9]/g,'');
+                                        }
+                                        
+                                     
+                                    
+                                                
+                                    
+                                    upgradeTower(upgrading,i); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on
                                 }
                             }
 
@@ -274,6 +291,7 @@
         var lifes = 150;
         var time = 0;
         var round = 1;
+        var money = 500;
         var aCS = false; //all Circles Spawned (for level) so I can chceck when all circle killed to start next round
 
         //towerMenu variables and upgrade variablse
@@ -289,6 +307,7 @@
         var rangeCircleY = 0;
         var rCircleTime = 3000; // when adding a tower this is how long it shows range circle for
         var soldierAct = false;
+        var towerActive = '';
         var grenadeTimer = 7;
         var grenadeMaxHit = 10000;
         var grenadePopPower = 15;
@@ -314,8 +333,8 @@
         var tMenuGridX = 0; //grid point of Menu xpos
         var tMenuGridY = 0; //grid poing of Menu Yposs
 
-        var towerNames = ['soldierCost10$', 'iceMakerCost10$', 'sniperOrginalCost10$', 'fireBWaterGCost10$',
-            'randomDiceCost10$'
+        var towerNames = ['soldierCost10$', 'iceMakerCost20$', 'sniperOrginalCost50$', 'fireBWaterGCost60$',
+            'randomDiceCost1000$'
         ];
 
         var twrNames = ['soldier', 'iceMaker', 'sniperOrginal', 'fireBWaterG',
@@ -325,46 +344,46 @@
 
 
         var soldierUpgradeNames = [
-            'attackSpeedx2',
-            'smallMachineGun',
-            'assaultRifle',
-            'MInigun',
-            'range',
-            'ShotGun',
-            'grenade',
-            'greandeShells'
+            'attackSpeedxTwo30$',
+            'smallMachineGun20$',
+            'assaultRifle20$',
+            'MInigun20$',
+            'range40$',
+            'ShotGun20$',
+            'grenade20$',
+            'greandeShells20$'
         ];
         var iceMakerUpgradeNames = [
-            'attackSpeed',
-            'betterSlow',
-            'iceNowPops',
-            'longerSlow',
-            'towerPierce',
-            'giantSnowBall'
+            'attackSpeed20$',
+            'betterSlow20$',
+            'iceNowPops20$',
+            'longerSlow20$',
+            'towerPierce20$',
+            'giantSnowBall20$'
         ];
         var sniperOrginalUpgradeNames = [ // need to make all of them the same length
-            'pierce',
-            'dblMoabDamage',
-            'Mega Pierce',
-            'attackspeed',
-            'more Attackspeed',
-            'semiAutoSniper'
+            'pierce20$',
+            'dblMoabDamage20$',
+            'Mega Pierce20$',
+            'attackspeed20$',
+            'more Attackspeed20$$',
+            'semiAutoSniper20$'
         ];
         var fireBWaterGUpgradeNames = [
-            'betterWater',
-            'WaterFireReacition',
-            'reactioncreatsstuff',
-            'betterfire',
-            'greenAcid',
-            'portal'
+            'betterfire20$',
+            'greenAcid20$',
+            'portal20$',
+            'betterWater20$',
+            'WaterFireReacition20$',
+            'reactioncreatsstuff20$'
         ];
         var randomDiceUpgradeNames = [
-            'dntclickbreaksbwlowupgradedoesnothing',
-            'godmode+'
+            'dntclickbreaksbwlowupgradedoesnothing20$',
+            'godmode+20$'
         ];
 
 
-        // .replace(/[^0-9]/g, '');.replace(/[^0-9]/g, '');.replace(/[^0-9]/g, '');.replace(/[^0-9]/g, '');.replace(/[^0-9]/g, ''); //todo cost money
+     
         //tower vareiabels
         var Towers = [];
         var towerCount = towerNames.length;
@@ -391,8 +410,9 @@
             [0, 'none']
         ];
         var fireBWaterG = [0.4, 2, 1, gridSize * 10, 1, 'red', gridSize / 18, gridSize * 0.2, 'crimson', '1st', 1,
-            waterEffect
+            JSON.parse(JSON.stringify(waterEffect))
         ];
+        
 
 
         var randomDice = [6, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', 1, [
@@ -530,7 +550,6 @@
 
         function mainloop() {
 
-            ;
             colorRect(0, 0, canvas.width, canvas.height, 'blue');
             drawGrid(canvas.width, canvas.height, 'grid');
             if (gameActive == false) {
@@ -538,6 +557,8 @@
                 currentTrackXY = JSON.parse(JSON.stringify(track2));
                 gameActive = true;
             }
+
+
 
             drawTrack();
             drawCircles();
@@ -742,6 +763,7 @@
 
         function addTower(x) {
             var towerType = eval(twrNames[x]);
+           money -= towerNames[x].replace(/[^0-9]/g,'');
             Towers.push(new tower(tMenuSquareX * gridSize + gridSize / 2, tMenuSquareY * gridSize + gridSize / 2,
                 towerType[
                     0], towerType[1], towerType[2],
@@ -805,6 +827,7 @@
                     }
                     tower.upgrades[1] += 1;
                 }
+                soldierAct = false;
             } //jkjkjk
 
             if (iceMakerAct) { //icemaker upgrades
@@ -831,9 +854,11 @@
                         tower.range *= 2;
                         tower.bulletSpeed *= 0.4;
                         tower.twerEffect[1] = 'snowBall';
+                        console.log('ldkjfdslfj');
                     } //tier 4 will make snowball go down track dealing 10 damage or so to every circle on track with cd
                     tower.upgrades[1] += 1;
                 }
+                iceMakerAct = false;
             } //
 
 
@@ -861,6 +886,7 @@
                     }
                     tower.upgrades[1] += 1;
                 }
+                sniperOrginalAct = false;
             } //
 
 
@@ -887,6 +913,7 @@
                     }
                     tower.upgrades[1] += 1;
                 }
+                fireBWaterGAct = false;
             } // 
 
             // fireByoy and water girl //dodododdod
@@ -910,6 +937,7 @@
                     tower.upgrades[1] += 1;
                 }
             } //
+            randomDiceAct = false;
         }
 
         var what = true;
@@ -1170,32 +1198,37 @@
                             if (circleMissing == false) {
                                 if (tower.coolDown <= 0) {
                                     if (tower.bulletColor == 'crimson') {
+                                        console.log('dlfkjdsf');
                                         tower.bulletColor = 'skyBlue'
+                                      
                                         if (tower.upgrades[0] == 0) {
-                                            tower.twerEffect[0] = waterEffect[0];
-                                            tower.twerEffect[1] = waterEffect[1];
-                                            tower.twerEffect[2] = waterEffect[2];
-                                            tower.twerEffect[3] = waterEffect[3];
+                                          
+                                            tower.twerEffect[0] = JSON.parse(JSON.stringify(waterEffect[0]));
+                                            tower.twerEffect[1] = JSON.parse(JSON.stringify(waterEffect[1]));
+                                            tower.twerEffect[2] = JSON.parse(JSON.stringify(waterEffect[2]));
+                                            tower.twerEffect[3] = JSON.parse(JSON.stringify(waterEffect[3]));
                                         } else {
-                                            tower.twerEffect[0] = waterEffect2[0];
-                                            tower.twerEffect[1] = waterEffect2[1];
-                                            tower.twerEffect[2] = waterEffect2[2];
-                                            tower.twerEffect[3] = waterEffect2[3];
+                                            tower.twerEffect[0] = JSON.parse(JSON.stringify(waterEffect2[0]));
+                                            tower.twerEffect[1] = JSON.parse(JSON.stringify(waterEffect2[1]));
+                                            tower.twerEffect[2] = JSON.parse(JSON.stringify(waterEffect2[2]));
+                                            tower.twerEffect[3] = JSON.parse(JSON.stringify(waterEffect2[3]));
                                         }
+                                     
                                     } else if (tower.bulletColor == 'skyBlue') {
+                                        console.log(waterEffect,tower.twerEffect);
                                         tower.bulletColor = 'crimson';
                                         if (tower.upgrades[1] == 0) {
-                                            tower.twerEffect[0] = fireEffect[0];
-                                            tower.twerEffect[1] = fireEffect[1];
-                                            tower.twerEffect[2] = fireEffect[2];
-                                            tower.twerEffect[3] = fireEffect[3];
+                                            tower.twerEffect[0] = JSON.parse(JSON.stringify(fireEffect[0]));
+                                            tower.twerEffect[1] = JSON.parse(JSON.stringify(fireEffect[1]));
+                                            tower.twerEffect[2] = JSON.parse(JSON.stringify(fireEffect[2]));
+                                            tower.twerEffect[3] = JSON.parse(JSON.stringify(fireEffect[3]));
                                         } else {
-                                            tower.twerEffect[0] = fireEffect2[0];
-                                            tower.twerEffect[1] = fireEffect2[1];
-                                            tower.twerEffect[2] = fireEffect2[2];
-                                            tower.twerEffect[3] = fireEffect2[3];
+                                            tower.twerEffect[0] = JSON.parse(JSON.stringify(fireEffect2[0]));
+                                            tower.twerEffect[1] = JSON.parse(JSON.stringify(fireEffect2[1]));
+                                            tower.twerEffect[2] = JSON.parse(JSON.stringify(fireEffect2[2]));
+                                            tower.twerEffect[3] = JSON.parse(JSON.stringify(fireEffect2[3]));
                                         }
-
+                                        console.log(waterEffect,tower.twerEffect);
                                     }
                                     //     if(tower.bulletColor == 'crimson') {
                                     //      tower.bulletColor = 'skyBlue';
@@ -1449,9 +1482,10 @@
             ctx.font = "30px Times New Roman";
             ctx.fillStyle = "red";
 
-            ctx.fillText("lives: " + lifes, canvas.width / 4, 30);
-            ctx.fillText("time: " + Math.floor(time / frameRate), canvas.width / 1.8, 30);
-            ctx.fillText("ROund: " + round, canvas.width / 10, 30);
+            ctx.fillText("Lifes: " + lifes, canvas.width * 0.1, 30);
+            ctx.fillText("Time: " + Math.floor(time / frameRate),canvas.width * 0.3, 30);
+            ctx.fillText("Round: " + round, canvas.width * 0.5, 30);
+            ctx.fillText("Money:" + money, canvas.width * 0.7, 30);
 
             // if (gameActive ) {
             time += 1;

@@ -792,14 +792,15 @@ class projectile { //for projectiles created by towers
       let maxHit = 0;
       Circles.forEach(function (circle) {
         // let explosionRadius = gridSize * 3; //tpdp // draw
+  pass = true;
+        if (pass == true) {
+          if ((circle.c == 'rgb(0,0,0,1)' || circle.c == 'rgb(0,1,0,1)') && circle.rbe < 21) { // black and zebra
+            console.log('test');
+            pass = false;
+            // this.deleteProjecitle();
+          }
 
-        // if (pass == true) {
-          // if ((circle.c == 'rgb(0,0,0,1)' || circle.c == 'rgb(0,1,0,1)') && circle.rbe < 21) { // black and zebra
-          //   pass = false;
-          //   // this.deleteProjecitle();
-          // }
-
-        // }
+        }
 
         if (pass == true) {
 
