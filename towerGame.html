@@ -144,9 +144,6 @@
                                             var n = eval(towerActive+'UpgradeNames')
                                             money -= n[upgrading.upgrades[1]+n.length/2].replace(/[^0-9]/g,'');
                                         }
-                                        
-                                     
-                                    
                                                 
                                     
                                     upgradeTower(upgrading,i); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on
@@ -442,6 +439,7 @@
 
         //track variables
         var Circles = [];
+        
         var circleId = [0];
         var size = 3; ///rbe is red ballon equivelent / damdge
         //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
@@ -546,7 +544,7 @@
 
         //red blue grteen yellow pink balck purple white lead zebra rainbow ceramic   moab  bfb     zomg, ,      dtd        bad
         //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
-
+     
 
         function mainloop() {
 
@@ -592,6 +590,10 @@
                 // console.log(x +'thisis x');
                 drawTowerMenu(x, 'green');
             }
+
+
+
+
         } //end of mainloop function()
 
 
@@ -603,43 +605,72 @@
         // var circleCount = 0;
 
 
-       var  levels = [[[5,'red',0.5],[20,'pink',2]]]; 
-       var levelSection = 1;
-       var currentSection = [5,'red',10]; // when i change level will have to update the currentSection
-    var updateSection = true;
-        //
+// levels == array     outside bracke for levels array[      next one is individual level[                                      ]           ]
+
+
+
+
+       var  levels = [[[20,['red'],0.8]]   ,[[30,['red'],0.8]]  ,[[30,['red'],0.8],[5,['blue'],1]]  ,[[35,['red'],0.6],[18,['blue'],0.8]]  ,[[5,['red'],0.7],[27,['blue'],0.5]]  
+       ,[[15,['red'],0.5],[15,['blue'],0.5],[4,['green'],1.3]]
+        ,[[100,['rainbow','ceramic'],0.1],[5,['green'],0.3]],[2,['red'],100000000000000000]]; 
+     // colo cycle not working cont of
+
+
+       var levelSection = 1; 
+       colorCycle = 0;
+       var currentSection = [20,['red'],0.5]; // when i change level will have to update the currentSection
+    // var updateSection = true;
+        //   
+        setInterval(function(){ 
+            if(Circles.length <= 0 && aCS) {
+                round+=1;
+                levelSection = 1;
+                colorCycle = 0;
+               currentSection =  JSON.parse(JSON.stringify(levels[round-1][0]));
+                aCS = false;
+            }
+            
+            }, 1000);
+
+
 
         function createCircles() {
-
-         
-                if(currentSection[0] <=0 && updateSection == true)  {  
-                    updateSection =false         
-                      if(levels[round-1].length > levelSection) {
-                          levelSection += 1;
-                          currentSection =  JSON.parse(JSON.stringify(levels[round-1][levelSection-1]));
-                      
-                          
-                      }  else {
-                          aCS = true;
-                      }
-                } 
-
-                
-            
+            // if acs == false
 
                 timeCounter += 1/frameRate;
+
                 if (timeCounter >= timeing) {
-                    newCircle =   JSON.parse(JSON.stringify(levels[round-1][levelSection-1])) ;
+                    newCircle = JSON.parse(JSON.stringify(levels[round-1][levelSection-1])) ;
                     timeing = newCircle[2];
-                    nextCircleName = newCircle[1];
-                    if(updateSection ==false) {
-                        updateSection = true;
+                    nextCircleName = newCircle[1][colorCycle];
+                    if(newCircle[1].length>1) {
+                        if(colorCycle<newCircle[1].length-1) {
+                            console.log(colorCycle);
+                            colorCycle += 1;
+                        }  else {
+                            colorCycle = 0;
+                        }
+                      
                     }
+                    // if(updateSection ==false) {
+                    //     updateSection = true;
+                    // }
                     addCircle(nextCircleName);
                     // circleCount += 1;
                     timeCounter = 0;
                     currentSection[0] -=1;
                 }
+
+                if(currentSection[0] <=0)  {  
+                    // updateSection =false;       
+                      if(levels[round-1].length > levelSection) {
+                          levelSection += 1;
+                          currentSection =  JSON.parse(JSON.stringify(levels[round-1][levelSection-1]));                                         
+                      }  else {
+                          aCS = true;
+                      }
+         }
+              
 
             
         }
@@ -763,6 +794,7 @@
 
         function addTower(x) {
             var towerType = eval(twrNames[x]);
+           
            money -= towerNames[x].replace(/[^0-9]/g,'');
             Towers.push(new tower(tMenuSquareX * gridSize + gridSize / 2, tMenuSquareY * gridSize + gridSize / 2,
                 towerType[
@@ -1198,16 +1230,17 @@
                             if (circleMissing == false) {
                                 if (tower.coolDown <= 0) {
                                     if (tower.bulletColor == 'crimson') {
-                                        console.log('dlfkjdsf');
+                              
                                         tower.bulletColor = 'skyBlue'
                                       
-                                        if (tower.upgrades[0] == 0) {
+                                        if (tower.upgrades[0] == 0) { // nned to change this to possibley check water effetelfkjdsl; jasd;flkjs adsfnnahg brsjkf
                                           
                                             tower.twerEffect[0] = JSON.parse(JSON.stringify(waterEffect[0]));
                                             tower.twerEffect[1] = JSON.parse(JSON.stringify(waterEffect[1]));
                                             tower.twerEffect[2] = JSON.parse(JSON.stringify(waterEffect[2]));
                                             tower.twerEffect[3] = JSON.parse(JSON.stringify(waterEffect[3]));
                                         } else {
+                                            console.log('test');
                                             tower.twerEffect[0] = JSON.parse(JSON.stringify(waterEffect2[0]));
                                             tower.twerEffect[1] = JSON.parse(JSON.stringify(waterEffect2[1]));
                                             tower.twerEffect[2] = JSON.parse(JSON.stringify(waterEffect2[2]));
@@ -1215,7 +1248,6 @@
                                         }
                                      
                                     } else if (tower.bulletColor == 'skyBlue') {
-                                        console.log(waterEffect,tower.twerEffect);
                                         tower.bulletColor = 'crimson';
                                         if (tower.upgrades[1] == 0) {
                                             tower.twerEffect[0] = JSON.parse(JSON.stringify(fireEffect[0]));
@@ -1228,7 +1260,6 @@
                                             tower.twerEffect[2] = JSON.parse(JSON.stringify(fireEffect2[2]));
                                             tower.twerEffect[3] = JSON.parse(JSON.stringify(fireEffect2[3]));
                                         }
-                                        console.log(waterEffect,tower.twerEffect);
                                     }
                                     //     if(tower.bulletColor == 'crimson') {
                                     //      tower.bulletColor = 'skyBlue';
