@@ -81,23 +81,28 @@
                                     rangeCircleRadius = Towers[i].range;
                                     rangeCircleX = Towers[i].x;
                                     rangeCircleY = Towers[i].y;
-                                    soldierAct = false;
-                                    iceMakerAct = false;
-                                    sniperOrginalAct = false;
-                                    fireBWaterGAct = false;
-                                    randomDiceAct = false;
-
+                            
                                     if (Towers[i].color == 'brown') {
                                         soldierAct = true;
+                                        towerActive = ' soldier';
                                     } else if (Towers[i].color == 'lightGrey') {
                                         iceMakerAct = true;
+                                        towerActive = 'iceMaker';
                                     } else if (Towers[i].color == 'black') {
                                         sniperOrginalAct = true;
+                                        towerActive = 'sniperOrginal';
                                     } else if (Towers[i].color == 'red') {
                                         fireBWaterGAct = true;
+                                        towerActive = ' fireBWaterG';
                                     } else if (Towers[i].color == 'purple') {
-                                        randomDiceAct = true;;
+                                        randomDiceAct = true;
+                                        towerActive = 'randomDice';
                                     }
+
+
+
+
+
                                 }
                             }
 
@@ -130,9 +135,18 @@
 
                             for (i = 0; i < 2; i++) {
                                 if (rowClicked == tMenuGridY + i) {
-                                    upgradeTower(upgrading,
-                                        i
-                                    ); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on
+
+
+                           
+                                        if(i == 0) {
+                                            money -= eval(towerActive+'UpgradeNames')[upgrading.upgrades[0]].replace(/[^0-9]/g,'');
+                                        } else {
+                                            var n = eval(towerActive+'UpgradeNames')
+                                            money -= n[upgrading.upgrades[1]+n.length/2].replace(/[^0-9]/g,'');
+                                        }
+                                                
+                                    
+                                    upgradeTower(upgrading,i); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on
                                 }
                             }
 
@@ -166,6 +180,7 @@
 
                         }
 
+                    
 
 
                         // else if (rowClicked == (tMenuGridY +3)) {
@@ -274,6 +289,7 @@
         var lifes = 150;
         var time = 0;
         var round = 1;
+        var money = 500;
         var aCS = false; //all Circles Spawned (for level) so I can chceck when all circle killed to start next round
 
         //towerMenu variables and upgrade variablse
@@ -289,9 +305,10 @@
         var rangeCircleY = 0;
         var rCircleTime = 3000; // when adding a tower this is how long it shows range circle for
         var soldierAct = false;
+        var towerActive = '';
         var grenadeTimer = 7;
         var grenadeMaxHit = 10000;
-        var grenadePopPower = 15;
+        var grenadePopPower = 2;
         var explosionRadius = gridSize * 4;
         var iceMakerAct = false;
         var sniperOrginalAct = false;
@@ -314,8 +331,8 @@
         var tMenuGridX = 0; //grid point of Menu xpos
         var tMenuGridY = 0; //grid poing of Menu Yposs
 
-        var towerNames = ['soldierCost10$', 'iceMakerCost10$', 'sniperOrginalCost10$', 'fireBWaterGCost10$',
-            'randomDiceCost10$'
+        var towerNames = ['soldierCost10$', 'iceMakerCost20$', 'sniperOrginalCost50$', 'fireBWaterGCost60$',
+            'randomDiceCost1000$'
         ];
 
         var twrNames = ['soldier', 'iceMaker', 'sniperOrginal', 'fireBWaterG',
@@ -325,46 +342,46 @@
 
 
         var soldierUpgradeNames = [
-            'attackSpeedx2',
-            'smallMachineGun',
-            'assaultRifle',
-            'MInigun',
-            'range',
-            'ShotGun',
-            'grenade',
-            'greandeShells'
+            'attackSpeedxTwo30$',
+            'smallMachineGun20$',
+            'assaultRifle20$',
+            'MInigun20$',
+            'range40$',
+            'ShotGun20$',
+            'grenade20$',
+            'greandeShells20$'
         ];
         var iceMakerUpgradeNames = [
-            'attackSpeed',
-            'betterSlow',
-            'iceNowPops',
-            'longerSlow',
-            'towerPierce',
-            'giantSnowBall'
+            'attackSpeed20$',
+            'betterSlow20$',
+            'iceNowPops20$',
+            'longerSlow20$',
+            'towerPierce20$',
+            'giantSnowBall20$'
         ];
         var sniperOrginalUpgradeNames = [ // need to make all of them the same length
-            'pierce',
-            'dblMoabDamage',
-            'Mega Pierce',
-            'attackspeed',
-            'more Attackspeed',
-            'semiAutoSniper'
+            'pierce20$',
+            'dblMoabDamage20$',
+            'Mega Pierce20$',
+            'attackspeed20$',
+            'more Attackspeed20$$',
+            'semiAutoSniper20$'
         ];
         var fireBWaterGUpgradeNames = [
-            'betterWater',
-            'WaterFireReacition',
-            'reactioncreatsstuff',
-            'betterfire',
-            'greenAcid',
-            'portal'
+            'betterfire20$',
+            'greenAcid20$',
+            'portal20$',
+            'betterWater20$',
+            'WaterFireReacition20$',
+            'reactioncreatsstuff20$'
         ];
         var randomDiceUpgradeNames = [
-            'dntclickbreaksbwlowupgradedoesnothing',
-            'godmode+'
+            'dntclickbreaksbwlowupgradedoesnothing20$',
+            'godmode+20$'
         ];
 
 
-        // .replace(/[^0-9]/g, '');.replace(/[^0-9]/g, '');.replace(/[^0-9]/g, '');.replace(/[^0-9]/g, '');.replace(/[^0-9]/g, ''); //todo cost money
+     
         //tower vareiabels
         var Towers = [];
         var towerCount = towerNames.length;
@@ -391,8 +408,9 @@
             [0, 'none']
         ];
         var fireBWaterG = [0.4, 2, 1, gridSize * 10, 1, 'red', gridSize / 18, gridSize * 0.2, 'crimson', '1st', 1,
-            waterEffect
+            JSON.parse(JSON.stringify(waterEffect))
         ];
+        
 
 
         var randomDice = [6, 2, 1, gridSize * 1.8, 1, 'purple', gridSize / 30, gridSize * 0.2, 'purple', '1st', 1, [
@@ -422,6 +440,7 @@
 
         //track variables
         var Circles = [];
+        
         var circleId = [0];
         var size = 3; ///rbe is red ballon equivelent / damdge
         //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
@@ -526,11 +545,10 @@
 
         //red blue grteen yellow pink balck purple white lead zebra rainbow ceramic   moab  bfb     zomg, ,      dtd        bad
         //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
-
+     
 
         function mainloop() {
 
-            ;
             colorRect(0, 0, canvas.width, canvas.height, 'blue');
             drawGrid(canvas.width, canvas.height, 'grid');
             if (gameActive == false) {
@@ -538,6 +556,8 @@
                 currentTrackXY = JSON.parse(JSON.stringify(track2));
                 gameActive = true;
             }
+
+
 
             drawTrack();
             drawCircles();
@@ -571,54 +591,90 @@
                 // console.log(x +'thisis x');
                 drawTowerMenu(x, 'green');
             }
+
+
+
+
         } //end of mainloop function()
 
 
 
 
-        var timeing = 1;
+        var timeing =0.5; // dealy at start og game before starting
+        var delayTimer = 5; // delayTimer is delay between levels
         var timeCounter = 0;
         var nextCircleName = '';
         // var circleCount = 0;
 
 
-       var  levels = [[[5,'red',0.5],[20,'pink',2]]]; 
-       var levelSection = 1;
-       var currentSection = [5,'red',10]; // when i change level will have to update the currentSection
-    var updateSection = true;
-        //
+// levels == array     outside bracke for levels array[      next one is individual level[                                      ]           ]
+
+
+// var levels = [[[20,['bad','zomg'],0.2]],[[10,['blue'],0.1]]];
+   // will have to decied soon if im doing regen or not
+       var  levels = [[[20,['red'],0.8]],[[30,['red'],0.8]]  ,[[30,['red'],0.8],[5,['blue'],1]]  ,[[25,['red'],0.6],[18,['blue'],0.8],[10,['red'],0.6]]  ,[[10,['blue'],0.5],[5,['red'],0.7],[12,['blue'],0.5]]  
+       ,[[4,['green'],0.5],[15,['red'],0.5],[15,['blue'],1.3]]
+        ,[[25,['blue'],0,5],[5,['green'],0.4],[20,['red'],2]],[[20,['blue'],0,5],[[4,['green'],0.5],[10,['red'],0.4]],[10,['green'],0.5]],[[30,['green'],075]],[[102,['blue'],0.3]]
+          ,[[10,['red'],0.5],[10,'blue',0.3],[12,['green'],0.6],[2,['yellow'],1.2]],[[15,'blue',0.4],[5,['yellow'],0.3],[5,['green'],0.5]],[[50,'red',0.1],[2,['yellow'],0.5],[10,['green'],0.6],[50,'red',0.1],[2,['yellow'],0.5],[13,['green'],0.6]]
+          ,[[20,['red'],0.4],[12,'green',0.3],[5,['yellow'],0.4],[2,['pink'],3]],[[10,'green',0.22],[1,['pink'],0],[10,['green'],0.22],[1,'pink',0.01],[8,['yellow'],0.1],[2,['pink'],0]]];
+                                                                                                                                              
+     // colo cycle not working cont of
+
+       var levelSection = 1; 
+       var colorCycle = 0;
+       var currentSection = [2,['red'],0.8]; // when i change level will have to update the currentSection
+    // var updateSection = true;
+        //   
+        setInterval(function(){ 
+            if(Circles.length <= 0 && aCS) {
+                round+=1;
+                levelSection = 1;
+                colorCycle = 0;
+               currentSection =  JSON.parse(JSON.stringify(levels[round-1][0]));
+                aCS = false;
+            }
+
+            
+            }, 1000);
+
+
 
         function createCircles() {
-
-         
-                if(currentSection[0] <=0 && updateSection == true)  {  
-                    updateSection =false         
-                      if(levels[round-1].length > levelSection) {
-                          levelSection += 1;
-                          currentSection =  JSON.parse(JSON.stringify(levels[round-1][levelSection-1]));
-                      
-                          
-                      }  else {
-                          aCS = true;
-                      }
-                } 
-
-                
-            
+            // if acs == false
 
                 timeCounter += 1/frameRate;
+
                 if (timeCounter >= timeing) {
-                    newCircle =   JSON.parse(JSON.stringify(levels[round-1][levelSection-1])) ;
+                    newCircle = JSON.parse(JSON.stringify(levels[round-1][levelSection-1])) ;
                     timeing = newCircle[2];
-                    nextCircleName = newCircle[1];
-                    if(updateSection ==false) {
-                        updateSection = true;
+                    nextCircleName = newCircle[1][colorCycle];
+                    if(newCircle[1].length>1) {
+                        if(colorCycle<newCircle[1].length-1) {
+                            colorCycle += 1;
+                        }  else {
+                            colorCycle = 0;
+                        }
                     }
-                    addCircle(nextCircleName);
+                    // if(updateSection ==false) {
+                    //     updateSection = true;
+                    // }
+                    addCircle(nextCircleName);  //might not do but could add regen here with (newxcirclename,type);
                     // circleCount += 1;
                     timeCounter = 0;
                     currentSection[0] -=1;
                 }
+
+                if(currentSection[0] <=0)  {  
+                    // updateSection =false;       
+                      if(levels[round-1].length > levelSection) {
+                          levelSection += 1;
+                          currentSection =  JSON.parse(JSON.stringify(levels[round-1][levelSection-1]));                                         
+                      }  else {
+                          aCS = true;
+                      }
+                      timeing = delayTimer;
+         }
+              
 
             
         }
@@ -742,6 +798,8 @@
 
         function addTower(x) {
             var towerType = eval(twrNames[x]);
+           
+           money -= towerNames[x].replace(/[^0-9]/g,'');
             Towers.push(new tower(tMenuSquareX * gridSize + gridSize / 2, tMenuSquareY * gridSize + gridSize / 2,
                 towerType[
                     0], towerType[1], towerType[2],
@@ -790,13 +848,13 @@
                         } else if (tower.upgrades[1] == 2) {
                             tower.twerEffect.push(0, 'grenade');
                             grenadeTimer = 3;
-                            // grenadePopPower = 2;
+                            grenadePopPower = 2;
                             //will make a grenage get made hree // teri4
                         } else if (tower.upgrades[1] == 3) {
                             tower.twerEffect = [7, 'shotNade'];
                             tower.poppingPower = 0;
                             tower.damage = 0;
-                            // tower.poppingPower = grenadePopPower;
+                            tower.poppingPower = grenadePopPower;
                             tower.pierce = 1;
                             //   /will make grenade shot gun shot gun spray of grenades.
 
@@ -805,6 +863,7 @@
                     }
                     tower.upgrades[1] += 1;
                 }
+                soldierAct = false;
             } //jkjkjk
 
             if (iceMakerAct) { //icemaker upgrades
@@ -834,6 +893,7 @@
                     } //tier 4 will make snowball go down track dealing 10 damage or so to every circle on track with cd
                     tower.upgrades[1] += 1;
                 }
+                iceMakerAct = false;
             } //
 
 
@@ -861,6 +921,7 @@
                     }
                     tower.upgrades[1] += 1;
                 }
+                sniperOrginalAct = false;
             } //
 
 
@@ -887,6 +948,7 @@
                     }
                     tower.upgrades[1] += 1;
                 }
+                fireBWaterGAct = false;
             } // 
 
             // fireByoy and water girl //dodododdod
@@ -910,6 +972,7 @@
                     tower.upgrades[1] += 1;
                 }
             } //
+            randomDiceAct = false;
         }
 
         var what = true;
@@ -1170,32 +1233,33 @@
                             if (circleMissing == false) {
                                 if (tower.coolDown <= 0) {
                                     if (tower.bulletColor == 'crimson') {
-                                        tower.bulletColor = 'skyBlue'
-                                        if (tower.upgrades[0] == 0) {
-                                            tower.twerEffect[0] = waterEffect[0];
-                                            tower.twerEffect[1] = waterEffect[1];
-                                            tower.twerEffect[2] = waterEffect[2];
-                                            tower.twerEffect[3] = waterEffect[3];
+                              
+                                        tower.bulletColor = 'skyBlue'                                  
+                                        if (tower.upgrades[0] == 0) { // nned to change this to possibley check water effetelfkjdsl; jasd;flkjs adsfnnahg brsjkf                                
+                                            tower.twerEffect[0] = JSON.parse(JSON.stringify(waterEffect[0]));
+                                            tower.twerEffect[1] = JSON.parse(JSON.stringify(waterEffect[1]));
+                                            tower.twerEffect[2] = JSON.parse(JSON.stringify(waterEffect[2]));
+                                            tower.twerEffect[3] = JSON.parse(JSON.stringify(waterEffect[3]));
                                         } else {
-                                            tower.twerEffect[0] = waterEffect2[0];
-                                            tower.twerEffect[1] = waterEffect2[1];
-                                            tower.twerEffect[2] = waterEffect2[2];
-                                            tower.twerEffect[3] = waterEffect2[3];
+                                            tower.twerEffect[0] = JSON.parse(JSON.stringify(waterEffect2[0]));
+                                            tower.twerEffect[1] = JSON.parse(JSON.stringify(waterEffect2[1]));
+                                            tower.twerEffect[2] = JSON.parse(JSON.stringify(waterEffect2[2]));
+                                            tower.twerEffect[3] = JSON.parse(JSON.stringify(waterEffect2[3]));
                                         }
+                                     
                                     } else if (tower.bulletColor == 'skyBlue') {
                                         tower.bulletColor = 'crimson';
                                         if (tower.upgrades[1] == 0) {
-                                            tower.twerEffect[0] = fireEffect[0];
-                                            tower.twerEffect[1] = fireEffect[1];
-                                            tower.twerEffect[2] = fireEffect[2];
-                                            tower.twerEffect[3] = fireEffect[3];
+                                            tower.twerEffect[0] = JSON.parse(JSON.stringify(fireEffect[0]));
+                                            tower.twerEffect[1] = JSON.parse(JSON.stringify(fireEffect[1]));
+                                            tower.twerEffect[2] = JSON.parse(JSON.stringify(fireEffect[2]));
+                                            tower.twerEffect[3] = JSON.parse(JSON.stringify(fireEffect[3]));
                                         } else {
-                                            tower.twerEffect[0] = fireEffect2[0];
-                                            tower.twerEffect[1] = fireEffect2[1];
-                                            tower.twerEffect[2] = fireEffect2[2];
-                                            tower.twerEffect[3] = fireEffect2[3];
+                                            tower.twerEffect[0] = JSON.parse(JSON.stringify(fireEffect2[0]));
+                                            tower.twerEffect[1] = JSON.parse(JSON.stringify(fireEffect2[1]));
+                                            tower.twerEffect[2] = JSON.parse(JSON.stringify(fireEffect2[2]));
+                                            tower.twerEffect[3] = JSON.parse(JSON.stringify(fireEffect2[3]));
                                         }
-
                                     }
                                     //     if(tower.bulletColor == 'crimson') {
                                     //      tower.bulletColor = 'skyBlue';
@@ -1449,9 +1513,10 @@
             ctx.font = "30px Times New Roman";
             ctx.fillStyle = "red";
 
-            ctx.fillText("lives: " + lifes, canvas.width / 4, 30);
-            ctx.fillText("time: " + Math.floor(time / frameRate), canvas.width / 1.8, 30);
-            ctx.fillText("ROund: " + round, canvas.width / 10, 30);
+            ctx.fillText("Lifes: " + lifes, canvas.width * 0.1, 30);
+            ctx.fillText("Time: " + Math.floor(time / frameRate),canvas.width * 0.3, 30);
+            ctx.fillText("Round: " + round, canvas.width * 0.5, 30);
+            ctx.fillText("Money:" + money, canvas.width * 0.7, 30);
 
             // if (gameActive ) {
             time += 1;
