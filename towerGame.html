@@ -435,7 +435,6 @@
             ctx.drawImage(bgImg,0,0,canvas.width,canvas.height);
             if (gameRun == true) {
                 
-               
                 currentTrack = JSON.parse(JSON.stringify(track2));
                 currentTrackXY = JSON.parse(JSON.stringify(track2));
                 // this where i will set varibales based of difficulty// komey per round lives baloon speed.
@@ -548,7 +547,6 @@
                     }else  if(difficulty == 'medium') {
                         ctx.fillText('Well done press r if you wanna play again', TotalGridSize * 0.17,TotalGridSize*0.74);
                     }  else {
-                        console.log('hi');
                         ctx.fillText('Impressive.. what op tower have you abused', TotalGridSize * 0.17,TotalGridSize*0.74);
                     }
 
@@ -1827,7 +1825,6 @@ function removeOutOfMoenyText() {
                                                 upgradeTower(upgrading,i); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on 
                                             money -= n[upgrading.upgrades[1]+n.length/2].replace(/[^0-9]/g,'');
                                         } else {
-                                            console.log('hgi');
                                             notEnoughMoney();
                                         }
                                        
