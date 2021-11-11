@@ -18,6 +18,7 @@ class circle { //this will creawte circles which go around track
     distanceTraveled = 0,
     nextCo = 0,
     hitPs = [],
+    type = ''
   ) {
 
     this.x = Number(x);
@@ -37,7 +38,9 @@ class circle { //this will creawte circles which go around track
     this.distanceTraveled = distanceTraveled;
     this.nextCo = [currentTrack[numberCo][0], currentTrack[numberCo][1]];
     this.hitPs = hitPs;
+    this.type = type;
   }
+  
 
   get area() { //this is incase i want to compare circles and know whcih one
     // is bigger to put smaller one on top for visual clarity
@@ -114,6 +117,10 @@ class circle { //this will creawte circles which go around track
           if (Circles[i].x == this.x && Circles[i].y == this.y && Circles[i].c == this.c) {
 
             lifes -= this.rbe;
+            if(lifes<= 0) {
+              gameActive = false;
+              gameLost = true;
+            }
             //check for lvies to be 0 and end game
             delete Circles[i];
             Circles = Circles.filter(item => item !== undefined);
@@ -134,8 +141,15 @@ class circle { //this will creawte circles which go around track
       if (this.effects[0] <= 0) {
         //burn basec of this.effects[2]
 
+
+         this.health -= eval(this.effects[1] + 'Damage');
+        
+        
+          if(this.health <= 0 ) {
+
+        
         var newCircle = [];
-        for (var a = 0; a < nextCircle.length; a++) { //this is right//will have to change al this to base it of popping poiewr tododododod todo
+        for (var a = 0; a < nextCircle.length; a++) { // todotdot make it so if damdge makes it zero that it reruns this code with remaining poppoiwer still usging daamdge.
           if (this.c == nextCircle[a][0]) {
             if (a > 10) {
               newCircle = nextCircle[a][1];
@@ -172,30 +186,65 @@ class circle { //this will creawte circles which go around track
             var nextCo = this.nextCo;
             var speed = this.speed;
             var iForgotTHisGrr = this.distanceTraveled;
+            var typee = this.type;
             // will need to reset the effect timer; effexts [1]
             this.x = 'hi';
             Circles = Circles.filter(item => item.x !== 'hi');
             // for loop into this
             // this.effects[3] -= 1; // check
             // console.log(this.effects[3]);
-     
+         
             if (this.effects[3] <= 0) {             
-              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, iForgotTHisGrr, [0, 'none']);
+              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, iForgotTHisGrr, [0, 'none'],typee);
+        // will have tochange based of pop power and damdg doen and if it popped moab or cermcac somewehre
             } else { // buged something around here
               // console.log(eval(this.effects[1])[0]);
-            
-              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, iForgotTHisGrr, [eval(this.effects[1])[0], this.effects[1], this.effects[2], this.effects[3] - 1]);
+       
+              addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, iForgotTHisGrr, [eval(this.effects[1])[0], this.effects[1], this.effects[2], this.effects[3] - 1],typee);
             }
           }
         } else {
 
           this.x = 'hi';
           Circles = Circles.filter(item => item.x !== 'hi');
+
+   
         }
         // to damage of this.effects [3] //todo
         // }
       }
     } // end of fireEffect
+
+
+     if(this.type[1] == 'regen' && this.type[2] > this.rbe) { // this chekcs to make sure that any regen circle can not regen above their starting health
+
+          this.type[0] -=1;
+          if(this.type[0] <= 0) {
+                  
+
+        for (var a =0; a < nextRegen.length; a++) { // todotdot make it so if damdge makes it zero that it reruns this code with remaining poppoiwer still usging daamdge.
+          if (this.c == nextRegen[a][0]) {
+            var   newCircle = nextRegen[a][1];
+            this.type[0] = JSON.parse(JSON.stringify(regenSpeed));
+      
+            addCircle2(this.x, this.y, this.numberCo, this.nextCo, this.id, newCircle[1], newCircle[0], this.speed, 123123, JSON.parse(JSON.stringify(this.effects)),this.type);
+            
+             this.x = 'hi';
+            Circles = Circles.filter(item => item.x !== 'hi');
+          }
+          }
+
+
+        }
+
+
+        }  //end of regen 
+
+
+
+
+
+      }
 
   } // end of followTrack()
 

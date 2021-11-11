@@ -24,182 +24,18 @@
         var onTrack = false;
         var onTower = false;
         var frameRate = 60;
+        var difficulty = '';
 
         window.onload = function () {
+
             canvas = document.getElementById('gameCanvas');
             ctx = canvas.getContext('2d');
             // resizeCanvas();
-            canvas.addEventListener("mousedown", function (evt) {
-                getMousePosition(canvas, evt);
+            document.addEventListener('keydown', keyPressed); // sets the event for the keypressed func 
+            document.addEventListener('keyup', keyReleased); // sets the event for the keyreleased func 
+            canvas.addEventListener("mousedown",mouseDown), 
 
-                let columnClicked = Math.floor(mouseX / gridSize);
-                let rowClicked = Math.floor(mouseY / gridSize);
-
-
-                for (i = 0; i <
-                    trackL; i++
-                ) { //checks each track cooradanets to see if mouse clikc on track then passes through ontrack is true or false
-                    onTrack = false;
-                    let trackColumn = Math.floor(currentTrackXY[i][0] / gridSize);
-                    let trackRow = Math.floor(currentTrackXY[i][1] / gridSize);
-
-                    // console.log(trackColumn,trackRow);
-                    //will have to chagne current tracdk above to change 1st and last variable
-                    if (columnClicked == trackColumn && rowClicked == trackRow) {
-                        onTrack = true;
-
-                        //will make traps menu come up when clikd on track
-                        break;
-                    }
-                }
-
-                if (onTrack == false && Towers.length > 0) { //echects if they clikc on a toer
-                    for (i = 0; i < Towers.length; i++) {
-                        onTower = false;
-                        let towerColumn = Math.floor(Towers[i].x / gridSize);
-                        let towerRow = Math.floor(Towers[i].y / gridSize);
-                        if (columnClicked == towerColumn && rowClicked == towerRow) {
-                            onTower = true;
-                            upgrading = Towers[i];
-                            break; ///if this happnes it stops for loop as they have clikced on a tower and doesnt need to check anything more
-                        }
-                    }
-                }
-
-                if (towerMenuActive == false && upgradeMenuActive == false) {
-                    if (onTrack == false) {
-
-                        if (onTower) {
-                            var upgrades = [0, 0];
-                            for (i = 0; i < Towers.length; i++) {
-                                if ((Math.floor(Towers[i].x / gridSize)) == columnClicked && (Math.floor(
-                                        Towers[i].y /
-                                        gridSize)) ==
-                                    rowClicked) {
-                                    upGsActive = Towers[i].upgrades;
-                                    // upgradeLength = soldierUpgradeNames.length;
-                                    targetingActive = Towers[i].targeting;
-                                    rangeCircleRadius = Towers[i].range;
-                                    rangeCircleX = Towers[i].x;
-                                    rangeCircleY = Towers[i].y;
-                            
-                                    if (Towers[i].color == 'brown') {
-                                        soldierAct = true;
-                                        towerActive = ' soldier';
-                                    } else if (Towers[i].color == 'lightGrey') {
-                                        iceMakerAct = true;
-                                        towerActive = 'iceMaker';
-                                    } else if (Towers[i].color == 'black') {
-                                        sniperOrginalAct = true;
-                                        towerActive = 'sniperOrginal';
-                                    } else if (Towers[i].color == 'red') {
-                                        fireBWaterGAct = true;
-                                        towerActive = ' fireBWaterG';
-                                    } else if (Towers[i].twerEffect[1] == 'roll') {
-                                        randomDiceAct = true;
-                                        towerActive = 'randomDice';
-                                    }
-
-
-
-
-
-                                }
-                            }
-
-
-                            upgradeMenuActive = true;
-                            towerMenu('upGradeMenu', [columnClicked * gridSize, rowClicked * gridSize]);
-
-
-                        } else {
-                            towerMenuActive = true;
-                            towerMenu('towerMenu', [columnClicked * gridSize, rowClicked * gridSize]);
-
-                        }
-
-                    } // else { will be to add traps
-                } else {
-                    if (towerMenuActive == true && columnClicked - tMenuGridX >= 0 && columnClicked -
-                        tMenuGridX < towerWidth - 2) {
-                        //todotodotodoTODo to do tooodooo 2du 2dough  twoduuuugooodoootoututudooo
-                        for (i = 0; i < towerCount; i++) {
-                            if (rowClicked == tMenuGridY + i) {
-                                addTower(i)
-
-                            }
-                        }
-
-                    } else if (upgradeMenuActive) {
-                        if (columnClicked - tMenuGridX >= 0 && columnClicked - tMenuGridX <
-                            upgradeWidth) {
-
-                            for (i = 0; i < 2; i++) {
-                                if (rowClicked == tMenuGridY + i) {
-
-
-                           
-                                        if(i == 0) {
-                                            money -= eval(towerActive+'UpgradeNames')[upgrading.upgrades[0]].replace(/[^0-9]/g,'');
-                                        } else {
-                                            var n = eval(towerActive+'UpgradeNames')
-                                            money -= n[upgrading.upgrades[1]+n.length/2].replace(/[^0-9]/g,'');
-                                        }
-                                                
-                                    
-                                    upgradeTower(upgrading,i); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on
-                                }
-                            }
-
-                            if (rowClicked == tMenuGridY + 3) {
-                                if (columnClicked - tMenuGridX >= targetingWidth / 2 && columnClicked -
-                                    tMenuGridX < targetingWidth / 2 + 1) {
-
-                                    if (upgrading.targeting == '1st') {
-                                        upgrading.targeting = 'last';
-                                    } else if (upgrading.targeting == 'strong') {
-                                        upgrading.targeting = '1st';
-                                    } else {
-                                        upgrading.targeting = 'strong';
-                                    }
-                                    var targetingList = ['1st', 'strong', 'last'];
-
-
-
-                                } else if (columnClicked - tMenuGridX >= targetingWidth / 2 + 1 &&
-                                    columnClicked -
-                                    tMenuGridX <= targetingWidth / 2 + 2) {
-                                    if (upgrading.targeting == '1st') {
-                                        upgrading.targeting = 'strong';
-                                    } else if (upgrading.targeting == 'strong') {
-                                        upgrading.targeting = 'last';
-                                    } else {
-                                        upgrading.targeting = '1st';
-                                    }
-                                }
-                            }
-
-                        }
-
-                    
-
-
-                        // else if (rowClicked == (tMenuGridY +3)) {
-                        //         console.log('test');
-
-                        //     //     columnClicked - tMenuGridX >= targetingWidth && columnClicked - tMenuGridX <
-                        //     // upgradeWidth && 
-
-                        // }
-
-
-                    }
-                    upgradeMenuActive = false;
-                    towerMenuActive = false;
-                }
-
-
-            });
+          
 
             setInterval(mainloop, 1000 / frameRate);
 
@@ -207,91 +43,39 @@
 
         } // end of onloead function()
 
+        var playerStats = [['']];
+        var cursureTimer = frameRate*1.2; // tiemr to make the cursure evenly go up
+        var cTimer = frameRate*1;
+            var attempt = 0;
+            const R_KEY = 82;
+    const SHIFT_KEY = 16;
+    var rKeyPressed = false;
+            var shiftKeyPressed = false;
 
-        var mouseX, mouseY;
-  
-        function getMousePosition(canvas, evt) {
-            var rect = canvas.getBoundingClientRect();
-            mouseX = event.clientX - rect.left;
-            mouseY = event.clientY - rect.top;
-        } //end of getMOusdePos funtion ()
-        // 0 == up
-        // 1 == right
-        // 2 = down
-        // 3 = up
 
-        var track = [1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-            1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 0,
-            0,
-            0, 0, 0, 1, 1, 1, 1, 1, 1,
-            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-            1,
-            1, 2, 2, 2, 1, 1, 1, 1,
-            1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-            1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 0,
-            0,
-            0, 0, 0, 1, 1, 1, 1, 1, 1,
-            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-            1,
-            1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-            1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 0,
-            0,
-            0, 0, 0, 1, 1, 1, 1, 1, 1,
-            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-            1,
-            2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2,
-            2,
-            2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
-            3,
-            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-            3,
-            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-            3,
-            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-            3,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0,
-            0, 0, 0, 0, 0, 0, 0,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1,
-            1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2,
-            2, 2, 2, 2, 2, 2, 2
-        ];
-
-        var track2 = [1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-            2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 3, 3,
-            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-            1,
-            1,
-            2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 3, 3,
-            2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-            1,
-            1, 2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 3, 3, 2, 2, 2
-        ];
+     
+        
+    
+        var track2 = [1,1,1,1,1,2,2,2,2,2,1,2,1,1,1,1,1,1,1,0,0,0,0,0,0,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,3,3,3,3,3,3,3,2,1,2,1];
 
 
         var currentTrack = '';
         var currentTrackXY = '';
         var gameActive = false; // to set the track when the game begins
-        
-        var gameRun = true;
+        var lostGame = false;
+        var gameStart = true;
+        var gameWon = false;
+        var difScreenActive = false;
+        var gameRun = false;
 
         // info variables
         var lifes = 150;
         var time = 0;
         var round = 1;
-        var money = 500;
+        var maxRound = 0;
+        var recordRound =0;//toto
+        var money = 0;
+        var outOfMoney = 0;
        var  moneyPerRound= 100;
         var aCS = false; //all Circles Spawned (for level) so I can chceck when all circle killed to start next round
 
@@ -310,10 +94,11 @@
         var soldierAct = false;
         var towerActive = '';
         var grenadeTimer = 7;
-        var grenadeMaxHit = 10000;
-        var grenadePopPower = 20;
-        var grenadeShellsPopPower = 100;
+        var grenadeMaxHit = 200;
+        var grenadePopPower = 6;
+        var grenadeShellsPopPower = 14;
         var explosionRadius = gridSize * 4;
+        var explosionDamage = 0.3;
         var iceMakerAct = false;
         var sniperOrginalAct = false;
         var fireBWaterGAct = false;
@@ -322,9 +107,12 @@
         var acidPitColor = 'green';
         var acidCount = 100;
         var fireEffect = [frameRate * 2, 'fireEffect', 1, 2]; //burn timer,effect name, popPower, burnsLeft/count;
+        var fireEffectDamage = 1;
         var acidTimer = 40;
+        var acidEffectDamage = 1;
         var waterEffect = [5, 'water', 10000, 0]; // bounce count, effect name, range
-        var fireEffect2 = [frameRate * 0.3, 'fireEffect2', 2, 10]; //burn timer,effect name, popPower, burnsLeft/count;
+        var fireEffect2 = [frameRate * 0.3, 'fireEffect2', 2, 5]; //burn timer,effect name, popPower, burnsLeft/count;
+        var fireEffect2Damage = 2;
         var waterEffect2 = [25, 'water', 10000, 0]; // bounce count, effect name, range
         var acidEffect = [frameRate * 0.13, 'acidEffect', 1, 12];
         var randomDiceAct = false;
@@ -351,8 +139,29 @@
         var dice6Img = new Image();
         dice6Img.src = 'Img/dice6.png';
         var bullet6 = new Image();
-        bullet6.src = 'Img/bullet6.png'
-        
+        bullet6.src = 'Img/bullet6.png';
+        var bgImg = new Image();
+        bgImg.src = 'Img/bgimg.png';
+        var nameScreenImg = new Image();
+        nameScreenImg.src = 'Img/nameScreen.png'
+        var difImg = new Image();
+        difImg.src = 'Img/dif.png';
+        var easyHoverDif = new Image();
+        easyHoverDif.src = 'Img/easyHoverDif.png';
+        var medHoverDif = new Image();
+        medHoverDif.src = 'Img/medHoverDif.png';
+        var hardHoverDif = new Image();
+        hardHoverDif.src = 'Img/hardHoverDif.png';
+        var fwImg = new Image();
+        fwImg.src = 'Img/fwImg.png';
+        var gameLost = new Image();
+        gameLost.src = 'Img/gameLost.png';
+        var gameOver = new Image();
+        gameOver.src = 'Img/gameOver.png';
+        var leftArrow = new Image();
+        leftArrow.src = 'Img/leftArrow.png';
+        var rightArrow = new Image();
+        rightArrow.src = 'Img/rightArrow.png';
 
         var upGsActive = [0, 0];
         var tMenuX = 0; //actual menu xps
@@ -377,42 +186,50 @@
             'smallMachineGun20$',
             'assaultRifle20$',
             'MInigun20$',
+            'Maxed',
             'range40$',
             'ShotGun20$',
             'grenade20$',
-            'greandeShells20$'
+            'greandeShells20$',
+            'Maxed',
         ];
         var iceMakerUpgradeNames = [
             'attackSpeed20$',
             'betterSlow20$',
             'iceNowPops20$',
+            'Maxed',
             'longerSlow20$',
             'towerPierce20$',
-            'giantSnowBall20$'
+            'giantSnowBall20$',
+            'Maxed'
         ];
         var sniperOrginalUpgradeNames = [ // need to make all of them the same length
             'pierce20$',
             'dblMoabDamage20$',
             'Mega Pierce20$',
+            'Maxed',
             'attackspeed20$',
             'more Attackspeed20$$',
-            'semiAutoSniper20$'
+            'semiAutoSniper20$',
+            'Maxed'
         ];
         var fireBWaterGUpgradeNames = [
             'betterWater20$',
             'greenAcid20$',
-            'portal20$',
+            'maxed',
             'betterFire20$',
-            'WaterFireReacition20$',
-            'reactioncreatsstuff20$'
+            'moreattackspeed',
+            'Maxed'
         ];
         var randomDiceUpgradeNames = [
             'extraPopPower40$',
             'ByeOnes&Twos800$',
             'tripleMoabDamge$',
+            'Maxed',
             'critChance40$',
             'chnaceToOneShot400$',
-            'MassiveShotChanc20000$'
+            'MassiveShotChanc20000$',
+            'Maxed'
 
         ];
 
@@ -424,11 +241,13 @@
         var towerWidth = 9.7;
         var upgradeWidth = 7;
         var tFontS = gridSize * 2.5 / 3;
-        var tColor = 'grey';
+        var tColor = 'white';
         var tFont = 'px Ariel';
         //projectile variables
         var Projectiles = [];
         var projectileId = 0;
+
+        
 
         //trap variables
 
@@ -440,10 +259,10 @@
         var iceMaker = [0.6, 2, 0, gridSize * 3, 1, 'lightGrey', gridSize / 5, gridSize * 0.2, 'white', 'strong', 0, [
             frameRate * 5, 'slow'
         ]];
-        var sniperOrginal = [0.7, 2, 1, TotalGridSize * 10, 1, 'black', gridSize / 9, gridSize * 0.1, 'black', '1st', 1,
+        var sniperOrginal = [0.7, 2, 1, TotalGridSize * 10, 1, 'black', gridSize / 9, gridSize * 0.1, 'white', '1st', 1,
             [0, 'none']
         ];
-        var fireBWaterG = [0.4, 2, 1, gridSize * 10, 1, 'red', gridSize / 18, gridSize * 0.3, 'crimson', '1st', 1,
+        var fireBWaterG = [0.4, 2, 1, gridSize * 10, 1, 'fwImg', gridSize / 18, gridSize * 0.3, 'crimson', '1st', 1,
             JSON.parse(JSON.stringify(waterEffect))
         ];
         
@@ -455,6 +274,7 @@
             //regen variabnles can make hard mode very hard lol
         var regenDupeCount = 1;
         var regenSpeed = 2 * frameRate;
+    
 
         //basic soldier wiht upgrading gun/weopons alot of attack speed/maching gun
         // var IceMaker;  //te3ir 1 shoots ice ball tier 2 ball explodes to hsards                             3,6,total*10,4,3
@@ -481,62 +301,11 @@
         var size = 3; ///rbe is red ballon equivelent / damdge
         //var circleEG = [x,y,radius,colo,bordersize,birdercolor,speed,nextCoornenant,coardNumber,rbe,health]
         var redSpeed = gridSize / 50;
+        var healthScaling = 1;
 
         var redSize = gridSize / 5; // /5
         var redBorderS = gridSize / 15;
-        var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1, 0, 0, 1, 1];
-        var blueCircle = [xa2, ya2, redSize, 'rgb(11,196,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2,
-            1
-        ];
-        var greenCircle = [xa2, ya2, redSize, 'rgb(0,155,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 3, 1];
-        var yellowCircle = [xa2, ya2, redSize, 'rgb(255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.2, 0, 0, 4,
-            1
-        ];
-        var pinkCircle = [xa2, ya2, redSize, 'rgb(255,182,194,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.5, 0, 0, 5,
-            1
-        ];
-        var blackCircle = [xa2, ya2, redSize / 2, 'rgb(0,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 11,
-            1
-        ];
-        var purpleCircle = [xa2, ya2, redSize, 'rgb(28,0,128,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3, 0, 0, 11,
-            1
-        ];
-        var whiteCircle = [xa2, ya2, redSize / 3 * 2, 'rgb(255,255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 2, 0,
-            0,
-            11, 1
-        ];
-        var leadCircle = [xa2, ya2, redSize, 'rgb(105,105,105,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed, 0, 0, 23, 1];
-        var zebraCircle = [xa2, ya2, redSize / 2.2, 'rgb(0,1,0,1)', redBorderS * 14, 'rgb(255,255,255,1)', redSpeed *
-            1.8,
-            0,
-            0, 23, 1
-        ];
-        var rainbowCircle = [xa2, ya2, redSize / 2.2, 'rgb(255,255,0,1)', redBorderS * 14, 'rgb(28,0,128,1)', redSpeed *
-            2.2,
-            0, 0, 47, 1
-        ];
-        var ceramicCircle = [xa2, ya2, redSize, 'rgb(100,65,54,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 2.5, 0,
-            0,
-            104, 10
-        ];
-        var moabCircle = [xa2, ya2, redSize * 8, 'rgb(1, 196, 255)', redBorderS, 'rgb(255,255,255,1)', redSpeed, 0, 0,
-            616,100
-        ];
-        var bfbCircle = [xa2, ya2, redSize * 15, 'rgb(255,1,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.25, 0,
-            0,
-            3164, 700
-        ];
-        var zomgCircle = [xa2, ya2, redSize * 18, 'rgb(0,0,1,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 0.18, 0,
-            0,
-            16656, 4000
-        ];
-        var ddtCircle = [xa2, ya2, redSize * 5, 'rgb(6,6,7,1)', redBorderS, 'rgb(105,105,105,1)', redSpeed * 2.75, 0, 0,
-            816, 400 
-        ];
-        var badCircle = [xa2, ya2, redSize * 25, 'rgb(254,182,195,1)', redBorderS, 'rgb(255,182,195,1)', redSpeed *
-            0.18, 0,
-            0, 55760, 28000
-        ];
+
         // https://bloons.fandom.com/wiki/Bloons_TD_6_Bloons_Stats
         var nextCircle = [
             ['rgb(255,0,0,1)', [1, 0]],
@@ -574,28 +343,35 @@
             ['rgb(255,0,0,1)', [regenDupeCount, 'blue']],
         ]
 
-        var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1, 0, 0, 1, 1];
-        var blueCircle = [xa2, ya2, redSize, 'rgb(11,196,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.4, 0, 0, 2,
+        var redCircle = [xa2, ya2, redSize, 'rgb(255,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 1, 0, 0, 1, 1];
+        var blueCircle = [xa2, ya2, redSize, 'rgb(11,196,255,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 1.4, 0, 0, 2,
             1
         ];
-        var greenCircle = [xa2, ya2, redSize, 'rgb(0,155,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 3, 1];
-        var yellowCircle = [xa2, ya2, redSize, 'rgb(255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.2, 0, 0, 4,
+        var greenCircle = [xa2, ya2, redSize, 'rgb(0,155,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 1.8, 0, 0, 3, 1];
+        var yellowCircle = [xa2, ya2, redSize, 'rgb(255,255,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 3.2, 0, 0, 4,
             1
         ];
-        var pinkCircle = [xa2, ya2, redSize, 'rgb(255,182,194,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 3.5, 0, 0, 5,
+        var pinkCircle = [xa2, ya2, redSize, 'rgb(255,182,194,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 3.5, 0, 0, 5,
             1
         ];
 
-        var blackCircle = [xa2, ya2, redSize / 2, 'rgb(0,0,0,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 1.8, 0, 0, 11,
+        var blackCircle = [xa2, ya2, redSize / 2, 'rgb(0,0,0,1)', redBorderS, 'rgb(255,255,255,1)', redSpeed * 1.8, 0, 0, 11,
             1
         ];
+
+        var whiteCircle = [xa2, ya2, redSize / 3 * 2, 'rgb(255,255,255,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed * 2, 0,
+            0,
+            11, 1
+        ];
+
+        var leadCircle = [xa2, ya2, redSize, 'rgb(105,105,105,1)', redBorderS, 'rgb(0,0,0,1)', redSpeed, 0, 0, 23, 1];
 
         var zebraCircle = [xa2, ya2, redSize / 2.2, 'rgb(0,1,0,1)', redBorderS * 14, 'rgb(255,255,255,1)', redSpeed *
             1.8,
             0,
             0, 23, 1
         ];
-        var rainbowCircle = [xa2, ya2, redSize / 2.2, 'rgb(255,255,0,1)', redBorderS * 14, 'rgb(28,0,128,1)', redSpeed *
+        var rainbowCircle = [xa2, ya2, redSize / 1.8, 'rgb(255,255,0,1)', redBorderS * 10, 'rgb(28,0,128,1)', redSpeed *
             2.2,
             0, 0, 47, 1
         ];
@@ -647,27 +423,71 @@
 
         //red blue grteen yellow pink balck purple white lead zebra rainbow ceramic   moab  bfb     zomg, ,      dtd        bad
         //relse0   red blue    green yellow 2p    2p 2pink   2bla b&w   2zebra   2rain   4 cermac 4moab   4bfb, 4c+ camoe regen   2zomg 3ddt
-     
-
+       //game start message
+        var drawGoodLuckMessageAct = true;
+        var glMessageTimer    = frameRate*5;
         function mainloop() {
 
-              if(gameRun == true) {
-            colorRect(0, 0, canvas.width, canvas.height, 'blue');
+    
+              if(gameActive == true) {
+      
             drawGrid(canvas.width, canvas.height, 'grid');
-            if (gameActive == false) {
+            ctx.drawImage(bgImg,0,0,canvas.width,canvas.height);
+            if (gameRun == true) {
+                
+               
                 currentTrack = JSON.parse(JSON.stringify(track2));
                 currentTrackXY = JSON.parse(JSON.stringify(track2));
-                gameActive = true;
+                // this where i will set varibales based of difficulty// komey per round lives baloon speed.
+
+ ///doing dododododod doing dfjdsf hello what is going on
+                if(difficulty == 'easy'  ){
+                    money = 500;
+                    regenSpeed = 2 * frameRate;
+                    regenDupeCount = 1;
+                    redSpeed = 1;
+                    healthScaling = 1;
+                    maxRound = 46;
+                    moneyPerRound = 250;
+                } else if (difficulty == 'medium') {
+                    regenSpeed = 1.4 * frameRate;
+                    regenDupeCount = 1;
+                    redSpeed = 1.2;
+                    maxRound = 54;
+                    money = 400;
+                    moneyPerRound = 150;
+                } else if (difficulty == 'impoppable') {
+                    regenDupeCount = 2;
+                    redSpeed = 1.4;
+                    regenSpeed = 0.8 * frameRate;
+                    maxRound=60;
+                    moneyPerRound = 10;
+                    money = 300;
+                }
+                gameRun = false;
+
             }
 
 
+
+            playerMsg()
+         
+           
             if(Circles.length <= 0 && aCS) {
-                round+=1;
-                money += moneyPerRound;
+                if(round<maxRound) {
+                    round+=1;
+                    money += moneyPerRound;
                 levelSection = 1;
                 colorCycle = 0;
                currentSection =  JSON.parse(JSON.stringify(levels[round-1][0]));
                 aCS = false;
+                } else {
+                    gameActive = false;
+                    gameWon = true;
+                  
+
+                }
+              
             }
             drawTrack();
             drawCircles();
@@ -685,7 +505,7 @@
 
 
             if (towerMenuActive) {
-                drawTowerMenu(towerNames, 'grey');
+                drawTowerMenu(towerNames, 'skyBlue');
             } else if (upgradeMenuActive) {
                 var x = '';
                 for (var i = 0; i < towerNames.length; i++) {
@@ -694,14 +514,55 @@
                         upgradeLength = (eval(x)).length;
                     }
                 }
-
-                // console.log(x +'thisis x');
-                drawTowerMenu(x, 'green');
+             
+                drawTowerMenu(x, 'skyBlue');
             }
 
 
 
+        }   else if(difScreenActive) {
+
+                if(difficulty == 'easy'  ){
+                    ctx.drawImage(easyHoverDif,0,0,canvas.width,canvas.height);
+                } else if (difficulty == 'medium') {
+                    ctx.drawImage(medHoverDif,0,0,canvas.width,canvas.height);
+                } else if (difficulty == 'impoppable') {
+                    ctx.drawImage(hardHoverDif,0,0,canvas.width,canvas.height);
+                } else {
+                    ctx.drawImage(difImg,0,0,canvas.width,canvas.height);
+                }
+
+            ctx.font = "44px Times New Roman";
+            ctx.fillStyle = "grey";
+            if(difficulty!= '') {
+                ctx.fillText('Press Enter When Done',TotalGridSize * 0.2, TotalGridSize*0.9);
+            }
+           
+        }  else if (lostGame) {
+            ctx.drawImage(gameLost,0,0,canvas.width,canvas.height);
+        }    else if (gameWon) {
+            ctx.drawImage(gameOver,0,0,canvas.width,canvas.height);
+            ctx.fillText('You bet ' + difficulty + ' mode in ' + time + ' seconds', TotalGridSize * 0.17,TotalGridSize*0.64);
+                    if(difficulty == 'easy'){
+                        ctx.fillText('PRESS R AND CHOOSE MEDIUM OR UNPOPABLE YOU WIMP', TotalGridSize * 0.17,TotalGridSize*0.74);
+                    }else  if(difficulty == 'medium') {
+                        ctx.fillText('Well done press r if you wanna play again', TotalGridSize * 0.17,TotalGridSize*0.74);
+                    }  else {
+                        console.log('hi');
+                        ctx.fillText('Impressive.. what op tower have you abused', TotalGridSize * 0.17,TotalGridSize*0.74);
+                    }
+
+                    ctx.fillText('press Enter to proceed to FREEPLAY', TotalGridSize * 0.17,TotalGridSize*0.84);
+        }  else {
+            ctx.drawImage(nameScreenImg,0,0,canvas.width,canvas.height);
+            drawName();
         }
+        
+        if(outOfMoney > 0) {
+             ctx.font = "60px Times New Roman";
+            ctx.fillStyle = "white";
+            ctx.fillText("Not Enough Money" + lifes, TotalGridSize * 0.17,TotalGridSize*0.77);
+            }
         } //end of mainloop function()
 
 
@@ -722,41 +583,63 @@
 
 // var levels = [[[20,['bad','zomg'],0.2]],[[10,['blue'],0.1]]];
    // will have to decied soon if im doing regen or not
-       var  levels = [[[1,['rainbow'],0.5,'regen']],[[20,['red'],0.8]],[[30,['red'],0.6]],[[30,['red'],0.5],[5,['blue'],1]]  ,[[25,['red'],0.4],[18,['blue'],0.4],[10,['red'],0.4]],[[10,['blue'],0.54],[5,['red'],0.4],[12,['blue'],0.5]]  
+       var  levels = [[[20,['red'],0.8]],[[30,['red'],0.6]],[[30,['red'],0.5],[5,['blue'],1]]  ,[[25,['red'],0.4],[18,['blue'],0.4],[10,['red'],0.4]],[[10,['blue'],0.54],[5,['red'],0.4],[12,['blue'],0.5]]  
        ,[[4,['green'],0.5],[15,['red'],0.5],[15,['blue'],1.3]]
         ,[[25,['blue'],0,5],[5,['green'],0.4],[20,['red'],2]],[[20,['blue'],0,5],[[4,['green'],0.5],[10,['red'],0.4]],[10,['green'],0.5]],[[30,['green'],075]],[[102,['blue'],0.3]]
-          ,[[10,['red'],0.5],[10,'blue',0.3],[12,['green'],0.6],[2,['yellow'],1.2]],[[15,'blue',0.4],[5,['yellow'],0.3],[5,['green'],0.5]],[[50,'red',0.1],[2,['yellow'],0.5],[10,['green'],0.6],[50,'red',0.1],[2,['yellow'],0.5],[13,['green'],0.6]]
-          ,[[20,['red'],0.4],[12,'green',0.3],[5,['yellow'],0.4],[2,['pink'],3]],[[10,'green',0.22],[1,['pink'],0],[10,['green'],0.22],[1,'pink',0.01],[8,['yellow'],0.1],[2,['pink'],0]] ,[[8,['yellow'],0.3,'regen']],[[60,['green'],0.3],[20,['green'],0.06]] 
+          ,[[10,['red'],0.5],[10,['blue'],0.3],[12,['green'],0.6],[2,['yellow'],1.2]],[[15,['blue'],0.4],[5,['yellow'],0.3],[5,['green'],0.5]],[[50,['red'],0.1],[2,['yellow'],0.5],[10,['green'],0.6],[50,['red'],0.1],[2,['yellow'],0.5],[13,['green'],0.6]]
+          ,[[20,['red'],0.4],[12,['green'],0.3],[5,['yellow'],0.4],[2,['pink'],3]],[[10,['green'],0.22],[1,['pink'],0],[10,['green'],0.22],[1,['pink'],0.01],[8,['yellow'],0.1],[2,['pink'],0]] ,[[8,['yellow'],0.3,'regen']],[[60,['green'],0.3],[20,['green'],0.06]] 
           [[6,['green'],0.3],[8,['green','yellow'],0.06],[5,['yellow'],0.2,'regen'],[7,['pink'],0.134]],[[6,['black'],0.4]],[[14,['pink'],0.4]],[[8,['white'],0.3]],[[4,['black'],0.3],[1,['black'],3.4],[4,['white'],0.3]],[[100,['red'],0.01]]
           ,[[31,['yellow'],0.4,'regen']],[[22,['pink'],0.2],[4,['zebra'],2]],  [[45,['yellow'],0.22],[45,['green'],0.22],[55,['blue'],0.18],[120,['red'],0.15]],[[4,['lead'],1.2]],[[25,['yellow'],0.3],[12,['pink'],1,'regen']],[[9,['lead'],0.8]]
             ,[[8,['zebra'],0.8],[[2,['zebra'],0.5],'regen']],[[25,['white'],0.4],[25,['black'],0.4],[8,['lead'],0.3]],[[2,['ceramci'],7]],[[28,['yellow'],0.2]],[1,['zebra'],0],[[28,['yellow'],0.2],[1,['zebra'],0],[28,['yellow'],0.2],[1,['zebra'],0],[28,['yellow'],0.2],[1,['zebra'],0],[28,['yellow'],0.2]]
-            , [[50,['pink','white'],0.2],[15,['pink'],0.18],[5,'rainbow',1.2]],[[20,['white'],0.4],[20,['black'],0.4],[15,['lead'],0.3],[10,['zebra'],0.2]],[[10,['lead'],1,'regen'],[3,['rainbow'],0.1]],[[75,['zebra','lead','rainbow'],0.5]],[[4,['ceramic'],1]],[[40,['black'],0.25],[40,['zebra'],0.25],[40,['black','zebra'],0.25]]
-              ,[[6,['rainbow'],1.5,'regen']],[[10,['rainbow'],0.3]],[[7,['ceramic'],0.8]],[[50,'zebra',0.122]],[[30,['rainbow','zebra','lead','black','white'],0.3,'regen']],[[1,'moab',5]]
+            , [[50,['pink','white'],0.2],[15,['pink'],0.18],[5,['rainbow'],1.2]],[[20,['white'],0.4],[20,['black'],0.4],[15,['lead'],0.3],[10,['zebra'],0.2]],[[10,['lead'],1,'regen'],[3,['rainbow'],0.1]],[[75,['zebra','lead','rainbow'],0.5]],[[4,['ceramic'],1]],[[40,['black'],0.25],[40,['zebra'],0.25],[40,['black','zebra'],0.25]]
+              ,[[6,['rainbow'],2,'regen']],[[10,['rainbow'],0.3]],[[7,['ceramic'],0.8]],[[50,['zebra'],0.122]],[[30,['rainbow','zebra','lead','black','white'],0.3,'regen']],[[1,['moab'],5]],[[5,['ceramic'],0.1],[100,['yellow'],0.001]],[[30,['rainbow'],0.4,'regen']],[[200,['zebra','lead'],0.1]],
+              [[5,['moab'],6]],[[2000,['yellow'],0.0]],[[2000,['red'],0.00001]],[[1,['bfb'],3]],[[6,['moab'],0.7]],[[20,['moab'],0.3]],[[1,['ddt'],3]],[[6,['bfb','moab'],1]],[[100,['ceramic'],0.002]],[[1000,['rainbow'],0.03,'regen']],[[1,['zomg'],5]],[[1,['bad'],1]],                    //round 61
+               [[10,['bad'],4]],[[10,['bad'],4]],[[10,['bad'],4]],[[10,['bad'],4]],[[12,['bad'],3]],[[10,['bad'],3]],[[10,['bad'],4]],[[10,['bad'],3]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[100,['zomg'],0,2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]]
+               ,[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]]
+               ,[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]]
+               ,[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]],[[10,['bad'],2]]
                   ];
-                                                                                                                                              
+                                                                  
+                  
      // colo cycle not working cont of
 
        var levelSection = 1; 
        var colorCycle = 0;
-       var currentSection =[1,['rainbow'],40,'regen']; // when i change level will have to update the currentSection
+       var currentSection =[1,['rainbow'],40]; // when i change level will have to update the currentSection
     // var updateSection = true;
         //   
-        // setInterval(function(){ 
-        //     if(Circles.length <= 0 && aCS) {
-        //         round+=1;
-        //         money += moneyPerRound;
-        //         levelSection = 1;
-        //         colorCycle = 0;
-        //        currentSection =  JSON.parse(JSON.stringify(levels[round-1][0]));
-        //         aCS = false;
-        //     }
+     
 
-            
-        //     }, 1000);
+function playerMsg() {
+        if(drawGoodLuckMessageAct && round<50) {
+                let text = '';  
+                ctx.font = "25px Times New Roman";
+                 ctx.fillStyle = "black";
+                 if(round == 1) {
+                     if(glMessageTimer >0) {
+                         text = 'Goodluck ' + playerStats[attempt][0];    //wishes player luck in 1st level
+                      glMessageTimer -=1;              
+                 }   else {
+                    text = 'Click on emtpy squares on the grass and then purchase' 
+                    ctx.fillText('towers to defend your base from the BALOONS', TotalGridSize * 0.17,TotalGridSize*0.94);
+                 }
+                 } else if (round==2) {
+                    text = 'To beat the game make it to round' + JSON.stringify(maxRound);
+                 } else if (round==3) {
+                     text = 'This game will start of nice and easy';
+                 }  else if (round==4) {
+                     text = 'I hope you are not playing on easy mode';
+                 }   
+
+                 ctx.fillText(text, TotalGridSize * 0.17,TotalGridSize*0.88);
+            }
+        }
+
+
 
         function createCircles() {
             // if acs == false
-
+  
                 timeCounter += 1/frameRate;
 
                 if (timeCounter >= timeing) {
@@ -802,11 +685,36 @@
          }
               
 
-            
+            if(round>61){
+                healthScaling += (round - 60) * 5;
+                redSpeed += (round-60);
+            }
         }
 
 
+        function drawName() {
 
+            ctx.font = "44px Times New Roman";
+            ctx.fillStyle = "white";
+            ctx.fillText(playerStats, TotalGridSize * 0.44, TotalGridSize*0.75);
+
+       
+
+            if(cursureTimer<= 0) {
+           
+                cursureTimer = JSON.parse(JSON.stringify(cTimer));
+            } else {
+                cursureTimer -=1;
+            }
+            
+              if(cursureTimer >= cTimer/2) {
+                ctx.fillRect(TotalGridSize * 0.449 + ctx.measureText((playerStats[attempt][0])).width ,TotalGridSize*0.708,7,36);
+            }  else {
+                    // do nothing
+            }
+            ctx.fillStyle = 'black';
+            ctx.fillText('Press Enter When Done',TotalGridSize * 0.2, TotalGridSize*0.85 )
+        }
 
         function drawTowerMenu(items, c) {
 
@@ -819,7 +727,6 @@
                     ctx.fillText(items[i], tMenuX, gridSize / 1.5 + tMenuY + gridSize * i);
                 }
             } else {
-
 
                 // console.log(items);
                 // console.log(items);
@@ -840,6 +747,8 @@
                         } else {
                             var a = i;
                         }
+
+                        
                         ctx.fillText(b, tMenuX, gridSize / 1.5 + tMenuY + gridSize * a);
                     } else {
                         if (targetingActive == '1st') {
@@ -849,10 +758,15 @@
                         } else if (targetingActive == 'last') {
                             targetingWidth = 2;
                         }
-
-
-                        ctx.fillText('a', tMenuX + targetingWidth * gridSize + gridSize * (i - 4) + gridSize * 0.3,
-                            gridSize / 1.5 + tMenuY + gridSize * 3);
+                            if(i == 4) {
+                                ctx.drawImage(rightArrow, tMenuX + targetingWidth * gridSize + gridSize * (i - 4) + gridSize * 0.3,gridSize / 1.5 + tMenuY + gridSize * 2.6,20,10);
+                            } else {
+                                ctx.drawImage(leftArrow, tMenuX + targetingWidth * gridSize + gridSize * (i - 4) + gridSize * 0.3,gridSize / 1.5 + tMenuY + gridSize * 2.6,20,10);
+                            }
+                       
+                        // ctx.fillText('a', tMenuX + targetingWidth * gridSize + gridSize * (i - 4) + gridSize * 0.3,
+                        //     gridSize / 1.5 + tMenuY + gridSize * 3);
+                            // ctx.drawImage(leftArrow,0,0,canvas.width,canvas.height);
                     }
                 }
 
@@ -868,7 +782,7 @@
             let a = circleId[0];
             Circles.push(new circle(type[0], type[1], type[2], type[3], type[4], type[5], type[6], type[7], type[8],
                 type[9],
-                [type[10]], [a], [0, 'none'],0,0,0,[],[JSON.parse(JSON.stringify(regenSpeed)),specialType,type[9]])); //[pushs]each thing from circle arrary
+                [type[10]] * healthScaling, [a], [0, 'none'],0,0,0,[],[JSON.parse(JSON.stringify(regenSpeed)),specialType,type[9]])); //[pushs]each thing from circle arrary
             circleId[0] += 1; ///frist thing from circle id eg from 1,2,2,2 gets 0
         }
 
@@ -929,7 +843,8 @@
 
         function addTower(x) {
             var towerType = eval(twrNames[x]);
-           
+           let newMoney = Number(money) -towerNames[x].replace(/[^0-9]/g,'')
+            if(newMoney>=0) {
            money -= towerNames[x].replace(/[^0-9]/g,'');
            if(towerType[11][1] == 'roll') {
                   towerType[11][4] =    Math.floor(Math.random() * 12 + 6);
@@ -940,13 +855,31 @@
                 towerType[3], towerType[4], towerType[5], towerType[6], towerType[7], towerType[8], towerType[
                     9], towerType[
                     10], JSON.parse(JSON.stringify(towerType[11]))  ));
-
+        } else {
+                notEnoughMoney();
+        }
         }
 
+       function notEnoughMoney()  {
+            outOfMoney += 1;
+             setTimeout(removeOutOfMoenyText, 1000);           
+       }
 
-        function upgradeTower(tower, path) { //tower to be upgraded and what path 
+function removeOutOfMoenyText() {
+    outOfMoney -= 1;
+}
 
+        
+
+     function upgradeTower(tower, path) { //tower to be upgraded and what path 
+
+
+            
+    
             if (soldierAct) { //soldier upgrade
+
+
+
                 if (path == 0) { //left path
                     if (tower.upgrades[0] == 0) { //tier 1    attack Speed
                         tower.attackSpeed *= 2;
@@ -969,8 +902,9 @@
                             tower.bulletSize *= 1.3;
                         }
                     }
-
+                    if(tower.upgrades[0] < 4) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[0] += 1;
+                    }
 
                 } else { //right path
                     if (tower.upgrades[1] == 0) { //tier 1         //range // could make a bomb... new class;
@@ -986,7 +920,7 @@
                             //will make a grenage get made hree // teri4
                             
                         } else if (tower.upgrades[1] == 3) {
-                            tower.twerEffect = [50, 'shotNade'];
+                            tower.twerEffect = [7, 'shotNade'];
                             tower.poppingPower = 0;
                             tower.damage = 1;
                             tower.poppingPower = grenadeShellsPopPower;
@@ -996,7 +930,9 @@
                         }
                         //teir wil be a tactile nuke abiltiy if i decide to do abiltiys otherwise just being explosion. 
                     }
+                    if(tower.upgrades[1] < 4) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[1] += 1;
+                    }
                 }
                 soldierAct = false;
             } //jkjkjk
@@ -1006,11 +942,16 @@
                     if (tower.upgrades[0] == 0) { //tier 1 
                         tower.attackSpeed *= 1.4; //atttackspeed ;                                            
                     } else if (tower.upgrades[0] == 1) { //teir 2  // 
-                        tower.twerEffect[1] = 'slow2'; // more effective slow;
+                        if(tower.twerEffect[1] == 'slow') {
+                            tower.twerEffect[1] = 'slow2'; // more effective slow;
+                        }
+                        
                     } else if (tower.upgrades[0] == 2) { //teir 3
                         tower.poppingPower += 1; //pops circles
                     } //ice shards teir 4
+                    if(tower.upgrades[0] < 3) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[0] += 1;
+                    }
 
                 } else { //right path
                     if (tower.upgrades[1] == 0) { //tier 1  attack speed
@@ -1026,7 +967,9 @@
                         tower.bulletSpeed *= 0.4;
                         tower.twerEffect[1] = 'snowBall';
                     } //tier 4 will make snowball go down track dealing 10 damage or so to every circle on track with cd
+                    if(tower.upgrades[1] < 3) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[1] += 1;
+                    }
                 }
                 iceMakerAct = false;
             } //
@@ -1044,8 +987,9 @@
                         tower.bulletSize *= 2;
                         tower.pierce = 30;
                     }
+                    if(tower.upgrades[0] < 3) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[0] += 1;
-
+                    }
                 } else { //right path
                     if (tower.upgrades[1] == 0) { //tier 1
                         tower.attackSpeed *= 1.1;
@@ -1054,7 +998,9 @@
                     } else if (tower.upgrades[1] == 2) {
                         tower.attackSpeed *= 30;
                     }
+                    if(tower.upgrades[1] < 3) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[1] += 1;
+                    }
                 }
                 sniperOrginalAct = false;
             } //
@@ -1067,20 +1013,20 @@
                     } else if (tower.upgrades[0] == 1) { //teir 2
                         tower.twerEffect[4] = 'acidPit';
                         tower.twerEffect[5] = 0; // count/trapsActiveFOrTowers.
-                    } else if (tower.upgrades[0] == 2) { //teir 3
-                        tower.bulletSize *= 2;
-                        tower.pierce = 30;
-                    }
+                    } 
+                    if(tower.upgrades[0] < 2) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[0] += 1;
+                    }
                 } else { //right path
                     if (tower.upgrades[1] == 0) { //tier 1
                         //fire Projectiles now use wate fireeffect;
                     } else if (tower.upgrades[1] == 1) {
-                        tower.attackSpeed *= 1.2;
-                    } else if (tower.upgrades[1] == 2) {
-                        tower.attackSpeed *= 30;
-                    }
+                        tower.attackSpeed *= 4;
+                        tower.bulletSize *=2;
+                    } 
+                    if(tower.upgrades[1] < 2) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[1] += 1;
+                    }
                 }
                 fireBWaterGAct = false;
             } // 
@@ -1088,21 +1034,7 @@
             // fireByoy and water girl //dodododdod
 
             // 1 side will creawte a portal that gets rid of baloons that enter upt ot moab andt dtd
-            //    light beams // ray of doom/ box from gave will be picture that will piont at circles it it targeting.
-            //    cover track in fir and water
-
-
-
-            // 'extraPopPower40$',
-            // 'ByeOnes&Twos800$',
-            // 'tripleMoabDamdge1000$',
-            // 'critChance40$',
-            // 'chnaceToOneShot400$',
-            // '//secred$'
-
-
-
-            
+   
             if (randomDiceAct) { 
                 if (path == 0) { //left path
                     if (tower.upgrades[0] == 0) { //tier 1  // increased popPower
@@ -1116,7 +1048,9 @@
                     } else if (tower.upgrades[0] == 2) {
                         tower.damage *= 3;
                     }
+                    if(tower.upgrades[0] < 3) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[0] += 1;
+                    }
 
                 } else { //right path
                     if (tower.upgrades[1] == 0) { //tier 1
@@ -1130,7 +1064,9 @@
                     }       //max tier will have hcance to creawt new random dice
 
 
+                    if(tower.upgrades[1] < 3) { // this prevents it trying to upgrade over max upgrade
                     tower.upgrades[1] += 1;
+                    }
                 }
             } //
             randomDiceAct = false;                                                                              
@@ -1546,7 +1482,7 @@
 
             trackL = currentTrack.length;
             gridAmount = currentTrack.length;
-            ctx.strokeStyle = 'rgb(71,67,77)';
+            ctx.strokeStyle = 'black';
             ctx.lineWidth = trackWidth;
 
 
@@ -1606,11 +1542,11 @@
 
                 width = towerWidth;
                 height = towerCount;
-            } else if (a == 'upGradeMenu') { //todotodotodo will have to redo this whole thing
+            } else if (a == 'upGradeMenu') {
                 width = upgradeWidth;
                 height = 3;
             }
-            //else { trap menu for when on track//todo later}
+
 
             if (Math.floor(x[0] / gridSize) < gridCount - width) { //for when menu on left of screen draws to right
                 tMenuX = x[0] + gridSize * 2;
@@ -1680,7 +1616,7 @@
 
         function drawScore() {
             ctx.font = "30px Times New Roman";
-            ctx.fillStyle = "red";
+            ctx.fillStyle = "black";
 
             ctx.fillText("Lifes: " + lifes, canvas.width * 0.1, 30);
             ctx.fillText("Time: " + Math.floor(time / frameRate),canvas.width * 0.3, 30);
@@ -1691,6 +1627,327 @@
             time += 1;
             // }
         }
+
+
+        function keyPressed(evt) { 
+            if (evt.keyCode == SHIFT_KEY) { //shift
+                    shiftKeyPressed = true;
+                }
+                if (evt.keyCode == SHIFT_KEY) { //shift
+                    shiftKeyPressed = true;
+                }
+
+                if(evt.keyCode == 13** difScreenActive == true && difficulty!= '') {
+                        difScreenActive = false;
+                        gameRun = true;
+                        gameActive = true;
+                }
+
+
+
+
+                
+            if (evt.keyCode > 0 && gameActive == false && difScreenActive == false &&gameWon == false && lostGame == false) { //runs if the starting menu is open and a key is pressed
+                    let maxDist = TotalGridSize / 2.1 ; //limits how much you can right
+                    if (playerStats[attempt].length == 0) { //if theres no word yet
+                        if (evt.keyCode == 8) { //if delet/backspace is pressed
+                            playerStats[attempt].pop(); //delet last letter
+                        } else if (evt.keyCode == 13) { //if enter key pressed
+                            difScreenActive = true; //close menu
+                        } else if (shiftKeyPressed == true && evt.keyCode !== 16) { //if shift is pressed
+                            playerStats[attempt].push(String.fromCharCode(evt.keyCode)); //push letter pressed in caps
+                        } else if (evt.keyCode !== 16) { //not shift pressed
+                            playerStats[attempt].push(String.fromCharCode(evt.keyCode).toLowerCase()); //write letter in lowercase
+                        }
+                    } else {
+                        if (evt.keyCode == 8) { //if delet/backspace is pressed
+                            if (playerStats[attempt][0].length == 1) { //if theres one letter in the word
+                                playerStats[attempt][0] = ""; //will becom nothing
+                            } else if (playerStats[attempt][0].length !== 0) { //if theres more than one letter
+                                backSpaceContainer = playerStats[attempt][0][0]; // backspacecontainer will be the first letter in the word
+                                for (let l = 1; l < playerStats[attempt][0].length - 1; l++) { //runs for every letter in the word instead of the first letter and the last letter
+                                    backSpaceContainer += playerStats[attempt][0][l]; //will push every letter exept the first letter and the last letter
+                                } //for end
+                                playerStats[attempt][0] = backSpaceContainer; //will have one less letter now
+                            }
+                        } else if (evt.keyCode == 13 ) { //if enter key pressed
+                            if(playerStats[attempt][0].length>2) {
+                                difScreenActive = true; //close menu
+                            }  //esle will do nothing as enter key should not be pushed throgh to array
+                           
+                        } else if (shiftKeyPressed == true && evt.keyCode !== 16 && ctx.measureText((playerStats[attempt][0])).width <= maxDist) { // if shift key pressed and theres still space for more letters
+                            playerStats[attempt][0] += (String.fromCharCode(evt.keyCode)); //adds capital letter
+                        } else if (evt.keyCode !== 16 && ctx.measureText((playerStats[attempt][0])).width <= maxDist) {
+                            // if shift key not pressed and theres still space for more letters
+                            if(playerStats[attempt][0].length == 0) {
+                                playerStats[attempt][0] += (String.fromCharCode(evt.keyCode).toUpperCase());
+                            }  else {
+                                playerStats[attempt][0] += (String.fromCharCode(evt.keyCode).toLowerCase()); //adds lowercase letter
+                            }
+                            
+                        }
+                    }
+                }   else if(lostGame || gameWon) {//if end
+                            if(evt.keyCode == 13) {
+                                lostGame = false;
+                                gameWon = false;
+                                gameActive = true;
+                                maxRound = 999;
+                            }
+                }
+
+        } // end of key pressed
+
+   //usedKeyCodes
+
+
+
+        function mouseDown(evt) {
+          
+                getMousePosition(canvas, evt);
+  if(gameActive == true) {
+                let columnClicked = Math.floor(mouseX / gridSize);
+                let rowClicked = Math.floor(mouseY / gridSize);
+
+
+                for (i = 0; i <
+                    trackL; i++
+                ) { //checks each track cooradanets to see if mouse clikc on track then passes through ontrack is true or false
+                    onTrack = false;
+                    let trackColumn = Math.floor(currentTrackXY[i][0] / gridSize);
+                    let trackRow = Math.floor(currentTrackXY[i][1] / gridSize);
+
+                    // console.log(trackColumn,trackRow);
+                    //will have to chagne current tracdk above to change 1st and last variable
+                    if (columnClicked == trackColumn && rowClicked == trackRow) {
+                        onTrack = true;
+
+                        //will make traps menu come up when clikd on track
+                        break;
+                    }
+                }
+
+                if (onTrack == false && Towers.length > 0 && upgradeMenuActive == false) { //echects if they clikc on a toer
+                    for (i = 0; i < Towers.length; i++) {
+                        onTower = false;
+                        let towerColumn = Math.floor(Towers[i].x / gridSize);
+                        let towerRow = Math.floor(Towers[i].y / gridSize);
+                        if (columnClicked == towerColumn && rowClicked == towerRow) {
+                            onTower = true;
+                            upgrading = Towers[i];
+                            break; ///if this happnes it stops for loop as they have clikced on a tower and doesnt need to check anything more
+                        }
+                    }
+                }
+
+                if (towerMenuActive == false && upgradeMenuActive == false && gameWon == false && lostGame == false) {
+                    if (onTrack == false) {
+
+                        if (onTower) {
+                            var upgrades = [0, 0];
+                            for (i = 0; i < Towers.length; i++) {
+                                if ((Math.floor(Towers[i].x / gridSize)) == columnClicked && (Math.floor(
+                                        Towers[i].y /
+                                        gridSize)) ==
+                                    rowClicked) {
+                                    upGsActive = Towers[i].upgrades;
+                                    // upgradeLength = soldierUpgradeNames.length;
+                                    targetingActive = Towers[i].targeting;
+                                    rangeCircleRadius = Towers[i].range;
+                                    rangeCircleX = Towers[i].x;
+                                    rangeCircleY = Towers[i].y;
+                            
+                                    if (Towers[i].color == 'brown') {
+                                        soldierAct = true;
+                                        towerActive = ' soldier';
+                                    } else if (Towers[i].color == 'lightGrey') {
+                                        iceMakerAct = true;
+                                        towerActive = 'iceMaker';
+                                    } else if (Towers[i].color == 'black') {
+                                        sniperOrginalAct = true;
+                                        towerActive = 'sniperOrginal';
+                                    } else if (Towers[i].color == 'fwImg') {
+                                        fireBWaterGAct = true;
+                                        towerActive = ' fireBWaterG';
+                                    } else if (Towers[i].twerEffect[1] == 'roll') {
+                                        randomDiceAct = true;
+                                        towerActive = 'randomDice';
+                                    }
+
+
+                                }
+                            }
+
+
+                            upgradeMenuActive = true;
+                            towerMenu('upGradeMenu', [columnClicked * gridSize, rowClicked * gridSize]);
+
+
+                        } else {
+                            towerMenuActive = true;
+                            towerMenu('towerMenu', [columnClicked * gridSize, rowClicked * gridSize]);
+
+                        }
+
+                    } // else { will be to add traps
+                } else {
+                    if (towerMenuActive == true && columnClicked - tMenuGridX >= 0 && columnClicked -
+                        tMenuGridX < towerWidth - 2) {
+                        //todotodotodoTODo to do tooodooo 2du 2dough  twoduuuugooodoootoututudooo
+                        for (i = 0; i < towerCount; i++) {
+                            if (rowClicked == tMenuGridY + i) {
+                                addTower(i)
+
+                            }
+                        }
+
+                    } else if (upgradeMenuActive) {
+                        if (columnClicked - tMenuGridX >= 0 && columnClicked - tMenuGridX <
+                            upgradeWidth) {
+
+                            for (i = 0; i < 2; i++) {
+                                if (rowClicked == tMenuGridY + i) {
+
+
+                           
+                                        if(i == 0) {
+                                          let moneyChange = eval(towerActive+'UpgradeNames')[upgrading.upgrades[0]].replace(/[^0-9]/g,'');
+                                            let newMoney = money -moneyChange;
+                                          if(newMoney>=0) {
+                                            money =newMoney;
+                                           
+                                             upgradeTower(upgrading,i); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on 
+                                             } else {
+                                                    notEnoughMoney();
+                                             }
+                                        } else {
+                                            var n = eval(towerActive+'UpgradeNames')
+                                            let newMoney = JSON.parse(JSON.stringify(money)) - n[upgrading.upgrades[1]+n.length/2].replace(/[^0-9]/g,'');
+                                            if(newMoney>=0) {
+                                                upgradeTower(upgrading,i); //towerIdTHat is clicked on and what path they ofg upgrade they clicked on 
+                                            money -= n[upgrading.upgrades[1]+n.length/2].replace(/[^0-9]/g,'');
+                                        } else {
+                                            console.log('hgi');
+                                            notEnoughMoney();
+                                        }
+                                       
+                                    
+                                    
+                                }
+                            }
+                        }
+
+                            if (rowClicked == tMenuGridY + 3) {
+                                if (columnClicked - tMenuGridX >= targetingWidth / 2 && columnClicked -
+                                    tMenuGridX < targetingWidth / 2 + 1) {
+
+                                    if (upgrading.targeting == '1st') {
+                                        upgrading.targeting = 'last';
+                                    } else if (upgrading.targeting == 'strong') {
+                                        upgrading.targeting = '1st';
+                                    } else {
+                                        upgrading.targeting = 'strong';
+                                    }
+                                    var targetingList = ['1st', 'strong', 'last'];
+
+
+
+                                } else if (columnClicked - tMenuGridX >= targetingWidth / 2 + 1 &&
+                                    columnClicked -
+                                    tMenuGridX <= targetingWidth / 2 + 2) {
+                                    if (upgrading.targeting == '1st') {
+                                        upgrading.targeting = 'strong';
+                                    } else if (upgrading.targeting == 'strong') {
+                                        upgrading.targeting = 'last';
+                                    } else {
+                                        upgrading.targeting = '1st';
+                                    }
+                                }
+                            }
+
+                        }
+
+                    
+
+
+                        // else if (rowClicked == (tMenuGridY +3)) {
+                        //         console.log('test');
+
+                        //     //     columnClicked - tMenuGridX >= targetingWidth && columnClicked - tMenuGridX <
+                        //     // upgradeWidth && 
+
+                        // }
+
+
+                    }
+                    upgradeMenuActive = false;
+                    towerMenuActive = false;
+                }
+
+                }  else if(difScreenActive) {           // end of ingame mouse checks 
+                       if(mouseX <= TotalGridSize*0.3) {
+                            difficulty = 'easy';
+                       } else if ( mouseX <= TotalGridSize *0.666 &&mouseX>= TotalGridSize*0.33) {
+                         difficulty = 'medium';
+                       } else if (mouseX >= TotalGridSize * 0.7) {
+                            difficulty = 'impoppable'
+                       }
+
+                }
+            } // end of keyPressed
+        
+
+
+
+        function keyReleased(evt) { //key releas function
+
+                if (evt.keyCode == SHIFT_KEY) { //shift
+                    shiftKeyPressed = false;
+                }
+                if (evt.keyCode == R_KEY) { //restart
+                     trackWidth = gridSize;
+                    trackL = '';
+                    gridAmount = '';
+                    gridDirection = '';
+                    xa = 0; //xa and ya used for track cooradanets
+                    ya = TotalGridSize / 2 + 2 * gridSize - gridSize / 2;
+                    xa2 = 0; //the 2nd one is for starting x,y
+                     ya2 = TotalGridSize / 2 + 2 * gridSize - gridSize / 2;
+                    rKeyPressed = false;
+                    
+                    Towers = [];
+                    Projectiles = [];
+                    lifes = 0;
+                    round = 1;
+                    time = 0;
+                     gameActive = false; // to set the track when the game begins
+                     lostGame = false;
+                     gameStart = true;
+                     gameWon = false;
+                     lostGame = false;
+                     difScreenActive = true;
+                     gameRun = true;
+                      currentTrack = '';
+         currentTrackXY = '';
+
+                }
+            } //func end
+
+
+
+        var mouseX, mouseY;
+  
+        function getMousePosition(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            mouseX = event.clientX - rect.left;
+            mouseY = event.clientY - rect.top;
+        } //end of getMOusdePos funtion ()
+        // 0 == up
+        // 1 == right
+        // 2 = down
+        // 3 = up
+
+
     </script>
 
 </body>

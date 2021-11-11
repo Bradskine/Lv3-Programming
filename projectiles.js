@@ -18,7 +18,6 @@ class projectile { //for projectiles created by towers
     id = 0,
     colls = [],
     peirceR = 0 // peirce remaining
-
   ) {
     this.x = x;
     this.y = y;
@@ -45,17 +44,19 @@ class projectile { //for projectiles created by towers
       y,
       bulletColor,
       bulletSize,
-      size = bulletSize * 2 * Math.cos(Math.PI / 6),
-      bulletColor
+      size = bulletSize * 2 * Math.cos(Math.PI / 6)
+
     } = this
 
-    if (this.effect[1] == 'grenade' || this.effect[1] == 'shotNade' || this.effect[1] == 'snowBall' || this.effect[0] == 'acidPit') {
+    if (this.effect[1] == 'grenade' || this.effect[1] == 'shotNade' || this.effect[1] == 'snowBall' || this.effect[1] == 'acidEffect' || this.effect[1] == 'roll') {
       ctx.save(); //so doesnt save over other ones/ safer
 
-      if(this.effect[0] == 'acidPit') {
-        bulletSize = gridSize/2;
+      if(this.effect[1] == 'roll') {
+        
+        ctx.drawImage(bulletColor,x,y,bulletSize,bulletSize);
+      } else {
+      drawCircle(x, y, bulletSize, bulletColor, 0.0000001, bulletColor);
       }
-      drawCircle(x, y, bulletSize, bulletColor, 0.0000001, bulletColor)
       ctx.restore();
     } else {
 
@@ -285,7 +286,9 @@ class projectile { //for projectiles created by towers
             if (JSON.stringify(collCheck) == JSON.stringify(projCheck)) { // needed to check them stringifyed
               // console.log(collCheck,projCheck);
               run = false;
+              if(this.effect[1] == 'acidPit')
               circle.effects = JSON.parse(JSON.stringify(this.effect));
+
               break;
             }
           }
@@ -305,30 +308,50 @@ class projectile { //for projectiles created by towers
 
           }
 
-          if (run == true) {
+          if (run == true) { // run will be true if projectile is normal and doesnt have effects that were check for above
+            if(this.effect[6] == 'critChance') {
+              if(Math.random() < 0.3) {
+                this.popPower *= 5;
+              }
+          
+            } 
+            
+            if (this.effect[6] == 'megaCrit') {
+              if(Math.random() < 0.05) {
+                  this.popPower = 99;
+                  this.damage = 99999999999999;  
+              }
+            } 
+            
+    
+
             for (var i = 0; i < Circles.length; i++) {
               if (Circles[i].x == circle.x && Circles[i].y == circle.y && Circles[i].c == circle.c) {
                 var newCircle = [];
 
-                for (var a = 0; a < nextCircle.length; a++) { //this is right//will have to change al this to base it of popping poiewr tododododod todo
+                for (var a = 0; a < nextCircle.length; a++) { 
 
                   if (circle.c == nextCircle[a][0]) {
                     if (a > 10) {
                       newCircle = nextCircle[a][1];
                     } else {
-
+                     
                       newCircle = nextCircle[a][1];
                       if (this.popPower > 1) {
                         for (var j = 0; j < this.popPower - 1; j++) {
-
+                       
                           for (var g = 0; g < nextCircle.length; g++) {
 
                             if (JSON.stringify(newCircle[1]) == JSON.stringify(nextCircleNames[g][0])) {
                               newCircle = nextCircle[g][1];
+                          money += 1;
+                    
                             }
                           }
 
                         }
+                      } else {
+                        money += 1;
                       }
                       // console.log(newCircle);
                       break;
@@ -339,6 +362,9 @@ class projectile { //for projectiles created by towers
 
 
                 if (newCircle[1] != 0) {
+
+                    //checks if bullet has crit or extra damdge chance abilitys
+                
                   this.colls.push(JSON.parse(JSON.stringify(Circles[i].id)));
                   Circles[i].health = Circles[i].health - this.damage * this.popPower;
                   let hitPsCheck = false;
@@ -356,9 +382,10 @@ class projectile { //for projectiles created by towers
                     var nextCo = Circles[i].nextCo;
                     var speed = Circles[i].speed;
                     var distanceTraveled = Circles[i].distanceTraveled;
+                    var type = Circles[i].type;
                     delete Circles[i];
                     Circles = Circles.filter(item => item !== undefined);
-                    addCircle2(cirX, cirY, numCo, nextCo, cirId, (newCircle[1]), newCircle[0], speed, distanceTraveled, JSON.parse(JSON.stringify(this.effect)));
+                    addCircle2(cirX, cirY, numCo, nextCo, cirId, (newCircle[1]), newCircle[0], speed, distanceTraveled, JSON.parse(JSON.stringify(this.effect)),type);
                   } else {
                     // Circles[i].effects[0] = this.effect[0];
                     // Circles[i].effects[1] = this.effect[1];
@@ -708,6 +735,9 @@ class projectile { //for projectiles created by towers
       }
       draw() {
         ctx.save();
+
+
+
         ctx.globalAlpha = this.alpha;
 
         ctx.fillStyle = this.colour;
@@ -727,6 +757,8 @@ class projectile { //for projectiles created by towers
         /* Restore the recent canvas context*/
         ctx.restore();
       }
+    
+
       update() {
         this.draw();
         this.alpha -= explosionRadius / 20;
@@ -775,32 +807,31 @@ class projectile { //for projectiles created by towers
     }
 
 
-  }
+  } // end of animate explsoin
 
 
 
 
-  deleteProjecitle() { //intentinal spelling error of course(hidden meaning):
+  deleteProjecitle() { //intentinal spelling error of for sure(hidden meaning):
 
     if (this.effect[1] == 'grenade' || this.effect[1] == 'shotNade') {
 
       this.animateExplosion(this.x, this.y);
-
-
       // each circle is touching imanegary exposin radius
       var pass = true;
       let maxHit = 0;
       Circles.forEach(function (circle) {
         // let explosionRadius = gridSize * 3; //tpdp // draw
-  pass = true;
-        if (pass == true) {
+ 
           if ((circle.c == 'rgb(0,0,0,1)' || circle.c == 'rgb(0,1,0,1)') && circle.rbe < 21) { // black and zebra
-            console.log('test');
             pass = false;
+            
             // this.deleteProjecitle();
+          } else {
+            pass = true;
           }
 
-        }
+    
 
         if (pass == true) {
 
@@ -808,7 +839,6 @@ class projectile { //for projectiles created by towers
             circle.y + circle.r > this.y - explosionRadius && circle.y - circle.r < this.y + explosionRadius) {
 
             // need to somehow change thing above to a funciton that I use here but not sure hwo I can do that
-
 
 
             for (var i = 0; i < Circles.length; i++) {
@@ -841,9 +871,9 @@ class projectile { //for projectiles created by towers
 
 
 
-                if (newCircle[1] != 0) {
+                if (newCircle[1] !== 0) {
                   this.colls.push(JSON.parse(JSON.stringify(Circles[i].id)));
-                  Circles[i].health = Circles[i].health - this.damage * this.popPower;
+                  Circles[i].health = Circles[i].health - explosionDamage * this.popPower;
                   let hitPsCheck = false;
                   // this.hitCheck();
                   if (Circles[i].health < 1) {
@@ -856,10 +886,12 @@ class projectile { //for projectiles created by towers
                     var numCo = Circles[i].numberCo;
                     var nextCo = Circles[i].nextCo;
                     var speed = Circles[i].speed;
+                    var classs = Circles[i].type;
                     var distanceTraveled = Circles[i].distanceTraveled;
                     delete Circles[i];
                     Circles = Circles.filter(item => item !== undefined);
-                    addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, 123123, JSON.parse(JSON.stringify(this.effect)));
+                  
+                    addCircle2(cirX, cirY, numCo, nextCo, cirId, newCircle[1], newCircle[0], speed, 123123, JSON.parse(JSON.stringify(this.effect)),classs);
                   } else {
                     // Circles[i].effects[0] = this.effect[0];
                     // Circles[i].effects[1] = this.effect[1];
@@ -885,6 +917,7 @@ class projectile { //for projectiles created by towers
 
     }
     // this.hitCheck();
+
     this.x = 'hi';
     Projectiles = Projectiles.filter(item => item.x !== 'hi');
 
