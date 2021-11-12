@@ -68,7 +68,7 @@ class circle { //this will creawte circles which go around track
   followTrack() { // might add followTrack(i) if i have time
 
 
-    if (((this.effects[1] == 'slow' || this.effects[1] == 'slow2' || this.effects[1] == 'snowBall') && this.rbe <= 104)) {
+    if (((this.effects[1] == 'slow' || this.effects[1] == 'slow2' || this.effects[1] == 'snowBall') && (this.rbe <= 104 || this.effects[2] == 'moab'))) {
       if (this.effects[1] == 'slow') {
         var speed = this.speed * 0.5;
       } else if (this.effects[1] == 'slow2' || this.effects[1] == 'snowBall') {
@@ -117,9 +117,12 @@ class circle { //this will creawte circles which go around track
           if (Circles[i].x == this.x && Circles[i].y == this.y && Circles[i].c == this.c) {
 
             lifes -= this.rbe;
+            money += this.rbe;
             if(lifes<= 0) {
               gameActive = false;
-              gameLost = true;
+
+              lostGame = true;
+             
             }
             //check for lvies to be 0 and end game
             delete Circles[i];

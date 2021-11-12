@@ -319,7 +319,8 @@ class projectile { //for projectiles created by towers
             if (this.effect[6] == 'megaCrit') {
               if(Math.random() < 0.05) {
                   this.popPower = 99;
-                  this.damage = 99999999999999;  
+                  this.damage = 9999999;
+        
               }
             } 
             
@@ -366,7 +367,7 @@ class projectile { //for projectiles created by towers
                     //checks if bullet has crit or extra damdge chance abilitys
                 
                   this.colls.push(JSON.parse(JSON.stringify(Circles[i].id)));
-                  Circles[i].health = Circles[i].health - this.damage * this.popPower;
+                  Circles[i].health = Circles[i].health - (this.damage * this.popPower);
                   let hitPsCheck = false;
                   // this.hitCheck();
                   if (Circles[i].health < 1) {
@@ -402,7 +403,7 @@ class projectile { //for projectiles created by towers
 
 
                 } else {
-
+                   
 
                   delete Circles[i];
                   Circles = Circles.filter(item => item !== undefined);
@@ -412,10 +413,10 @@ class projectile { //for projectiles created by towers
                   if (this.effect[1] == 'water') {
                     this.waterBounce(); //need to also pu above before deleets circle
                   } else if (this.peirceR < 1) {
-                    this.deleteProjecitle();
+                      this.deleteProjecitle();
                     // if this.,effecst [1] == water wil bounce and lower effecds 2
                   }
-                }
+              }
 
 
               }
